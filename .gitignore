@@ -1,2 +1,5 @@
 # Package Management
 node_modules
+
+# Distribution
+build
