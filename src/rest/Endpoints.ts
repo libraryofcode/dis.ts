@@ -105,7 +105,7 @@ export default class Endpoints {
   }
 
   /**
-   * `/guilds/${guildID}`
+   * `/guilds/${guildID}/preview`
    * - GET
    */
   public static GUILD_PREVIEW(guildID: string) {
