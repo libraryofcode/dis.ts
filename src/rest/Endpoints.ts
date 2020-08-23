@@ -94,7 +94,7 @@ export default class Endpoints {
     return `/channels/${channelID}/pins/${messageID}`;
   }
 
-  /** 
+  /**
    * `/guilds/${guildID}`
    * - GET
    * - PATCH
