@@ -94,38 +94,6 @@ export default class Endpoints {
     return `/channels/${channelID}/pins/${messageID}`;
   }
 
-  /**
-   * `/users/@me`
-   * - GET
-   * - PATCH
-   */
-  public static CURRENT_USER() {
-    return `/users/@me`;
-  }
-  /**
-   * `/users/${userID}`
-   * - GET
-   */
-  public static USER(userID: string) {
-    return `/users/${userID}`;
-  }
-  /**
-   * `/users/@me/guilds`
-   * - GET
-   * - PATCH
-   */
-  public static CURRENT_USER_GUILDS() {
-    return `/users/@me/guilds`;
-  }
-  /**
-   * ` /users/@me/channels`
-   * - POST
-   * - GET
-   */
-  public static CREATE_DM() {
-    return `/users/@me/channels`;
-  }
-
   /** `/guilds/${guildID}`
    * - GET
    * - PATCH
@@ -300,5 +268,37 @@ export default class Endpoints {
    */
   public static GUILD_VANITY_URL(guildID: string) {
     return `/guilds/${guildID}/vanity-url`;
+  }
+
+  /**
+   * `/users/@me`
+   * - GET
+   * - PATCH
+   */
+  public static CURRENT_USER() {
+    return `/users/@me`;
+  }
+  /**
+   * `/users/${userID}`
+   * - GET
+   */
+  public static USER(userID: string) {
+    return `/users/${userID}`;
+  }
+  /**
+   * `/users/@me/guilds`
+   * - GET
+   * - PATCH
+   */
+  public static CURRENT_USER_GUILDS() {
+    return `/users/@me/guilds`;
+  }
+  /**
+   * ` /users/@me/channels`
+   * - POST
+   * - GET
+   */
+  public static CREATE_DM() {
+    return `/users/@me/channels`;
   }
 }
