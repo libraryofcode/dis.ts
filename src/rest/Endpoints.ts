@@ -29,12 +29,7 @@ export default class Endpoints {
    * - PUT
    * - DELETE
    */
-  public static CHANNEL_MESSAGE_USER_REACTION(
-    channelID: string,
-    messageID: string,
-    reaction: string,
-    userID: string
-  ) {
+  public static CHANNEL_MESSAGE_USER_REACTION(channelID: string, messageID: string, reaction: string, userID: string) {
     return `/channels/${channelID}/messages/${messageID}/reactions/${reaction}/${userID}`;
   }
   /**
@@ -42,11 +37,7 @@ export default class Endpoints {
    * - GET
    * - DELETE
    */
-  public static CHANNEL_MESSAGE_REACTION(
-    channelID: string,
-    messageID: string,
-    reaction: string
-  ) {
+  public static CHANNEL_MESSAGE_REACTION(channelID: string, messageID: string, reaction: string) {
     return `/channels/${channelID}/messages/${messageID}/reactions/${reaction}`;
   }
   /**
@@ -54,10 +45,7 @@ export default class Endpoints {
    * - GET
    * - DELETE
    */
-  public static CHANNEL_MESSAGE_REACTIONS(
-    channelID: string,
-    messageID: string
-  ) {
+  public static CHANNEL_MESSAGE_REACTIONS(channelID: string, messageID: string) {
     return `/channels/${channelID}/messages/${messageID}/reactions`;
   }
   /**
