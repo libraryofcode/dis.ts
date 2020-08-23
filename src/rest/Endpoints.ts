@@ -33,10 +33,10 @@ export default class Endpoints {
     return `/channels/${channelID}/messages/${messageID}/reactions/${reaction}/${userID}`;
   }
   /**
-   * `/channels/${channelID}/messages/${messageID}/reactions/${reaction}`
-   * - GET
-   * - DELETE
-   */
+    * `/channels/${channelID}/messages/${messageID}/reactions/${reaction}`
+    * - GET
+    * - DELETE
+    */
   public static CHANNEL_MESSAGE_REACTION(channelID: string, messageID: string, reaction: string) {
     return `/channels/${channelID}/messages/${messageID}/reactions/${reaction}`;
   }
@@ -56,40 +56,40 @@ export default class Endpoints {
     return `/channels/${channelID}/bulk-delete`;
   }
   /**
-   * `/channels/${channelID}/permissions/${overwriteID}`
-   * - PUT
-   * - DELETE
-   */
+    * `/channels/${channelID}/permissions/${overwriteID}`
+    * - PUT
+    * - DELETE
+    */
   public static CHANNEL_OVERWRITE_PERMISSIONS(channelID, overwriteID) {
     return `/channels/${channelID}/permissions/${overwriteID}`;
   }
   /**
-   * `/channels/${channelID}/invites`
-   * - GET
-   * - POST
-   */
+    * `/channels/${channelID}/invites`
+    * - GET
+    * - POST
+    */
   public static CHANNEL_INVITES(channelID: string) {
     return `/channels/${channelID}/invites`;
   }
   /**
-   * `/channels/${channelID}/typing`
-   * - POST
-   */
+    * `/channels/${channelID}/typing`
+    * - POST
+    */
   public static CHANNEL_TYPING(channelID: string) {
     return `/channels/${channelID}/typing`;
   }
   /**
-   * `/channels/${channelID}/pins`
-   * - GET
-   */
+    * `/channels/${channelID}/pins`
+    * - GET
+    */
   public static CHANNEL_PINNED_MESSAGES(channelID: string) {
     return `/channels/${channelID}/pins`;
   }
   /**
-   * `/channels/${channelID}/pins/${messageID}`
-   * - PUT
-   * - DELETE
-   */
+    * `/channels/${channelID}/pins/${messageID}`
+    * - PUT
+    * - DELETE
+    */
   public static CHANNEL_PINNED_MESSAGE(channelID: string, messageID: string) {
     return `/channels/${channelID}/pins/${messageID}`;
   }
