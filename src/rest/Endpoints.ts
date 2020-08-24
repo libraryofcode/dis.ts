@@ -269,4 +269,22 @@ export default class Endpoints {
   public static GUILD_VANITY_URL(guildID: string) {
     return `/guilds/${guildID}/vanity-url`;
   }
+
+  /**
+   * `/guilds/${guildID}/emojis/${emojiID}`
+   * - GET
+   * - PATCH
+   * - DELETE
+   */
+  public static GUILD_EMOJIS(guildID: string, emojiID: string) {
+    return `/guilds/${guildID}/emojis/${emojiID}`;
+  }
+
+  /**
+   * `/guilds/${guildID}/emojis`
+   * - POST
+   */
+  public static CREATE_EMOJI(guildID: string) {
+    return `/guilds/${guildID}/emojis`;
+  }
 }
