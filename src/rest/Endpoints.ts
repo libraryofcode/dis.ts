@@ -276,7 +276,7 @@ export default class Endpoints {
    * - PATCH
    * - DELETE
    */
-  public static GUILD_EMOJIS(guildID: string, emojiID: string) {
+  public static EMOJI(guildID: string, emojiID: string) {
     return `/guilds/${guildID}/emojis/${emojiID}`;
   }
 
