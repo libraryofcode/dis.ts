@@ -165,7 +165,6 @@ export default class Endpoints {
     return `/guilds/${guildID}/bans`;
   }
 
-
   /**
    * `/guilds/${guildID}/bans/${userID}`
    * - GET
