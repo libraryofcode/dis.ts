@@ -282,6 +282,7 @@ export default class Endpoints {
 
   /**
    * `/guilds/${guildID}/emojis`
+   * - GET
    * - POST
    */
   public static GUILD_EMOJIS(guildID: string) {
