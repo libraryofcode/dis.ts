@@ -96,6 +96,14 @@ export default class Endpoints {
 
   /**
    * `/guilds/${guildID}`
+   * - POST
+   */
+  public static GUILDS() {
+    return '/guilds/';
+  }
+
+  /**
+   * `/guilds/${guildID}`
    * - GET
    * - PATCH
    * - DELETE
