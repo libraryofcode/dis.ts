@@ -50,10 +50,10 @@ export default class Endpoints {
   }
   /**
    * `/channels/${channelID}/bulk-delete`
-   * - DELETE
+   * - POST
    */
-  public static CHANNEL_MESSAGE_BULK_DELETE(channelID: string) {
-    return `/channels/${channelID}/bulk-delete`;
+  public static CHANNEL_MESSAGES_BULK_DELETE(channelID: string) {
+    return `/channels/${channelID}/messages/bulk-delete`;
   }
   /**
     * `/channels/${channelID}/permissions/${overwriteID}`
