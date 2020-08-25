@@ -42,7 +42,6 @@ export default class Endpoints {
   }
   /**
    * `/channels/${channelID}/messages/${messageID}/reactions`
-   * - GET
    * - DELETE
    */
   public static CHANNEL_MESSAGE_REACTIONS(channelID: string, messageID: string) {
