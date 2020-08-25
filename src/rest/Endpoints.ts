@@ -18,6 +18,7 @@ export default class Endpoints {
   }
   /**
    * `/channels/${channelID}/messages/${messageID}`
+   * - GET
    * - PATCH
    * - DELETE
    */
