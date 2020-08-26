@@ -291,7 +291,7 @@ export default class Endpoints {
    * - GET
    * - PATCH
    */
-  public static CURRENT_USER_GUILDS() {
+  public static SELF_USER_GUILDS() {
     return `/users/@me/guilds`;
   }
   /**
