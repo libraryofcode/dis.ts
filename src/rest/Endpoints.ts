@@ -18,6 +18,7 @@ export default class Endpoints {
   }
   /**
    * `/channels/${channelID}/messages/${messageID}`
+   * - GET
    * - PATCH
    * - DELETE
    */
@@ -42,7 +43,6 @@ export default class Endpoints {
   }
   /**
    * `/channels/${channelID}/messages/${messageID}/reactions`
-   * - GET
    * - DELETE
    */
   public static CHANNEL_MESSAGE_REACTIONS(channelID: string, messageID: string) {
@@ -50,10 +50,10 @@ export default class Endpoints {
   }
   /**
    * `/channels/${channelID}/bulk-delete`
-   * - DELETE
+   * - POST
    */
-  public static CHANNEL_MESSAGE_BULK_DELETE(channelID: string) {
-    return `/channels/${channelID}/bulk-delete`;
+  public static CHANNEL_MESSAGES_BULK_DELETE(channelID: string) {
+    return `/channels/${channelID}/messages/bulk-delete`;
   }
   /**
     * `/channels/${channelID}/permissions/${overwriteID}`
@@ -92,6 +92,14 @@ export default class Endpoints {
     */
   public static CHANNEL_PINNED_MESSAGE(channelID: string, messageID: string) {
     return `/channels/${channelID}/pins/${messageID}`;
+  }
+
+  /**
+   * `/guilds/${guildID}`
+   * - POST
+   */
+  public static GUILDS() {
+    return '/guilds/';
   }
 
   /**
@@ -164,7 +172,6 @@ export default class Endpoints {
   public static GUILD_BANS(guildID: string) {
     return `/guilds/${guildID}/bans`;
   }
-
 
   /**
    * `/guilds/${guildID}/bans/${userID}`
@@ -301,5 +308,23 @@ export default class Endpoints {
    */
   public static CREATE_DM() {
     return `/users/@me/channels`;
+
+  /** 
+   * `/guilds/${guildID}/emojis/${emojiID}`
+   * - GET
+   * - PATCH
+   * - DELETE
+   */
+  public static GUILD_EMOJI(guildID: string, emojiID: string) {
+    return `/guilds/${guildID}/emojis/${emojiID}`;
+  }
+
+  /**
+   * `/guilds/${guildID}/emojis`
+   * - GET
+   * - POST
+   */
+  public static GUILD_EMOJIS(guildID: string) {
+    return `/guilds/${guildID}/emojis`;
   }
 }

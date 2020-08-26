@@ -7,10 +7,12 @@
   "author": "Matthew R, FSEN <matthew@staff.libraryofcode.org>",
   "license": "MIT",
   "private": false,
-  "scripts": {},
+  "scripts": {
+    "lint": "eslint src/**/*.ts"
+  },
   "dependencies": {
     "node-fetch": "^2.6.0",
-    "typescript": "^3.9.7"
+    "typescript": "^4.0.2"
   },
   "devDependencies": {
     "@types/node-fetch": "^2.5.7",
