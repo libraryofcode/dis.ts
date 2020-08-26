@@ -276,7 +276,7 @@ export default class Endpoints {
    * - GET
    * - PATCH
    */
-  public static CURRENT_USER() {
+  public static SELF_USER() {
     return `/users/@me`;
   }
   /**
