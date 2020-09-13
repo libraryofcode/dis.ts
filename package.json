@@ -11,7 +11,7 @@
     "lint": "eslint src/**/*.ts"
   },
   "dependencies": {
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "typescript": "^4.0.2"
   },
   "devDependencies": {
