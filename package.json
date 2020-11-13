@@ -7,10 +7,12 @@
   "author": "Library of Code sp-us, Dept. of Engineering : Board of Directors",
   "license": "MIT",
   "private": false,
-  "scripts": {},
+  "scripts": {
+    "lint": "eslint src/**/*.ts"
+  },
   "dependencies": {
-    "node-fetch": "^2.6.0",
-    "typescript": "^3.9.7"
+    "node-fetch": "^2.6.1",
+    "typescript": "^4.0.2"
   },
   "devDependencies": {
     "@types/node-fetch": "^2.5.7",
