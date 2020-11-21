@@ -10,7 +10,7 @@ export const GATEWAY_PROPERTIES = {
 
 // https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-opcodes
 export enum GATEWAY_OPCODES {
-  DISPATCH = 0,
+    DISPATCH = 0,
     HEARTBEAT = 1,
     IDENTIFY = 2,
     PRESENCE_UPDATE = 3,
