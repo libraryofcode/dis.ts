@@ -1,7 +1,7 @@
 export default class Collection<T> extends Map<string, T> {
   Base: new (...args: any[]) => T;
   maxContent?: number;
-  constructor(options: {
+  constructor(options?: {
     base: new (...args: any[]) => T;
     entries?: readonly (readonly [string, T])[];
     maxContent?: number;
