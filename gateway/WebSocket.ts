@@ -1,6 +1,7 @@
 /* eslint-disable no-case-declarations */
 import WebSocket from 'ws';
-import { GATEWAY_URL, GATEWAY_OPCODES, GATEWAY_CLOSE_CODES, Heartbeat, Identify, Payload } from './constants';
+import { GATEWAY_URL, GATEWAY_OPCODES, GATEWAY_CLOSE_CODES, EVENTS, Heartbeat, Identify, Payload } from './constants';
+import { client } from '../Client';
 
 const ws = new WebSocket(GATEWAY_URL);
 
@@ -26,6 +27,7 @@ ws.on('message', (data: Payload) => {
 
   switch (op) {
     case GATEWAY_OPCODES.DISPATCH:
+      if (EVENTS[t]) client.emit(EVENTS[t], d);
       break;
 
     case GATEWAY_OPCODES.HEARTBEAT:
