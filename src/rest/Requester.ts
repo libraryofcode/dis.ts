@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import HTTPS from 'https';
 
 type REST_METHODS = 'DELETE' | 'GET' | 'PATCH' | 'POST' | 'PUT';
 
@@ -19,13 +19,21 @@ class Requester {
         delete payload.reason;
       }
 
-      const request = fetch(this.baseURL + endpoint, {
+      const request = HTTPS.request(new URL(endpoint, this.baseURL), {
         method,
         headers,
-        body: JSON.stringify(payload),
-        compress: true,
-      }).then((r) => {
-        if (r.ok === false) { (() => {})(); } // Do something on error
+      });
+
+      request.once('response', (response) => {
+        let data = '';
+
+        response
+          .on('data', (d) => { data += d; })
+          .once('end', () => {
+            let parsed = data.length !== 0 && response.headers['content-type'] === 'application/json' ? JSON.parse(data) : data;
+            typeof parsed === 'string' ? parsed += `statusCode:${response.statusCode}` : parsed.statusCode = response.statusCode;
+            res(data);
+          });
       });
     });
   }
