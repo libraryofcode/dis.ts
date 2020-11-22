@@ -42,7 +42,8 @@
         "import/extensions": "off",
         "no-param-reassign": "off",
         "no-underscore-dangle": "off",
-        "lines-between-class-members": "off"
+        "lines-between-class-members": "off",
+        "no-unused-expressions": ["error", { "allowTernary": true }]
     },
     "ignorePatterns": "**/*.js"
 }
