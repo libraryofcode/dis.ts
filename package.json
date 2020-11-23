@@ -1,6 +1,6 @@
 {
   "name": "discord.ts",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A Discord API wrapper written 100% in TypeScript.",
   "main": "build/index.js",
   "repository": "https://github.com/LibraryOfCode/discordts",
