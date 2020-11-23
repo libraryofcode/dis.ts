@@ -1,5 +1,3 @@
-export const GATEWAY_URL = 'wss://gateway.discord.gg/?v=8&encoding=json';
-
 // https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties
 export const GATEWAY_PROPERTIES = {
   $os: 'linux',
