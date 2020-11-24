@@ -1,6 +1,6 @@
 export default class Endpoints {
   /**
-   * `/channels/${channelID}`
+   * `/channels/:channelID`
    * - GET
    * - PATCH
    * - DELETE
@@ -9,7 +9,7 @@ export default class Endpoints {
     return `/channels/${channelID}`;
   }
   /**
-   * `/channels/${channelID}/messages`
+   * `/channels/:channelID/messages`
    * - GET
    * - POST
    */
@@ -17,7 +17,7 @@ export default class Endpoints {
     return `/channels/${channelID}/messages`;
   }
   /**
-   * `/channels/${channelID}/messages/${messageID}`
+   * `/channels/:channelID/messages/:messageID`
    * - GET
    * - PATCH
    * - DELETE
@@ -26,7 +26,7 @@ export default class Endpoints {
     return `/channels/${channelID}/messages/${messageID}`;
   }
   /**
-   * `/channels/${channelID}/messages/${messageID}/reactions/${reaction}/${userID}`
+   * `/channels/:channelID/messages/:messageID/reactions/:reaction/:userID`
    * - PUT
    * - DELETE
    */
@@ -34,7 +34,7 @@ export default class Endpoints {
     return `/channels/${channelID}/messages/${messageID}/reactions/${reaction}/${userID}`;
   }
   /**
-    * `/channels/${channelID}/messages/${messageID}/reactions/${reaction}`
+    * `/channels/:channelID/messages/:messageID/reactions/:reaction`
     * - GET
     * - DELETE
     */
@@ -42,21 +42,21 @@ export default class Endpoints {
     return `/channels/${channelID}/messages/${messageID}/reactions/${reaction}`;
   }
   /**
-   * `/channels/${channelID}/messages/${messageID}/reactions`
+   * `/channels/:channelID/messages/:messageID/reactions`
    * - DELETE
    */
   public static CHANNEL_MESSAGE_REACTIONS(channelID: string, messageID: string) {
     return `/channels/${channelID}/messages/${messageID}/reactions`;
   }
   /**
-   * `/channels/${channelID}/bulk-delete`
+   * `/channels/:channelID/bulk-delete`
    * - POST
    */
   public static CHANNEL_MESSAGES_BULK_DELETE(channelID: string) {
     return `/channels/${channelID}/messages/bulk-delete`;
   }
   /**
-    * `/channels/${channelID}/permissions/${overwriteID}`
+    * `/channels/:channelID/permissions/:overwriteID`
     * - PUT
     * - DELETE
     */
@@ -64,7 +64,7 @@ export default class Endpoints {
     return `/channels/${channelID}/permissions/${overwriteID}`;
   }
   /**
-    * `/channels/${channelID}/invites`
+    * `/channels/:channelID/invites`
     * - GET
     * - POST
     */
@@ -72,21 +72,21 @@ export default class Endpoints {
     return `/channels/${channelID}/invites`;
   }
   /**
-    * `/channels/${channelID}/typing`
+    * `/channels/:channelID/typing`
     * - POST
     */
   public static CHANNEL_TYPING(channelID: string) {
     return `/channels/${channelID}/typing`;
   }
   /**
-    * `/channels/${channelID}/pins`
+    * `/channels/:channelID/pins`
     * - GET
     */
   public static CHANNEL_PINNED_MESSAGES(channelID: string) {
     return `/channels/${channelID}/pins`;
   }
   /**
-    * `/channels/${channelID}/pins/${messageID}`
+    * `/channels/:channelID/pins/:messageID`
     * - PUT
     * - DELETE
     */
@@ -95,7 +95,7 @@ export default class Endpoints {
   }
 
   /**
-   * `/guilds/${guildID}`
+   * `/guilds/:guildID`
    * - POST
    */
   public static GUILDS() {
@@ -103,7 +103,7 @@ export default class Endpoints {
   }
 
   /**
-   * `/guilds/${guildID}`
+   * `/guilds/:guildID`
    * - GET
    * - PATCH
    * - DELETE
@@ -113,7 +113,7 @@ export default class Endpoints {
   }
 
   /**
-   * `/guilds/${guildID}/preview`
+   * `/guilds/:guildID/preview`
    * - GET
    */
   public static GUILD_PREVIEW(guildID: string) {
@@ -121,7 +121,7 @@ export default class Endpoints {
   }
 
   /**
-   * `/guilds/${guildID}/channels`
+   * `/guilds/:guildID/channels`
    * - POST
    * - PATCH
    */
@@ -130,7 +130,7 @@ export default class Endpoints {
   }
 
   /**
-   * `/guilds/${guildID}/members/${userID}`
+   * `/guilds/:guildID/members/:userID`
    * - GET
    * - PUT
    * - PATCH
@@ -141,7 +141,7 @@ export default class Endpoints {
   }
 
   /**
-   * `/guilds/${guildID}/members`
+   * `/guilds/:guildID/members`
    * - GET
    */
   public static GUILD_MEMBERS(guildID: string) {
@@ -149,7 +149,7 @@ export default class Endpoints {
   }
 
   /**
-   * `/guilds/${guildID}/members/@me/nick`
+   * `/guilds/:guildID/members/@me/nick`
    * - PATCH
    */
   public static SELF_GUILD_NICK(guildID: string) {
@@ -157,7 +157,7 @@ export default class Endpoints {
   }
 
   /**
-   * `/guilds/${guildID}/members/${userID}/roles/${roleID}`
+   * `/guilds/:guildID/members/:userID/roles/:roleID`
    * - PUT
    * - DELETE
    */
@@ -166,7 +166,7 @@ export default class Endpoints {
   }
 
   /**
-   * `/guilds/${guildID}/bans`
+   * `/guilds/:guildID/bans`
    * - GET
    */
   public static GUILD_BANS(guildID: string) {
@@ -174,7 +174,7 @@ export default class Endpoints {
   }
 
   /**
-   * `/guilds/${guildID}/bans/${userID}`
+   * `/guilds/:guildID/bans/:userID`
    * - GET
    * - PUT
    * - DELETE
@@ -184,7 +184,7 @@ export default class Endpoints {
   }
 
   /**
-   * `/guilds/${guildID}/roles`
+   * `/guilds/:guildID/roles`
    * - GET
    * - POST
    * - PATCH
@@ -194,7 +194,7 @@ export default class Endpoints {
   }
 
   /**
-   * `/guilds/${guildID}/roles/${roleID}`
+   * `/guilds/:guildID/roles/:roleID`
    * - PATCH
    * - DELETE
    */
@@ -203,7 +203,7 @@ export default class Endpoints {
   }
 
   /**
-   * `/guilds/${guildID}/prune`
+   * `/guilds/:guildID/prune`
    * - GET
    * - POST
    */
@@ -212,7 +212,7 @@ export default class Endpoints {
   }
 
   /**
-   * `/guilds/${guildID}/regions`
+   * `/guilds/:guildID/regions`
    * - GET
    */
   public static GUILD_VOICE_REGIONS(guildID: string) {
@@ -220,7 +220,7 @@ export default class Endpoints {
   }
 
   /**
-   * `/guilds/${guildID}/invites`
+   * `/guilds/:guildID/invites`
    * - GET
    */
   public static GUILD_INVITES(guildID: string) {
@@ -228,7 +228,7 @@ export default class Endpoints {
   }
 
   /**
-   * `/guilds/${guildID}/integrations`
+   * `/guilds/:guildID/integrations`
    * - GET
    * - POST
    */
@@ -237,7 +237,7 @@ export default class Endpoints {
   }
 
   /**
-   * `/guilds/${guildID}/integrations/${integrationID}`
+   * `/guilds/:guildID/integrations/:integrationID`
    * - PATCH
    * - DELETE
    */
@@ -246,7 +246,7 @@ export default class Endpoints {
   }
 
   /**
-   * `/guilds/${guildID}/integrations/${integrationID}/sync`
+   * `/guilds/:guildID/integrations/:integrationID/sync`
    * - POST
    */
   public static GUILD_INTEGRATION_SYNC(guildID: string, integrationID: string) {
@@ -254,7 +254,7 @@ export default class Endpoints {
   }
 
   /**
-   * `/guilds/${guildID}/widget`
+   * `/guilds/:guildID/widget`
    * - GET
    * - PATCH
    */
@@ -263,7 +263,7 @@ export default class Endpoints {
   }
 
   /**
-   * `/guilds/${guildID}/widget.png`
+   * `/guilds/:guildID/widget.png`
    * - GET
    */
   public static GUILD_WIDGET_IMAGE(guildID: string) {
@@ -271,7 +271,7 @@ export default class Endpoints {
   }
 
   /**
-   * `/guilds/${guildID}/vanity-url`
+   * `/guilds/:guildID/vanity-url`
    * - GET
    */
   public static GUILD_VANITY_URL(guildID: string) {
@@ -279,7 +279,7 @@ export default class Endpoints {
   }
 
   /**
-   * `/guilds/${guildID}/emojis/${emojiID}`
+   * `/guilds/:guildID/emojis/:emojiID`
    * - GET
    * - PATCH
    * - DELETE
@@ -289,7 +289,7 @@ export default class Endpoints {
   }
 
   /**
-   * `/guilds/${guildID}/emojis`
+   * `/guilds/:guildID/emojis`
    * - GET
    * - POST
    */
