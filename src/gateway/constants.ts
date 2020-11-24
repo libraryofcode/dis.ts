@@ -1,6 +1,6 @@
 // https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties
 export const GATEWAY_PROPERTIES = {
-  $os: 'linux',
+  $os: process.platform,
   $browser: 'DiscordTS',
   $device: 'DiscordTS',
 
