@@ -15,7 +15,7 @@ export default class Requester {
       'User-Agent': this.userAgent,
     };
     if (auth) headers.Authorization = 'Bot $token';
-    if (payload.reason) {
+    if (payload?.reason) {
       headers['X-Audit-Log-Reason'] = payload.reason;
       if ((method !== 'POST' || !endpoint.includes('/prune')) && (method !== 'PUT' || endpoint.includes('/bans'))) delete payload.reason;
     }

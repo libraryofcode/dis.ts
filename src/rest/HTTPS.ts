@@ -38,7 +38,7 @@ export default class HTTPS {
           rej(error);
         })
         .once('response', (response) => {
-          const _data = [];
+          const _data: Buffer[] = [];
 
           response
             .on('data', (b) => _data.push(b))
@@ -53,7 +53,7 @@ export default class HTTPS {
               if (response.headers['content-type'] !== 'application/json') rej(new Error(`Unexpected header ${response.headers['content-type']}`));
               if (text.length > 0) json = JSON.parse(text);
 
-              if (response.statusCode >= 300) {
+              if (response.statusCode! >= 300) {
                 if (json && json.code) {
                   rej(new APIError(request, response, json as ErrorPayload, stackTrace.stack));
                 } else {
