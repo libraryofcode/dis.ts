@@ -1,7 +1,6 @@
 import http from 'http';
 import https from 'https';
-import APIError, { ErrorPayload } from './APIError';
-import HTTPError from './HTTPError';
+import HTTPResponse from './HTTPResponse';
 import Requester from './Requester';
 
 export type HTTP_METHODS = 'DELETE' | 'GET' | 'PATCH' | 'POST' | 'PUT';
@@ -47,25 +46,7 @@ export default class HTTPS {
               error = err;
               request.abort();
             })
-            .once('end', () => {
-              const text = Buffer.concat(_data).toString();
-              let json: Record<string | number, unknown> | ErrorPayload | undefined;
-
-              if (response.headers['content-type'] !== 'application/json') rej(new Error(`Unexpected header ${response.headers['content-type']}`));
-              if (text.length > 0) json = JSON.parse(text);
-
-              if (response.statusCode! >= 300) {
-                if (json && json.code) {
-                  rej(new APIError(request, response, json as ErrorPayload, stackTrace.stack));
-                } else if (json) {
-                  rej(new HTTPError(request, response, json as Record<string | number, unknown>, stackTrace.stack));
-                } else {
-                  rej(new Error(`${response.statusCode} - ${text}`));
-                }
-              } else {
-                res(json);
-              }
-            });
+            .once('end', () => res(new HTTPResponse(request, response, Buffer.concat(_data), stackTrace.stack)));
         });
 
       request.setTimeout(30000, () => {
