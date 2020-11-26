@@ -1,6 +1,7 @@
 import http from 'http';
 import https from 'https';
 import APIError, { ErrorPayload } from './APIError';
+import HTTPError from './HTTPError';
 import Requester from './Requester';
 
 export type HTTP_METHODS = 'DELETE' | 'GET' | 'PATCH' | 'POST' | 'PUT';
@@ -56,6 +57,8 @@ export default class HTTPS {
               if (response.statusCode! >= 300) {
                 if (json && json.code) {
                   rej(new APIError(request, response, json as ErrorPayload, stackTrace.stack));
+                } else if (json) {
+                  rej(new HTTPError(request, response, json as Record<string | number, unknown>, stackTrace.stack));
                 } else {
                   rej(new Error(`${response.statusCode} - ${text}`));
                 }
