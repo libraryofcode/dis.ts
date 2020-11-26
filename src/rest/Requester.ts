@@ -41,35 +41,11 @@ export default class Requester {
     }
 
     const api = await this.https.request(method, endpointFinal, headers, data);
-    /*
-    return new Promise((res, rej) => {
-      const headers = {
-        Authorization: 'Bot $token',
-        'User-Agent': 'Discord.TS ($url, $version)',
-        'X-RateLimit-Precision': 'millisecond',
-      };
-      if (payload !== undefined && payload.reason !== undefined) {
-        headers['X-Audit-Log-Reason'] = payload.reason;
-        delete payload.reason;
-      }
+    try {
+      if (api.error) throw api.error;
+      return api.json;
+    } finally { // Still want to handle rate limits
 
-      const request = HTTPS.request(new URL(endpoint, this.baseURL), {
-        method,
-        headers,
-      });
-
-      request.once('response', (response) => {
-        let data = '';
-
-        response
-          .on('data', (d) => { data += d; })
-          .once('end', () => {
-            let parsed = data.length !== 0 && response.headers['content-type'] === 'application/json' ? JSON.parse(data) : data;
-            typeof parsed === 'string' ? parsed += `statusCode:${response.statusCode}` : parsed.statusCode = response.statusCode;
-            res(data);
-          });
-      });
-    });
-    */
+    }
   }
 }

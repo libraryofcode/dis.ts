@@ -28,7 +28,7 @@ export default class HTTPResponse {
 
   get json() {
     if (this.headersIn['content-type'] !== 'application/json') return null;
-    return JSON.parse(this.data.toString());
+    return this.rawData.length ? JSON.parse(this.rawData) : undefined;
   }
 
   get rawData() {

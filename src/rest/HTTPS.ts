@@ -15,7 +15,7 @@ export default class HTTPS {
   }
 
   request(method: HTTP_METHODS, path: string, headers: http.OutgoingHttpHeaders, body?: string | string[]) {
-    return new Promise((res, rej) => {
+    return new Promise<HTTPResponse>((res, rej) => {
       // @ts-expect-error
       const stackTrace: {stack: string} = {}; Error.captureStackTrace(stackTrace); stackTrace.stack = stackTrace.stack.substr(6);
 
