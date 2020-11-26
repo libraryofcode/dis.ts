@@ -27,7 +27,7 @@ export default async function Socket(token: string, intents: number) {
         token,
         intents,
         properties: {
-          $os: 'linux',
+          $os: process.platform,
           $browser: 'DiscordTS',
           $device: 'DiscordTS',
         },
