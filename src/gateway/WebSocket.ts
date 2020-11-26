@@ -1,7 +1,7 @@
 /* eslint-disable no-case-declarations */
 import WebSocket from 'ws';
 import fetch from 'node-fetch';
-import { GATEWAY_OPCODES, GATEWAY_CLOSE_CODES, EVENTS, Heartbeat, Identify, Payload } from './constants';
+import { GATEWAY_OPCODES, GATEWAY_CLOSE_CODES, EVENTS, Heartbeat, Payload } from './constants';
 import { client } from '../Client';
 
 export default async function Socket(token: string, intents: number) {
@@ -20,14 +20,23 @@ export default async function Socket(token: string, intents: number) {
     }, ms);
   }
 
-  function identify(token2: string, intents2: number) {
-    Identify.d.token = token2;
-    Identify.d.intents = intents2;
-    ws.send(JSON.stringify(Identify));
+  function identify() {
+    ws.send(JSON.stringify({
+      op: GATEWAY_OPCODES.IDENTIFY,
+      d: {
+        token,
+        intents,
+        properties: {
+          $os: 'linux',
+          $browser: 'DiscordTS',
+          $device: 'DiscordTS',
+        },
+      },
+    }));
   }
 
   ws.on('open', () => {
-    identify(token, intents);
+    identify();
   });
 
   ws.on('message', (data: Payload) => {
