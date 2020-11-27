@@ -1,14 +1,17 @@
 {
   "name": "discord.ts",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A Discord API wrapper written 100% in TypeScript.",
   "main": "build/index.js",
+  "types": "build/index.d.ts",
   "repository": "https://github.com/LibraryOfCode/discordts",
   "author": "Library of Code sp-us, Dept. of Engineering : Board of Directors",
   "license": "MIT",
   "private": false,
   "scripts": {
-    "lint": "eslint src/**/*.ts"
+    "lint": "eslint src/**/*.ts",
+    "build": "tsc -p tsconfig.json",
+    "prepare": "npm run build"
   },
   "dependencies": {
     "node-fetch": "^2.6.1",
@@ -16,6 +19,7 @@
     "ws": "^7.4.0"
   },
   "devDependencies": {
+    "@types/node": "^14.14.10",
     "@types/node-fetch": "^2.5.7",
     "@types/ws": "^7.4.0",
     "@typescript-eslint/eslint-plugin": "^3.9.1",
