@@ -6,15 +6,16 @@ export default class Collection<T> extends Map<string, T> {
     entries?: readonly (readonly [string, T])[];
     maxContent?: number;
   }) {
-    super(options.entries);
+    super(options?.entries);
     this.Base = options.base;
-    this.maxContent = options.maxContent;
+    this.maxContent = options?.maxContent;
   }
 
-  upsert(name: string, obj: T, overwrite = false) {
-    if ((obj instanceof this.Base) === false) obj = new this.Base(obj);
+  upsert(name: string, obj: T | Record<string, unknown>, overwrite = false) {
+    if ((obj instanceof this.Base!) === false) obj = new this.Base(obj);
     if (overwrite === false && this.has(name)) return this.get(name);
 
+    // @ts-expect-error
     this.set(name, obj);
 
     if (this.maxContent !== undefined && this.size > this.maxContent) {
