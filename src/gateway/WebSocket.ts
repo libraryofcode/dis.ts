@@ -2,7 +2,6 @@
 import WebSocket from 'ws';
 import fetch from 'node-fetch';
 import { GATEWAY_OPCODES, GATEWAY_CLOSE_CODES, EVENTS, Heartbeat, Payload } from './constants';
-import { client } from '../Client';
 
 export default async function Socket(token: string, intents: number) {
   const res = await fetch('https://discord.com/api/v8/gateway/bot', {
@@ -45,7 +44,7 @@ export default async function Socket(token: string, intents: number) {
 
     switch (op) {
       case GATEWAY_OPCODES.DISPATCH:
-        if (EVENTS[t]) client.emit(EVENTS[t], d);
+        // if (EVENTS[t]) client.emit(EVENTS[t], d);
         break;
 
       case GATEWAY_OPCODES.HEARTBEAT:
