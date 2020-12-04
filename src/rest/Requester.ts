@@ -1,6 +1,5 @@
 import http from 'http';
 import HTTPS, { HTTP_METHODS } from './HTTPS';
-import APIError from './APIError';
 
 const { version, repository } = require('../../package.json');
 

@@ -68,7 +68,7 @@ export default class Collection<T> extends Map<string, T> {
       return item;
     }
 
-    const found = this.asEntries().find(([k, v]) => key(v));
+    const found = this.asEntries().find(([, v]) => key(v));
     if (!found) return null;
     this.delete(found[0]);
     return found[1];
