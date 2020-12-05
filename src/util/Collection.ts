@@ -15,8 +15,7 @@ export default class Collection<T> extends Map<string, T> {
     if ((obj instanceof this.Base!) === false) obj = new this.Base(obj);
     if (overwrite === false && this.has(name)) return this.get(name);
 
-    // @ts-expect-error
-    this.set(name, obj);
+    this.set(name, obj as T);
 
     if (this.maxContent !== undefined && this.size > this.maxContent) {
       const names = this.keys();
