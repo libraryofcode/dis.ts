@@ -33,6 +33,7 @@
         "global-require": "off",
         "class-methods-use-this":"off",
         "no-restricted-syntax": "off",
+        "no-restricted-globals": "off",
         "camelcase": "off",
         "@typescript-eslint/indent": ["warn", 2],
         "object-curly-newline": "off",
