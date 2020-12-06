@@ -15,20 +15,20 @@ export enum GATEWAY_OPCODES {
 
 // https:// discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-close-event-codes
 export enum GATEWAY_CLOSE_CODES {
-UNKNOWN_ERROR = 4000,
-UNKNOW_OPCODE = 4001,
-DECODE_ERROR = 4002,
-NOT_AUTHENTICATED = 4003,
-AUTHENTICATION_FAILED= 4004,
-ALREADY_AUTHENTICATED = 4005,
-INVALID_RESUME_SEQUENCE = 4007,
-RATE_LIMITED = 4008,
-SESSION_TIMED_OUT = 4009,
-INVALID_SHARD = 4010,
-SHARDING_REQUIRED = 4011,
-INVALID_API_VERSION = 4012,
-'INVALID_INTENT(S)' = 4013,
-'DISALLOWED_INTENT(S)' = 4014,
+  UNKNOWN_ERROR = 4000,
+  UNKNOW_OPCODE = 4001,
+  DECODE_ERROR = 4002,
+  NOT_AUTHENTICATED = 4003,
+  AUTHENTICATION_FAILED= 4004,
+  ALREADY_AUTHENTICATED = 4005,
+  INVALID_RESUME_SEQUENCE = 4007,
+  RATE_LIMITED = 4008,
+  SESSION_TIMED_OUT = 4009,
+  INVALID_SHARD = 4010,
+  SHARDING_REQUIRED = 4011,
+  INVALID_API_VERSION = 4012,
+  'INVALID_INTENT(S)' = 4013,
+  'DISALLOWED_INTENT(S)' = 4014,
 }
 
 // https://discord.com/developers/docs/topics/gateway#commands-and-events-gateway-events
@@ -78,8 +78,8 @@ export const Heartbeat = {
 
 // https://discord.com/developers/docs/topics/gateway#payloads
 export interface Payload {
-op: number;
-s: number;
-t: string;
-d: any;
+  op: number;
+  s: number;
+  t: string;
+  d: any;
 }
