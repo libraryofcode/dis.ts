@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [14.x]
         
     steps:
     - uses: actions/checkout@v1
@@ -15,9 +15,27 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: yarn install and lint
+    - name: npm install and npm lint
       run: |
-        yarn install
-        yarn lint
+        npm install
+        npm run lint
+      env:
+        CI: true
+  tsc:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: npm install and tsc
+      run: |
+        npm install
+        tsc -p tsconfig.json --noEmit true
       env:
         CI: true

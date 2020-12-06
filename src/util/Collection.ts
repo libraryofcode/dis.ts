@@ -6,16 +6,16 @@ export default class Collection<T> extends Map<string, T> {
     entries?: readonly (readonly [string, T])[];
     maxContent?: number;
   }) {
-    super(options.entries);
+    super(options?.entries);
     this.Base = options.base;
-    this.maxContent = options.maxContent;
+    this.maxContent = options?.maxContent;
   }
 
-  upsert(name: string, obj: T, overwrite = false) {
-    if ((obj instanceof this.Base) === false) obj = new this.Base(obj);
+  upsert(name: string, obj: T | Record<string, unknown>, overwrite = false) {
+    if ((obj instanceof this.Base!) === false) obj = new this.Base(obj);
     if (overwrite === false && this.has(name)) return this.get(name);
 
-    this.set(name, obj);
+    this.set(name, obj as T);
 
     if (this.maxContent !== undefined && this.size > this.maxContent) {
       const names = this.keys();
@@ -27,8 +27,8 @@ export default class Collection<T> extends Map<string, T> {
     return obj;
   }
 
-  find(func: (item?: T, index?: number, obj?: T[]) => boolean): T | null {
-    return this.asArray().find(func) || null;
+  find(func: (item: T, index: number, obj: T[]) => boolean) {
+    return this.asArray().find(func);
   }
 
   asArray() {
@@ -67,7 +67,7 @@ export default class Collection<T> extends Map<string, T> {
       return item;
     }
 
-    const found = this.asEntries().find(([k, v]) => key(v));
+    const found = this.asEntries().find(([, v]) => key(v));
     if (!found) return null;
     this.delete(found[0]);
     return found[1];
