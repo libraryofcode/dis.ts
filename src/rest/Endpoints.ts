@@ -142,7 +142,7 @@ export default class Endpoints {
    * - DELETE - Delete Guild Emoji
    */
   public static GUILD_EMOJI(guildID: string, emojiID: string) {
-    return `/guilds/${guildID}/emojis`;
+    return `/guilds/${guildID}/emojis/${emojiID}`;
   }
 
   // Guild

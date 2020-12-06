@@ -15,8 +15,7 @@ export default class Collection<T> extends Map<string, T> {
     if ((obj instanceof this.Base!) === false) obj = new this.Base(obj);
     if (overwrite === false && this.has(name)) return this.get(name);
 
-    // @ts-expect-error
-    this.set(name, obj);
+    this.set(name, obj as T);
 
     if (this.maxContent !== undefined && this.size > this.maxContent) {
       const names = this.keys();
@@ -68,7 +67,7 @@ export default class Collection<T> extends Map<string, T> {
       return item;
     }
 
-    const found = this.asEntries().find(([k, v]) => key(v));
+    const found = this.asEntries().find(([, v]) => key(v));
     if (!found) return null;
     this.delete(found[0]);
     return found[1];
