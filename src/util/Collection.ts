@@ -27,8 +27,8 @@ export default class Collection<T> extends Map<string, T> {
     return obj;
   }
 
-  find(func: (item: T, index: number, obj: T[]) => boolean): T | null {
-    return this.asArray().find(func) || null;
+  find(func: (item: T, index: number, obj: T[]) => boolean) {
+    return this.asArray().find(func);
   }
 
   asArray() {
