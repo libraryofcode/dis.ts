@@ -1,6 +1,7 @@
 /* eslint-disable no-case-declarations */
 import WebSocket from 'ws';
 import fetch from 'node-fetch';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { GATEWAY_OPCODES, GATEWAY_CLOSE_CODES, EVENTS, Heartbeat, Payload } from './constants';
 
 export default async function Socket(token: string, intents: number) {
@@ -40,6 +41,7 @@ export default async function Socket(token: string, intents: number) {
 
   ws.on('message', (data: Payload) => {
     data = JSON.parse(String(data));
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { t, s, op, d } = data;
 
     switch (op) {
