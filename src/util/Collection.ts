@@ -43,23 +43,23 @@ export default class Collection<T> extends Map<string, T> {
     return this.asArray()[Math.floor(Math.random() * this.size)];
   }
 
-  filter(func: (value?: T, index?: number, array?: T[]) => unknown): T[] {
+  filter(func: (value: T, index: number, array: T[]) => unknown): T[] {
     return this.asArray().filter(func);
   }
 
-  map<R>(func: (value?: T, index?: number, array?: T[]) => R): R[] {
+  map<R>(func: (value: T, index: number, array: T[]) => R): R[] {
     return this.asArray().map(func);
   }
 
-  every<S>(func: (value?: T, index?: number, array?: T[]) => this is S) {
+  every<S>(func: (value: T, index: number, array: T[]) => this is S) {
     return this.asArray().every(func);
   }
 
-  some<S>(func: (value?: T, index?: number, array?: T[]) => this is S) {
+  some<S>(func: (value: T, index: number, array: T[]) => this is S) {
     return this.asArray().some(func);
   }
 
-  remove(key: string | ((value?: T, index?: number, array?: T[]) => unknown)): T | null {
+  remove(key: string | ((value: T, index: number, array: T[]) => unknown)): T | null {
     if (typeof key === 'string') {
       const item = this.get(key);
       if (!item) return null;
@@ -67,7 +67,7 @@ export default class Collection<T> extends Map<string, T> {
       return item;
     }
 
-    const found = this.asEntries().find(([, v]) => key(v));
+    const found = this.asEntries().find(([, v], i, obj) => key(v, i, obj.map((o) => o[1])));
     if (!found) return null;
     this.delete(found[0]);
     return found[1];
