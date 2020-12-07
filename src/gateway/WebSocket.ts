@@ -2,7 +2,8 @@
 import WebSocket from 'ws';
 import fetch from 'node-fetch';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { GATEWAY_OPCODES, GATEWAY_CLOSE_CODES, EVENTS, Heartbeat, Payload } from './constants';
+import { EVENTS, Heartbeat, Payload } from './constants';
+import { GATEWAY_OPCODES, GATEWAY_CLOSE_EVENT_CODES } from '../util/Constants';
 
 export default async function Socket(token: string, intents: number) {
   const res = await fetch('https://discord.com/api/v8/gateway/bot', {
@@ -88,7 +89,7 @@ export default async function Socket(token: string, intents: number) {
 
   ws.on('close', (code) => {
     // eslint-disable-next-line no-console
-    console.log(GATEWAY_CLOSE_CODES[code]);
+    console.log(GATEWAY_CLOSE_EVENT_CODES[code]);
     process.exit();
   });
 }

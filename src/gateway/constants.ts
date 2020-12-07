@@ -1,35 +1,4 @@
-// https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-opcodes
-export enum GATEWAY_OPCODES {
-  DISPATCH = 0,
-  HEARTBEAT = 1,
-  IDENTIFY = 2,
-  PRESENCE_UPDATE = 3,
-  VOICE_STATE_UPDATE = 4,
-  RESUME = 6,
-  RECONNECT = 7,
-  REQUEST_GUILD_MEMBERS = 8,
-  INVALID_SESSION = 9,
-  HELLO = 10,
-  HEARTBEAT_ACK = 11
-}
-
-// https:// discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-close-event-codes
-export enum GATEWAY_CLOSE_CODES {
-  UNKNOWN_ERROR = 4000,
-  UNKNOW_OPCODE = 4001,
-  DECODE_ERROR = 4002,
-  NOT_AUTHENTICATED = 4003,
-  AUTHENTICATION_FAILED= 4004,
-  ALREADY_AUTHENTICATED = 4005,
-  INVALID_RESUME_SEQUENCE = 4007,
-  RATE_LIMITED = 4008,
-  SESSION_TIMED_OUT = 4009,
-  INVALID_SHARD = 4010,
-  SHARDING_REQUIRED = 4011,
-  INVALID_API_VERSION = 4012,
-  'INVALID_INTENT(S)' = 4013,
-  'DISALLOWED_INTENT(S)' = 4014,
-}
+import { GATEWAY_OPCODES } from '../util/Constants';
 
 // https://discord.com/developers/docs/topics/gateway#commands-and-events-gateway-events
 export const EVENTS = {
