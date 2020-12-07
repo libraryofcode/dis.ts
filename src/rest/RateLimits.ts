@@ -13,6 +13,10 @@ export default class RateLimits extends Collection<RESTBucket> {
     return super.get(key) || this.find((b) => b.additionalRoutes.includes(key));
   }
 
+  has(key: string) {
+    return super.has(key) || this.some((b) => b.additionalRoutes.includes(key));
+  }
+
   getBucket(bucket: string) {
     return this.find((i) => i.bucket === bucket);
   }
