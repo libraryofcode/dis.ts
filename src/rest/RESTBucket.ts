@@ -6,6 +6,7 @@ export default class RESTBucket {
   limit = 1; // Will be updated when headers are received
   remaining = this.limit;
   resetAt = 0;
+  additionalRoutes: string[] = [];
   readonly queue: ((cb: () => any) => any)[] = [];
   constructor(route: string) {
     this.route = route;
@@ -15,7 +16,7 @@ export default class RESTBucket {
     Object.keys(header).forEach((k) => (header[k] = isNaN(header[k]) ? header[k] : Number(header[k]))); // save convering each to number later
     if (this.limit !== header['x-ratelimit-limit']) this.limit = header['x-ratelimit-limit'];
     if (this.remaining !== header['x-ratelimit-remaining']) this.remaining = header['x-ratelimit-remaining'];
-    this.resetAt = (header['x-ratelimit-reset-after'] * 1000) + Date.now();
+    if (header['x-ratelimit-reset-after'] !== undefined) this.resetAt = (header['x-ratelimit-reset-after'] * 1000) + Date.now();
   }
 
   add(fn: (cb: () => any) => any, priority = false) {
