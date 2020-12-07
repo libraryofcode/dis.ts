@@ -14,8 +14,8 @@ export default class RESTBucket {
 
   updateRatelimitInfo(header: any) {
     Object.keys(header).forEach((k) => (header[k] = isNaN(header[k]) ? header[k] : Number(header[k]))); // save convering each to number later
-    if (this.limit !== header['x-ratelimit-limit']) this.limit = header['x-ratelimit-limit'];
-    if (this.remaining !== header['x-ratelimit-remaining']) this.remaining = header['x-ratelimit-remaining'];
+    if (header['x-ratelimit-limit'] && this.limit !== header['x-ratelimit-limit']) this.limit = header['x-ratelimit-limit'];
+    if (this.remaining !== header['x-ratelimit-remaining']) this.remaining = header['x-ratelimit-remaining'] === undefined ? 1 : header['x-ratelimit-remaining'];
     if (header['x-ratelimit-reset-after'] !== undefined) this.resetAt = (header['x-ratelimit-reset-after'] * 1000) + Date.now();
   }
 
