@@ -8,21 +8,39 @@ export interface ErrorPayload {
 }
 
 export default class APIError extends Error {
-  payload: ErrorPayload;
-  statusCode: number;
-  code: number;
-  request: ClientRequest;
-  response: IncomingMessage;
-  meta: HTTPResponse;
+  request!: ClientRequest;
+  response!: IncomingMessage;
+  statusCode!: number;
+  code!: number;
+  payload!: ErrorPayload;
+  meta!: HTTPResponse;
   readonly name = this.constructor.name;
   constructor(request: ClientRequest, response: IncomingMessage, payload: ErrorPayload, stack: string, meta: HTTPResponse) {
     super(`[${payload.code}] - ${payload.message}`);
-    this.statusCode = response.statusCode!;
-    this.payload = payload;
-    this.code = payload.code;
+    Object.defineProperty(this, 'request', {
+      enumerable: false,
+      value: request,
+    });
+    Object.defineProperty(this, 'response', {
+      enumerable: false,
+      value: response,
+    });
+    Object.defineProperty(this, 'statusCode', {
+      enumerable: false,
+      value: response.statusCode,
+    });
+    Object.defineProperty(this, 'code', {
+      enumerable: false,
+      value: payload.code,
+    });
+    Object.defineProperty(this, 'payload', {
+      enumerable: false,
+      value: payload,
+    });
+    Object.defineProperty(this, 'meta', {
+      enumerable: false,
+      value: meta,
+    });
     this.stack = `${this.name}: ${this.message}\n${stack}`;
-    this.request = request;
-    this.response = response;
-    this.meta = meta;
   }
 }
