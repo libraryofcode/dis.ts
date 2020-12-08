@@ -26,6 +26,6 @@ export default class RateLimits extends Collection<RESTBucket> {
   }
 
   create(route: string) {
-    this.set(route, new RESTBucket(route));
+    return this.set(route, new RESTBucket(route)).get(route) as RESTBucket;
   }
 }
