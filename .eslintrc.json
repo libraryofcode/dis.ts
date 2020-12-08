@@ -43,7 +43,7 @@
         "no-param-reassign": "off",
         "no-underscore-dangle": "off",
         "@typescript-eslint/lines-between-class-members": "off",
-        "@typescript-eslint/no-unused-expressions": ["error", { "allowTernary": true }],
+        "@typescript-eslint/no-unused-expressions": ["error", { "allowTernary": true, "allowShortCircuit": true }],
         "no-return-assign": ["error", "except-parens"],
         // Conflicts with @typescript-eslint
         "no-unused-vars": "off",
