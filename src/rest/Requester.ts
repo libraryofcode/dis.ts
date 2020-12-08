@@ -10,6 +10,7 @@ export default class Requester {
   apiURL = `/api/${this.version}`;
   https = new HTTPS(null, this);
   userAgent = `DiscordBot (${repository}, ${version})`;
+  globallyRateLimited = false;
   readonly rateLimits = new RateLimits(this);
   readonly routeRegex = /\/(?!guilds|channels|webhooks)([a-z-]+)\/(?:\d+)/g;
   readonly routeReplacer = '/$1/:id';
@@ -20,6 +21,8 @@ export default class Requester {
   readonly INVALID_HEADER_REGEX = /[^\t\x20-\x7e\x80-\xff]/;
 
   async request(method: HTTP_METHODS, endpoint: string, auth: boolean, payload?: { [s: string]: any }): Promise<any> {
+    if (this.globallyRateLimited) throw new Error('Globally rate limited. Try again later.');
+
     const rateLimitRoute = this.calculateRLRoute(endpoint, method);
     const routeBucket = this.rateLimits.get(rateLimitRoute) || this.rateLimits.create(rateLimitRoute);
 
@@ -62,8 +65,9 @@ export default class Requester {
         cb();
 
         const discordBucket = api.headersIn['x-ratelimit-bucket'] as string | undefined;
-        if (api.headersIn['x-ratelimit-global'] !== undefined) {
-          // Handle global rate here
+        if (api.headersIn['x-ratelimit-global'] === 'true') {
+          this.globallyRateLimited = true;
+          setTimeout(() => { this.globallyRateLimited = false; }, api.json.retry_after * 1e3);
         } else if (discordBucket !== undefined) {
           const bucket = this.rateLimits.getBucket(discordBucket) || this.rateLimits.get(rateLimitRoute) as RESTBucket;
           bucket.bucket ?? (bucket.bucket = discordBucket);
