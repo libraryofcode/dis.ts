@@ -100,18 +100,6 @@ export enum MESSAGE_STICKER_FORMAT_TYPES {
   LOTTIE,
 }
 
-// https://discord.com/developers/docs/resources/channel#embed-limits-limits
-export enum EMBED_LIMITS {
-  TITLE = 256,
-  DESCRIPTION = 2048,
-  FIELDS = 25,
-  FIELD_NAME = 256,
-  FIELD_VALUE = 1024,
-  FOOTER = 2048,
-  AUTHOR = 256,
-  TOTAL = 6000,
-}
-
 // Guild
 // https://discord.com/developers/docs/resources/guild#guild-object-default-message-notification-level
 export enum DEFAULT_MESSAGE_NOTIFICATION_LEVEL {
@@ -575,3 +563,80 @@ export enum PERMISSION_FLAGS {
   MANAGE_WEBHOOKS = 1 << 29,
   MANAGE_EMOJIS = 1 << 30,
 }
+
+// List of all limits
+export const AUDIT_LOG_LIMITS = {
+  ENTRY_LIMIT_MIN: 1,
+  ENTRY_LIMIT_MAX: 100,
+};
+
+export const CHANNEL_LIMITS = {
+  NAME_MIN: 2,
+  NAME_MAX: 100,
+  TOPIC_MAX: 1024,
+  SLOWMODE_MAX: 21600,
+  BITRATE_MIN: 8000,
+  BITRATE_MAX: 96000,
+  BITRATE_MAX_VIP: 128000,
+  USER_LIMIT_MAX: 99,
+  PARENT_CHILD_CHANNEL_MAX: 50,
+};
+
+export const EMBED_LIMITS = {
+  TITLE: 256,
+  DESCRIPTION: 2048,
+  FIELDS: 25,
+  FIELD_NAME: 256,
+  FIELD_VALUE: 1024,
+  FOOTER: 2048,
+  AUTHOR: 256,
+  TOTAL: 6000,
+};
+
+export const GUILD_LIMITS = {
+  NAME_MIN: 2,
+  NAME_MAX: 100,
+  BAN_DELETE_MESSAGE_MAX: 7,
+  PRUNE_MIN: 1,
+  TEMPLATE_NAME_MIN: 1,
+  TEMPLATE_NAME_MAX: 100,
+  TEMPLATE_DESCRIPTION_MAX: 120,
+  GET_GUILDS_MIN: 1,
+  GET_GUILDS_MAX: 100,
+};
+
+export const MESSAGE_LIMITS = {
+  GET_MESSAGES_LIMIT_MIN: 1,
+  GET_MESSAGES_LIMIT_MAX: 100,
+  CONTENT_MAX: 2000,
+  GET_REACTION_LIMIT_MIN: 1,
+  GET_REACTION_LIMIT_MAX: 100,
+  BULK_DELETE_MIN: 2,
+  BULK_DELETE_MAX: 100,
+};
+
+export const USER_LIMITS = {
+  USERNAME_MIN: 2,
+  USERNAME_MAX: 32,
+  NICKNAME_MIN: 1,
+  NICKNAME_MAX: 32,
+  INVALID_USERNAME_SUBSTR: ['@', '#', ':', '```'],
+  INVALID_USERNAMES: ['discordtag', 'everyone', 'here'],
+};
+
+export const WEBHOOK_LIMITS = {
+  NAME_MIN: 1,
+  NAME_MAX: 80,
+  INVALID_NAMES: ['clyde'],
+  EMBED_COUNT_MAX: 10,
+};
+
+export const LIMITS = {
+  AuditLog: AUDIT_LOG_LIMITS,
+  Channel: CHANNEL_LIMITS,
+  Embed: EMBED_LIMITS,
+  Guild: GUILD_LIMITS,
+  Message: MESSAGE_LIMITS,
+  User: USER_LIMITS,
+  Webhook: WEBHOOK_LIMITS,
+};
