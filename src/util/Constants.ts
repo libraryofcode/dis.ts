@@ -50,6 +50,10 @@ export enum CHANNEL_TYPES {
   GUILD_NEWS,
   GUILD_STORE,
 }
+export enum GUILD_TEXT_CHANNEL_TYPES {
+  GUILD_TEXT,
+  GUILD_NEWS = 5,
+}
 
 // https://discord.com/developers/docs/resources/channel#message-object-message-types
 export enum MESSAGE_TYPES {
@@ -98,6 +102,12 @@ export enum MESSAGE_STICKER_FORMAT_TYPES {
   PNG = 1,
   APNG,
   LOTTIE,
+}
+
+// https://discord.com/developers/docs/resources/channel#overwrite-object-overwrite-structure
+export enum OVERWRITE_TYPES {
+  ROLE,
+  MEMBER,
 }
 
 // Guild
