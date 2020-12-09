@@ -1,17 +1,15 @@
 /* eslint-disable no-case-declarations */
 import WebSocket from 'ws';
-import fetch from 'node-fetch';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { EVENTS, Heartbeat, Payload } from './constants';
 import { GATEWAY_OPCODES, GATEWAY_CLOSE_EVENT_CODES } from '../util/Constants';
+import Requester from '../rest/Requester';
+import Endpoints from '../rest/Endpoints';
+
+const requester = new Requester();
 
 export default async function Socket(token: string, intents: number) {
-  const res = await fetch('https://discord.com/api/v8/gateway/bot', {
-    headers: {
-      Authorization: `Bot ${token}`,
-    },
-  });
-  const json = await res.json();
+  const json = await requester.request('GET', Endpoints.GATEWAY_BOT(), true);
 
   const ws = new WebSocket(json.url);
 
