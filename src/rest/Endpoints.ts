@@ -1,11 +1,11 @@
 export default class Endpoints {
   // Audit Log
   /**
-   * `/guilds/:guildID/audit-log`
+   * `/guilds/:guildID/audit-logs`
    * - GET - Get Guild Audit Log
    */
   public static GUILD_AUDIT_LOG(guildID: string) {
-    return `/guilds/${guildID}/audit-log`;
+    return `/guilds/${guildID}/audit-logs`;
   }
 
   // Channel
