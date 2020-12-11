@@ -92,7 +92,7 @@ export default class Requester {
       .replace(this.webhookRegex, this.webhookReplacer);
 
     if (method === 'DELETE' && route.endsWith('/messages/:id')) {
-      // Deleting messages has its own rate limit
+      // NOTE Deleting messages has its own rate limit
       // Messages younger than 10 seconds have no rate limit
       // Messages younger than 2 weeks have a rate limit of 3 per 1 second
       // All other messages have a rate limit of 30 per 120 seconds
