@@ -21,7 +21,7 @@ export default class Requester {
   readonly INVALID_HEADER_REGEX = /[^\t\x20-\x7e\x80-\xff]/;
 
   async request(method: HTTP_METHODS, endpoint: string, auth: boolean, payload?: { [s: string]: any }): Promise<any> {
-    if (this.globallyRateLimited) throw new Error('Globally rate limited. Try again later.');
+    if (this.globallyRateLimited) throw new Error('Globally rate limited. Try again later.'); // TODO Implement proper global rate limit queue
 
     const rateLimitRoute = this.calculateRLRoute(endpoint, method);
     const routeBucket = this.rateLimits.get(rateLimitRoute) || this.rateLimits.create(rateLimitRoute);
