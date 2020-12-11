@@ -176,6 +176,15 @@ export enum INTEGRATION_EXPIRE_BEHAVIORS {
   KICK,
 }
 
+// https://discord.com/developers/docs/resources/guild#get-guild-widget-image-widget-style-options
+export enum WIDGET_STYLE_OPTIONS {
+  SHIELD = 'shield',
+  BANNER1 = 'banner1',
+  BANNER2 = 'banner2',
+  BANNER3 = 'banner3',
+  BANNER4 = 'banner4',
+}
+
 // Invite
 // https://discord.com/developers/docs/resources/invite#invite-object-target-user-types
 export enum TARGET_USER_TYPES {
