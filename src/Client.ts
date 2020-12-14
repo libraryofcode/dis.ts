@@ -57,6 +57,12 @@ export default class Client {
     });
   }
 
+  createDM(recipientID: string) {
+    return this.requester.request('POST', Endpoints.USER_CHANNELS(), true, { recipient_id: recipientID });
+  }
+
+  // TODO createGroupDM - Intended orginally for now-deprecated GameBridge SDK, DMs won't be shown in Client. OAuth only.
+
   createGuild(params: any = {}) {
     return this.requester.request('POST', Endpoints.GUILDS(), true, {
       name: params.name,
@@ -99,12 +105,20 @@ export default class Client {
     return this.requester.request('POST', Endpoints.GUILD_EMOJIS(guildID), true, params);
   }
 
+  createGuildFromTemplate(code: string, name: string, icon?: string) {
+    return this.requester.request('POST', Endpoints.TEMPLATE(code), true, { name, icon });
+  }
+
   createGuildIntegration(guildID: string, params: any = {}) {
     return this.requester.request('POST', Endpoints.GUILD_INTEGRATIONS(guildID), true, params);
   }
 
   createGuildRole(guildID: string, params: any = {}) {
     return this.requester.request('POST', Endpoints.GUILD_ROLES(guildID), true, params);
+  }
+
+  createGuildTemplate(guildID: string, name: string, description?: string) {
+    return this.requester.request('POST', Endpoints.GUILD_TEMPLATES(guildID), true, { name, description });
   }
 
   createMessage(channelID: string, params: any = {}) { // TODO Sort out multipart form data
@@ -121,6 +135,10 @@ export default class Client {
 
   createReaction(channelID: string, messageID: string, emoji: string) {
     return this.requester.request('PUT', Endpoints.CHANNEL_MESSAGE_USER_REACTION(channelID, messageID, emoji, '@me'), true);
+  }
+
+  createWebhook(channelID: string, name: string, avatar: string | null = null) {
+    return this.requester.request('POST', Endpoints.CHANNEL_WEBHOOK(channelID), true, { name, avatar });
   }
 
   crosspostMessage(channelID: string, messageID: string) {
@@ -159,6 +177,10 @@ export default class Client {
     return this.requester.request('DELETE', Endpoints.GUILD_ROLE(guildID, roleID), true);
   }
 
+  deleteGuildTemplate(guildID: string, code: string) {
+    return this.requester.request('DELETE', Endpoints.GUILD_TEMPLATE(guildID, code), true);
+  }
+
   deleteInvite(code: string) {
     return this.requester.request('DELETE', Endpoints.INVITE(code), true);
   }
@@ -173,6 +195,11 @@ export default class Client {
 
   deleteReaction(channelID: string, messageID: string, emoji: string, userID = '@me') {
     return this.requester.request('DELETE', Endpoints.CHANNEL_MESSAGE_USER_REACTION(channelID, messageID, emoji, userID), true);
+  }
+
+  deleteWebhook(webhookID: string, webhookToken?: string) {
+    return webhookToken ? this.requester.request('DELETE', Endpoints.WEBHOOK_TOKEN(webhookID, webhookToken), false)
+      : this.requester.request('DELETE', Endpoints.WEBHOOK(webhookID), true);
   }
 
   editChannel(channelID: string, params: any = {}) {
@@ -252,6 +279,10 @@ export default class Client {
     return this.requester.request('PATCH', Endpoints.GUILD_ROLES(guildID), true, params);
   }
 
+  editGuildTemplate(guildID: string, code: string, params: any = {}) {
+    return this.requester.request('PATCH', Endpoints.GUILD_TEMPLATE(guildID, code), true, params);
+  }
+
   editGuildWidget(guildID: string, params: any = {}) {
     return this.requester.request('PATCH', Endpoints.GUILD_WIDGET(guildID), true, {
       enabled: params.enabled,
@@ -261,6 +292,39 @@ export default class Client {
 
   editMessage(channelID: string, messageID: string, params: any = {}) {
     return this.requester.request('PATCH', Endpoints.CHANNEL_MESSAGE(channelID, messageID), true, params);
+  }
+
+  editSelf(params: any = {}) {
+    return this.requester.request('PATCH', Endpoints.USER('@me'), true, params);
+  }
+
+  editWebhook(webhookID: string, params: any = {}, webhookToken?: string) {
+    return webhookToken ? this.requester.request('GET', Endpoints.WEBHOOK_TOKEN(webhookID, webhookToken), false, params)
+      : this.requester.request('GET', Endpoints.WEBHOOK(webhookID), true, {
+        name: params.name,
+        avatar: params.avatar,
+        channel_id: params.channelID,
+      });
+  }
+
+  executeGitHubWebhook(webhookID: string, webhookToken: string, params: any = {}, wait?: boolean) {
+    return this.requester.request('POST', Endpoints.WEBHOOK_GITHUB(webhookID, webhookToken) + wait ? '?wait=true' : '', false, params);
+  }
+
+  executeSlackWebhook(webhookID: string, webhookToken: string, params: any = {}, wait?: boolean) {
+    return this.requester.request('POST', Endpoints.WEBHOOK_SLACK(webhookID, webhookToken) + wait ? '?wait=true' : '', false, params);
+  }
+
+  executeWebhook(webhookID: string, webhookToken: string, params: any = {}, wait?: boolean) {
+    return this.requester.request('POST', Endpoints.WEBHOOK_TOKEN(webhookID, webhookToken) + wait ? '?wait=true' : '', false, {
+      content: params.content,
+      username: params.username,
+      avatar_url: params.avatarURL,
+      tss: params.tts,
+      file: params.files,
+      embeds: params.embeds,
+      allowed_mentions: params.allowedMentions,
+    });
   }
 
   followNewsChannel(channelID: string, webhookChannelID: string) {
@@ -281,6 +345,22 @@ export default class Client {
 
   getChannelMessages(channelID: string, params: any = {}) {
     return this.requester.request('GET', Endpoints.CHANNEL_MESSAGES(channelID), true, params);
+  }
+
+  getChannelWebhooks(channelID: string) {
+    return this.requester.request('GET', Endpoints.CHANNEL_WEBHOOK(channelID), true);
+  }
+
+  getCurrentApplicationInfo() {
+    return this.requester.request('GET', Endpoints.APPLICATION_INFORMATION(), true);
+  }
+
+  getGateway() {
+    return this.requester.request('GET', Endpoints.GATEWAY(), false);
+  }
+
+  getGatewayBot() {
+    return this.requester.request('GET', Endpoints.GATEWAY_BOT(), true);
   }
 
   getGuild(guildID: string, withCounts?: boolean) {
@@ -347,12 +427,20 @@ export default class Client {
     return this.requester.request('GET', Endpoints.GUILD_ROLES(guildID), true);
   }
 
+  getGuildTemplates(guildID: string) {
+    return this.requester.request('GET', Endpoints.GUILD_TEMPLATES(guildID), true);
+  }
+
   getGuildVanityURL(guildID: string) {
     return this.requester.request('GET', Endpoints.GUILD_VANITY_URL(guildID), true);
   }
 
   getGuildVoiceRegions(guildID: string) {
     return this.requester.request('GET', Endpoints.GUILD_VOICE_REGIONS(guildID), true);
+  }
+
+  getGuildWebhooks(guildID: string) {
+    return this.requester.request('GET', Endpoints.GUILD_WEBHOOK(guildID), true);
   }
 
   getGuildWidget(guildID: string) {
@@ -379,7 +467,38 @@ export default class Client {
     return this.requester.request('GET', Endpoints.CHANNEL_MESSAGE_REACTIONS_EMOJI(channelID, messageID, emoji), true);
   }
 
-  // TODO getTemplate
+  getSelfGuilds(params: any = {}) {
+    return this.requester.request('GET', Endpoints.USER_GUILDS(), true, params);
+  }
+
+  getTemplate(code: string) {
+    return this.requester.request('GET', Endpoints.TEMPLATE(code), true);
+  }
+
+  getUser(userID: string) {
+    return this.requester.request('GET', Endpoints.USER(userID), true);
+  }
+
+  getUserConnections() {
+    return this.requester.request('GET', Endpoints.USER_CONNECTIONS(), true);
+  }
+
+  getUserDMs() {
+    return this.requester.request('GET', Endpoints.USER_CHANNELS(), true);
+  }
+
+  getWebhook(webhookID: string, webhookToken?: string) {
+    return webhookToken ? this.requester.request('GET', Endpoints.WEBHOOK_TOKEN(webhookID, webhookToken), false)
+      : this.requester.request('GET', Endpoints.WEBHOOK(webhookID), true);
+  }
+
+  leaveGuild(guildID: string) {
+    return this.requester.request('DELETE', Endpoints.USER_GUILD(guildID), true);
+  }
+
+  listVoiceRegions() {
+    return this.requester.request('GET', Endpoints.VOICE_REGIONS(), true);
+  }
 
   removeGroupDMRecipient(channelID: string, userID: string, param: any = {}) {
     return this.requester.request('DELETE', Endpoints.GROUP_DM_RECIPIENT(channelID, userID), false, {
@@ -402,6 +521,10 @@ export default class Client {
 
   syncGuildIntegration(guildID: string, integrationID: string) {
     return this.requester.request('POST', Endpoints.GUILD_INTEGRATION_SYNC(guildID, integrationID), true);
+  }
+
+  syncGuildTemplate(guildID: string, code: string) {
+    return this.requester.request('PUT', Endpoints.GUILD_TEMPLATE(guildID, code), true);
   }
 
   triggerTypingIndicator(channelID: string) {
