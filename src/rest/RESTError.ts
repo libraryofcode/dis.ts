@@ -7,7 +7,7 @@ export interface ErrorPayload {
   errors: Record<string | number, unknown>;
 }
 
-export default class APIError extends Error {
+export default class RESTError extends Error {
   request!: ClientRequest;
   response!: IncomingMessage;
   statusCode!: number;

@@ -1,10 +1,10 @@
 import Collection from '../util/Collection';
-import Requester from './Requester';
+import RESTClient from './RESTClient';
 import RESTBucket from './RESTBucket';
 
 export default class RateLimits extends Collection<RESTBucket> {
-  requester: Requester
-  constructor(requester: Requester) {
+  requester: RESTClient
+  constructor(requester: RESTClient) {
     super({ base: RESTBucket });
     this.requester = requester;
   }

@@ -1,14 +1,14 @@
 import http from 'http';
-import HTTPS, { HTTP_METHODS } from './HTTPS';
+import DiscordHTTPS, { HTTP_METHODS } from './DiscordHTTPS';
 import RateLimits from './RateLimits';
 import RESTBucket from './RESTBucket';
 
 const { version, repository } = require('../../package.json');
 
-export default class Requester {
+export default class RESTClient {
   version = 'v8';
   apiURL = `/api/${this.version}`;
-  https = new HTTPS(null, this);
+  https = new DiscordHTTPS(null, this);
   userAgent = `DiscordBot (${repository}, ${version})`;
   globallyRateLimited = false;
   readonly rateLimits = new RateLimits(this);

@@ -3,10 +3,10 @@ import WebSocket from 'ws';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { EVENTS, Heartbeat, Payload } from './constants';
 import { GATEWAY_OPCODES, GATEWAY_CLOSE_EVENT_CODES } from '../util/Constants';
-import Requester from '../rest/Requester';
+import RESTClient from '../rest/RESTClient';
 import Endpoints from '../rest/Endpoints';
 
-const requester = new Requester();
+const requester = new RESTClient();
 
 export default async function Socket(token: string, intents: number) {
   const json = await requester.request('GET', Endpoints.GATEWAY_BOT(), true);

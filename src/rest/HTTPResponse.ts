@@ -1,5 +1,5 @@
 import { ClientRequest, OutgoingHttpHeaders, IncomingMessage, IncomingHttpHeaders } from 'http';
-import APIError from './APIError';
+import RESTError from './RESTError';
 import HTTPError from './HTTPError';
 
 export default class HTTPResponse {
@@ -17,7 +17,7 @@ export default class HTTPResponse {
     this.data = data;
     if (this.response.statusCode! >= 300) {
       if (this.json?.code) {
-        this.error = new APIError(this.request, this.response, this.json, stack, this);
+        this.error = new RESTError(this.request, this.response, this.json, stack, this);
       } else {
         this.error = new HTTPError(this.request, this.response, this.json, stack, this);
       }

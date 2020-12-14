@@ -1,15 +1,15 @@
 import http from 'http';
 import https from 'https';
 import HTTPResponse from './HTTPResponse';
-import Requester from './Requester';
+import RESTClient from './RESTClient';
 
 export type HTTP_METHODS = 'DELETE' | 'GET' | 'PATCH' | 'POST' | 'PUT';
 
-export default class HTTPS {
+export default class DiscordHTTPS {
   private _client: unknown;
   domain = 'discord.com';
-  requester: Requester;
-  constructor(client: unknown, requester: Requester) {
+  requester: RESTClient;
+  constructor(client: unknown, requester: RESTClient) {
     this._client = client;
     this.requester = requester;
   }
