@@ -4,9 +4,13 @@ import { WIDGET_STYLE_OPTIONS } from './util/Constants';
 
 export default class Client {
   private _token: string;
-  readonly rest = new RESTClient();
+  readonly rest = new RESTClient(this);
   constructor(token: string) {
     this._token = token;
+  }
+
+  get token() {
+    return this._token;
   }
 
   addGuildMember(guildID: string, userID: string, params: any = {}) {

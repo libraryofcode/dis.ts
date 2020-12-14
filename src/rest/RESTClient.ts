@@ -1,4 +1,5 @@
 import http from 'http';
+import Client from '../Client';
 import DiscordHTTPS, { HTTP_METHODS } from './DiscordHTTPS';
 import RateLimits from './RateLimits';
 import RESTBucket from './RESTBucket';
@@ -11,6 +12,7 @@ export default class RESTClient {
   https = new DiscordHTTPS(null, this);
   userAgent = `DiscordBot (${repository}, ${version})`;
   globallyRateLimited = false;
+  client: Client;
   readonly rateLimits = new RateLimits(this);
   readonly routeRegex = /\/(?!guilds|channels|webhooks)([a-z-]+)\/(?:\d+)/g;
   readonly routeReplacer = '/$1/:id';
@@ -19,6 +21,10 @@ export default class RESTClient {
   readonly messageIDRegex = /\/channels\/\d+\/messages\//;
   readonly DISCORD_EPOCH = 1420070400000;
   readonly INVALID_HEADER_REGEX = /[^\t\x20-\x7e\x80-\xff]/;
+
+  constructor(client: Client) {
+    this.client = client;
+  }
 
   async request(method: HTTP_METHODS, endpoint: string, auth: boolean, payload?: { [s: string]: any }): Promise<any> {
     if (this.globallyRateLimited) throw new Error('Globally rate limited. Try again later.'); // TODO Implement proper global rate limit queue
@@ -29,7 +35,7 @@ export default class RESTClient {
     const headers: http.OutgoingHttpHeaders = {
       'User-Agent': this.userAgent,
     };
-    if (auth) headers.Authorization = 'Bot $token';
+    if (auth) headers.Authorization = this.client.token;
     if (payload?.reason) {
       payload.reason = payload.reason.replace(/\s+/g, ' ');
       if (this.INVALID_HEADER_REGEX.test(payload.reason)) throw new TypeError('Invalid character(s) in Audit Log reason');
