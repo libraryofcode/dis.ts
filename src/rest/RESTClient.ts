@@ -3,6 +3,7 @@ import Client from '../Client';
 import DiscordHTTPS, { HTTP_METHODS } from './DiscordHTTPS';
 import RateLimits from './RateLimits';
 import RESTBucket from './RESTBucket';
+import { REST_CONSTANTS } from '../util/Constants';
 
 const { version, repository } = require('../../package.json');
 
@@ -12,15 +13,8 @@ export default class RESTClient {
   https = new DiscordHTTPS(null, this);
   userAgent = `DiscordBot (${repository}, ${version})`;
   globallyRateLimited = false;
-  client: Client;
+  readonly client: Client;
   readonly rateLimits = new RateLimits(this);
-  readonly routeRegex = /\/(?!guilds|channels|webhooks)([a-z-]+)\/(?:\d+)/g;
-  readonly routeReplacer = '/$1/:id';
-  readonly webhookRegex = /\/webhooks\/(\d+)\/[a-zA-Z0-9-_]{64,}/
-  readonly webhookReplacer = '/webhooks/$1/:token';
-  readonly messageIDRegex = /\/channels\/\d+\/messages\//;
-  readonly DISCORD_EPOCH = 1420070400000;
-  readonly INVALID_HEADER_REGEX = /[^\t\x20-\x7e\x80-\xff]/;
 
   constructor(client: Client) {
     this.client = client;
@@ -38,7 +32,7 @@ export default class RESTClient {
     if (auth) headers.Authorization = this.client.token;
     if (payload?.reason) {
       payload.reason = payload.reason.replace(/\s+/g, ' ');
-      if (this.INVALID_HEADER_REGEX.test(payload.reason)) throw new TypeError('Invalid character(s) in Audit Log reason');
+      if (REST_CONSTANTS.INVALID_HEADER_REGEX.test(payload.reason)) throw new TypeError('Invalid character(s) in Audit Log reason');
       headers['X-Audit-Log-Reason'] = payload.reason;
       if ((method !== 'POST' || !endpoint.includes('/prune')) && (method !== 'PUT' || endpoint.includes('/bans'))) delete payload.reason;
     }
@@ -94,15 +88,15 @@ export default class RESTClient {
 
   calculateRLRoute(endpoint: string, method: HTTP_METHODS) {
     const route = endpoint
-      .replace(this.routeRegex, this.routeReplacer)
-      .replace(this.webhookRegex, this.webhookReplacer);
+      .replace(REST_CONSTANTS.ROUTE_REGEX, REST_CONSTANTS.ROUTE_REPLACER)
+      .replace(REST_CONSTANTS.WEBHOOK_REGEX, REST_CONSTANTS.WEBHOOK_REPLACER);
 
     if (method === 'DELETE' && route.endsWith('/messages/:id')) {
       // NOTE Deleting messages has its own rate limit
       // Messages younger than 10 seconds have no rate limit
       // Messages younger than 2 weeks have a rate limit of 3 per 1 second
       // All other messages have a rate limit of 30 per 120 seconds
-      const diff = Date.now() - Math.floor(Number(endpoint.replace(this.messageIDRegex, '')) / 4194304) + this.DISCORD_EPOCH;
+      const diff = Date.now() - Math.floor(Number(endpoint.replace(REST_CONSTANTS.MESSAGE_ID_REGEX, '')) / 4194304) + REST_CONSTANTS.DISCORD_EPOCH;
       if (diff < 10e3) return `DELETE_NEW-${route}`;
       if (diff < 1209600e3) return `DELETE-${route}`;
       return `DELETE_OLD-${route}`;

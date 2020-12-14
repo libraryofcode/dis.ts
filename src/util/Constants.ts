@@ -659,3 +659,21 @@ export const LIMITS = {
   User: USER_LIMITS,
   Webhook: WEBHOOK_LIMITS,
 };
+
+const ROUTE_REGEX = /\/(?!guilds|channels|webhooks)([a-z-]+)\/(?:\d+)/g;
+const ROUTE_REPLACER = '/$1/:id';
+const WEBHOOK_REGEX = /\/webhooks\/(\d+)\/[a-zA-Z0-9-_]{64,}/;
+const WEBHOOK_REPLACER = '/webhooks/$1/:token';
+const MESSAGE_ID_REGEX = /\/channels\/\d+\/messages\//;
+const DISCORD_EPOCH = 1420070400000;
+const INVALID_HEADER_REGEX = /[^\t\x20-\x7e\x80-\xff]/;
+
+export const REST_CONSTANTS = {
+  ROUTE_REGEX,
+  ROUTE_REPLACER,
+  WEBHOOK_REGEX,
+  WEBHOOK_REPLACER,
+  MESSAGE_ID_REGEX,
+  DISCORD_EPOCH,
+  INVALID_HEADER_REGEX,
+};
