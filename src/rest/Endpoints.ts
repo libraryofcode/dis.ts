@@ -386,7 +386,7 @@ export default class Endpoints {
   }
   /**
    * `/users/@me/channels`
-   * - GET - Get User DMs
+   * - GET - Get User DMs (OAuth2 - Will return empty array for bots)
    * - POST - Create DM
    * - POST - Create Group DM (OAuth2) - Deprecated GameBridge SDK
    */
@@ -395,7 +395,7 @@ export default class Endpoints {
   }
   /**
    * `/users/@me/connections`
-   * - GET - Get User Connections (OAuth2 optional)
+   * - GET - Get User Connections (OAuth2 - Will return empty array for bots)
    */
   public static USER_CONNECTIONS() {
     return '/users/@me/connections';
