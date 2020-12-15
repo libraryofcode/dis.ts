@@ -1,6 +1,7 @@
 import Collection from '../util/Collection';
 import RESTClient from './RESTClient';
 import RESTBucket from './RESTBucket';
+import { REST_CONSTANTS } from '../util/Constants';
 
 export default class RateLimits extends Collection<RESTBucket> {
   requester: RESTClient
@@ -22,7 +23,7 @@ export default class RateLimits extends Collection<RESTBucket> {
   }
 
   getFromURL(url: string) {
-    return this.get(url.replace(this.requester.routeRegex, this.requester.routeReplacer));
+    return this.get(url.replace(REST_CONSTANTS.ROUTE_REGEX, REST_CONSTANTS.ROUTE_REPLACER));
   }
 
   create(route: string) {
