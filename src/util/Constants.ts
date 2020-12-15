@@ -208,9 +208,9 @@ export enum USER_FLAGS {
   TEAM_USER = 1 << 10,
   // UNKNOWN 1 << 11 discord/discord-api-docs#1823
   SYSTEM = 1 << 12,
-  UNREAD_URGENT_MESSAGES = 1 << 13
-  BUG_HUNTER_LEVEL_2 = 1 << 14
-  VERIFIED_BOT = 1 << 16
+  UNREAD_URGENT_MESSAGES = 1 << 13,
+  BUG_HUNTER_LEVEL_2 = 1 << 14,
+  VERIFIED_BOT = 1 << 16,
   EARLY_VERIFIED_BOT_DEVELOPER = 1 << 17
 }
 
