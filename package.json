@@ -1,10 +1,10 @@
 {
-  "name": "discord.ts",
+  "name": "dis.ts",
   "version": "0.1.0",
   "description": "A Discord API wrapper written 100% in TypeScript.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
-  "repository": "https://github.com/LibraryOfCode/discordts",
+  "repository": "https://github.com/libraryofcode/dis.ts",
   "author": "Library of Code sp-us, Dept. of Engineering : Board of Directors",
   "license": "MIT",
   "private": false,
