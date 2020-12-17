@@ -114,14 +114,14 @@ export enum OVERWRITE_TYPES {
 // https://discord.com/developers/docs/resources/guild#guild-object-default-message-notification-level
 export enum DEFAULT_MESSAGE_NOTIFICATION_LEVEL {
   ALL_MESSAGES,
-  ONLY_MENTIONS
+  ONLY_MENTIONS,
 }
 
 // https://discord.com/developers/docs/resources/guild#guild-object-explicit-content-filter-level
 export enum EXPLICIT_CONTENT_FILTER_LEVEL {
   DISABLED,
   MEMBERS_WITHOUT_ROLES,
-  ALL_MEMBERS
+  ALL_MEMBERS,
 }
 
 // https://discord.com/developers/docs/resources/guild#guild-object-mfa-level
@@ -136,7 +136,7 @@ export enum VERIFICATION_LEVEL {
   LOW,
   MEDIUM,
   HIGH,
-  VERY_HIGH
+  VERY_HIGH,
 }
 
 // https://discord.com/developers/docs/resources/guild#guild-object-premium-tier
@@ -212,7 +212,7 @@ export enum USER_FLAGS {
   BUG_HUNTER_LEVEL_2 = 1 << 14,
   UNDERAGE_DELETED = 1 << 15,
   VERIFIED_BOT = 1 << 16,
-  EARLY_VERIFIED_BOT_DEVELOPER = 1 << 17
+  EARLY_VERIFIED_BOT_DEVELOPER = 1 << 17,
 }
 
 // https://discord.com/developers/docs/resources/user#user-object-premium-types

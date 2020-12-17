@@ -45,13 +45,17 @@
         "@typescript-eslint/lines-between-class-members": "off",
         "@typescript-eslint/no-unused-expressions": ["error", { "allowTernary": true, "allowShortCircuit": true }],
         "no-return-assign": ["error", "except-parens"],
+        "@typescript-eslint/comma-dangle": ["error", "always-multiline"],
+        "@typescript-eslint/no-shadow": "error",
         // Conflicts with @typescript-eslint
         "no-unused-vars": "off",
         "lines-between-class-members": "off",
         "indent": "off",
         "no-useless-constructor": "off",
         "no-unused-expressions": "off",
-        "no-bitwise": "off"
+        "no-bitwise": "off",
+        "comma-dangle": "off",
+        "no-shadow": "off"
     },
     "ignorePatterns": "build/"
 }
