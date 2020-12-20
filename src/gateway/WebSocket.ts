@@ -61,7 +61,6 @@ export default function Socket(token: string, wsURL: string, intents: number) {
 
   function onMessage(data: Payload) {
     data = JSON.parse(String(data));
-    console.log(data);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { t, s, op, d } = data;
     if (s) seq = s;
