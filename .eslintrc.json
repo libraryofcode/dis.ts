@@ -1,17 +1,10 @@
 {
-    "settings": {
-        "import/resolver": {
-          "node": {
-            "extensions": [".js", ".jsx", ".ts", ".tsx"]
-          }
-        }
-    },
     "env": {
         "es6": true,
         "node": true
     },
     "extends": [
-        "airbnb-base"
+        "@dis.ts/eslint-config"
     ],
     "globals": {
         "Atomics": "readonly",
@@ -25,37 +18,12 @@
     "plugins": [
         "@typescript-eslint"
     ],
+    "ignorePatterns": "build/",
     "rules": {
-        "linebreak-style": ["error", "unix"],
-        "@typescript-eslint/no-unused-vars": "error",
-        "max-len": "off",
-        "import/no-dynamic-require": "off",
-        "global-require": "off",
-        "class-methods-use-this":"off",
-        "no-restricted-syntax": "off",
-        "no-restricted-globals": "off",
-        "camelcase": "off",
-        "@typescript-eslint/indent": ["warn", 2],
-        "object-curly-newline": "off",
-        "import/prefer-default-export": "off",
-        "@typescript-eslint/no-useless-constructor": 2,
-        "import/extensions": "off",
-        "no-param-reassign": "off",
-        "no-underscore-dangle": "off",
+        "no-undefined": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off",
         "@typescript-eslint/lines-between-class-members": "off",
-        "@typescript-eslint/no-unused-expressions": ["error", { "allowTernary": true, "allowShortCircuit": true }],
-        "no-return-assign": ["error", "except-parens"],
-        "@typescript-eslint/comma-dangle": ["error", "always-multiline"],
-        "@typescript-eslint/no-shadow": "error",
-        // Conflicts with @typescript-eslint
-        "no-unused-vars": "off",
-        "lines-between-class-members": "off",
-        "indent": "off",
-        "no-useless-constructor": "off",
-        "no-unused-expressions": "off",
-        "no-bitwise": "off",
-        "comma-dangle": "off",
-        "no-shadow": "off"
-    },
-    "ignorePatterns": "build/"
+        "@typescript-eslint/consistent-indexed-object-style": "off",
+        "@typescript-eslint/no-unused-expressions": [2, { "allowShortCircuit": true, "allowTernary": true }]
+    }
 }
