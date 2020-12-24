@@ -3,14 +3,21 @@ import RESTClient from './rest/RESTClient';
 import { WIDGET_STYLE_OPTIONS } from './util/Constants';
 
 export default class Client {
-  private _token: string;
   readonly rest = new RESTClient(this);
+  private _token: string;
   constructor(token: string) {
     this._token = token;
   }
 
   get token() {
     return this._token;
+  }
+
+  addGroupDMRecipient(channelID: string, userID: string, params: any = {}) {
+    return this.rest.request('PUT', Endpoints.GROUP_DM_RECIPIENT(channelID, userID), false, {
+      access_token: params.accessToken,
+      nick: params.nick,
+    });
   }
 
   addGuildMember(guildID: string, userID: string, params: any = {}) {
@@ -25,13 +32,6 @@ export default class Client {
 
   addGuildMemberRole(guildID: string, userID: string, roleID: string) {
     return this.rest.request('PUT', Endpoints.GUILD_MEMBER_ROLE(guildID, userID, roleID), true);
-  }
-
-  addGroupDMRecipient(channelID: string, userID: string, params: any = {}) {
-    return this.rest.request('PUT', Endpoints.GROUP_DM_RECIPIENT(channelID, userID), false, {
-      access_token: params.accessToken,
-      nick: params.nick,
-    });
   }
 
   addPinnedChannelMessage(channelID: string, messageID: string) {
@@ -202,7 +202,8 @@ export default class Client {
   }
 
   deleteWebhook(webhookID: string, webhookToken?: string) {
-    return webhookToken ? this.rest.request('DELETE', Endpoints.WEBHOOK_TOKEN(webhookID, webhookToken), false)
+    return webhookToken
+      ? this.rest.request('DELETE', Endpoints.WEBHOOK_TOKEN(webhookID, webhookToken), false)
       : this.rest.request('DELETE', Endpoints.WEBHOOK(webhookID), true);
   }
 
@@ -303,7 +304,8 @@ export default class Client {
   }
 
   editWebhook(webhookID: string, params: any = {}, webhookToken?: string) {
-    return webhookToken ? this.rest.request('GET', Endpoints.WEBHOOK_TOKEN(webhookID, webhookToken), false, params)
+    return webhookToken
+      ? this.rest.request('GET', Endpoints.WEBHOOK_TOKEN(webhookID, webhookToken), false, params)
       : this.rest.request('GET', Endpoints.WEBHOOK(webhookID), true, {
         name: params.name,
         avatar: params.avatar,
@@ -492,7 +494,8 @@ export default class Client {
   }
 
   getWebhook(webhookID: string, webhookToken?: string) {
-    return webhookToken ? this.rest.request('GET', Endpoints.WEBHOOK_TOKEN(webhookID, webhookToken), false)
+    return webhookToken
+      ? this.rest.request('GET', Endpoints.WEBHOOK_TOKEN(webhookID, webhookToken), false)
       : this.rest.request('GET', Endpoints.WEBHOOK(webhookID), true);
   }
 

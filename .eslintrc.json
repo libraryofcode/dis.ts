@@ -24,6 +24,7 @@
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "@typescript-eslint/lines-between-class-members": "off",
         "@typescript-eslint/consistent-indexed-object-style": "off",
-        "@typescript-eslint/no-unused-expressions": [2, { "allowShortCircuit": true, "allowTernary": true }]
+        "@typescript-eslint/no-unused-expressions": [2, { "allowShortCircuit": true, "allowTernary": true }],
+        "no-undef": "off"
     }
 }

@@ -2,12 +2,12 @@ import { ClientRequest, IncomingMessage } from 'http';
 import HTTPResponse from './HTTPResponse';
 
 export default class HTTPError extends Error {
+  meta!: HTTPResponse;
+  readonly name = this.constructor.name;
+  payload!: Record<string | number, unknown>;
   request!: ClientRequest;
   response!: IncomingMessage;
   statusCode!: number;
-  payload!: Record<string | number, unknown>;
-  meta!: HTTPResponse;
-  readonly name = this.constructor.name;
   constructor(request: ClientRequest, response: IncomingMessage, payload: Record<string | number, unknown>, stack: string, meta: HTTPResponse) {
     super(`${response.statusCode} - ${response.statusMessage}`);
     Object.defineProperty(this, 'request', {

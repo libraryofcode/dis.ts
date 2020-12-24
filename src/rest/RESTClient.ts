@@ -5,30 +5,29 @@ import RateLimits from './RateLimits';
 import RESTBucket from './RESTBucket';
 import { REST_CONSTANTS } from '../util/Constants';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { version, repository } = require('../../package.json');
 
 export default class RESTClient {
   version = 'v8';
-  apiURL = `/api/${this.version}`;
-  https = new DiscordHTTPS(null, this);
-  userAgent = `DiscordBot (${repository}, ${version})`;
-  globallyRateLimited = false;
+  apiURL = `/api/${this.version}`;// eslint-disable-line @typescript-eslint/member-ordering
   readonly client: Client;
+  globallyRateLimited = false;
+  https = new DiscordHTTPS(null, this);
   readonly rateLimits = new RateLimits(this);
+  userAgent = `DiscordBot (${repository}, ${version})`;
 
   constructor(client: Client) {
     this.client = client;
   }
 
-  async request(method: HTTP_METHODS, endpoint: string, auth: boolean, payload?: { [s: string]: any }): Promise<any> {
+  request(method: HTTP_METHODS, endpoint: string, auth: boolean, payload?: { [s: string]: any }): Promise<any> {
     if (this.globallyRateLimited) throw new Error('Globally rate limited. Try again later.'); // TODO Implement proper global rate limit queue
 
     const rateLimitRoute = this.calculateRLRoute(endpoint, method);
     const routeBucket = this.rateLimits.get(rateLimitRoute) || this.rateLimits.create(rateLimitRoute);
 
-    const headers: http.OutgoingHttpHeaders = {
-      'User-Agent': this.userAgent,
-    };
+    const headers: http.OutgoingHttpHeaders = { 'User-Agent': this.userAgent };
     if (auth) headers.Authorization = this.client.token;
     if (payload?.reason) {
       payload.reason = payload.reason.replace(/\s+/g, ' ');
@@ -43,7 +42,7 @@ export default class RESTClient {
     if (payload) {
       if (method === 'GET' || method === 'DELETE') {
         const queryString: string[] = [];
-        Object.entries(payload).forEach(([key, value]) => {
+        Object.entries(payload).forEach(([ key, value ]) => {
           if (value === undefined) return;
           if (Array.isArray(value)) {
             value.forEach((v) => queryString.push(`${encodeURIComponent(key)}=${encodeURIComponent(v)}`));

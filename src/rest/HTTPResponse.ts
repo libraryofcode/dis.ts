@@ -3,12 +3,12 @@ import RESTError from './RESTError';
 import HTTPError from './HTTPError';
 
 export default class HTTPResponse {
-  request: ClientRequest;
-  headersOut: OutgoingHttpHeaders;
-  headersIn: IncomingHttpHeaders;
-  response: IncomingMessage;
-  error: Error | null;
   data: Buffer;
+  error: Error | null;
+  headersIn: IncomingHttpHeaders;
+  headersOut: OutgoingHttpHeaders;
+  request: ClientRequest;
+  response: IncomingMessage;
   constructor(request: ClientRequest, response: IncomingMessage, data: Buffer, stack: string) {
     this.request = request;
     this.headersOut = request.getHeaders();

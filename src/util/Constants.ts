@@ -643,14 +643,14 @@ export const USER_LIMITS = {
   USERNAME_MAX: 32,
   NICKNAME_MIN: 1,
   NICKNAME_MAX: 32,
-  INVALID_USERNAME_SUBSTR: ['@', '#', ':', '```'],
-  INVALID_USERNAMES: ['discordtag', 'everyone', 'here'],
+  INVALID_USERNAME_SUBSTR: [ '@', '#', ':', '```' ],
+  INVALID_USERNAMES: [ 'discordtag', 'everyone', 'here' ],
 };
 
 export const WEBHOOK_LIMITS = {
   NAME_MIN: 1,
   NAME_MAX: 80,
-  INVALID_NAMES: ['clyde'],
+  INVALID_NAMES: [ 'clyde' ],
   EMBED_COUNT_MAX: 10,
 };
 

@@ -4,7 +4,7 @@ import WebSocket from 'ws';
 import { EVENTS, Heartbeat, Payload } from './constants';
 import { GATEWAY_OPCODES, GATEWAY_CLOSE_EVENT_CODES } from '../util/Constants';
 
-export default async function Socket(token: string, wsURL: string, intents: number) {
+export default function Socket(token: string, wsURL: string, intents: number) {
   const ws = new WebSocket(wsURL);
 
   function heartbeat(ms: number) {

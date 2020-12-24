@@ -3,18 +3,18 @@ import HTTPResponse from './HTTPResponse';
 
 export interface ErrorPayload {
   code: number;
-  message: string;
   errors: Record<string | number, unknown>;
+  message: string;
 }
 
 export default class RESTError extends Error {
+  code!: number;
+  meta!: HTTPResponse;
+  readonly name = this.constructor.name;
+  payload!: ErrorPayload;
   request!: ClientRequest;
   response!: IncomingMessage;
   statusCode!: number;
-  code!: number;
-  payload!: ErrorPayload;
-  meta!: HTTPResponse;
-  readonly name = this.constructor.name;
   constructor(request: ClientRequest, response: IncomingMessage, payload: ErrorPayload, stack: string, meta: HTTPResponse) {
     super(`[${payload.code}] - ${payload.message}`);
     Object.defineProperty(this, 'request', {

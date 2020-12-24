@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/member-ordering */
+
 export default class Endpoints {
   // Audit Log
   /**

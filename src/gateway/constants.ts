@@ -47,8 +47,8 @@ export const Heartbeat = {
 
 // https://discord.com/developers/docs/topics/gateway#payloads
 export interface Payload {
+  d: any;
   op: number;
   s: number;
   t: string;
-  d: any;
 }
