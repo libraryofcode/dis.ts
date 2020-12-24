@@ -1,16 +1,14 @@
-/* eslint-disable no-console */
-/* eslint-disable no-use-before-define */
 import WebSocket from 'ws';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { EVENTS, Payload } from './constants';
 import { GATEWAY_OPCODES, GATEWAY_CLOSE_EVENT_CODES } from '../util/Constants';
 
 export default function Socket(token: string, wsURL: string, intents: number) {
-  let ws = new WebSocket(wsURL);
+  let interval: NodeJS.Timeout;
   let lastHeartbeatAck = true;
   let session_id: string;
   let seq: number;
-  let interval: NodeJS.Timeout;
+  let ws: WebSocket;
 
   function heartbeat(expected: boolean) {
     if (expected) {
@@ -18,12 +16,13 @@ export default function Socket(token: string, wsURL: string, intents: number) {
         clearInterval(interval);
         ws.removeEventListener('close');
         ws.terminate();
+
         newWS();
         resume();
         lastHeartbeatAck = true;
       } else lastHeartbeatAck = false;
     }
-    if (ws.readyState === 1) {
+    if (ws.readyState === WebSocket.OPEN) {
       ws.send(JSON.stringify({
         op: GATEWAY_OPCODES.HEARTBEAT,
         d: seq || null,
@@ -47,7 +46,7 @@ export default function Socket(token: string, wsURL: string, intents: number) {
   }
 
   function resume() {
-    if (ws.readyState === 1) {
+    if (ws.readyState === WebSocket.OPEN) {
       ws.send(JSON.stringify({
         op: GATEWAY_OPCODES.RESUME,
         d: {
@@ -79,6 +78,7 @@ export default function Socket(token: string, wsURL: string, intents: number) {
         clearInterval(interval);
         ws.removeEventListener('close');
         ws.terminate();
+
         newWS();
         resume();
         break;
