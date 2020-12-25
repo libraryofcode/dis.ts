@@ -1,5 +1,3 @@
-import { GATEWAY_OPCODES } from '../util/Constants';
-
 // https://discord.com/developers/docs/topics/gateway#commands-and-events-gateway-events
 export const EVENTS = {
   READY: 'ready',
@@ -37,12 +35,6 @@ export const EVENTS = {
   VOICE_STATE_UPDATE: 'voiceStateUpdate',
   VOICE_SERVER_UPDATE: 'guildServerUpdate',
   WEBHOOKS_UPDATE: 'webhooksUpdate',
-};
-
-// https://discord.com/developers/docs/topics/gateway#heartbeat
-export const Heartbeat = {
-  op: GATEWAY_OPCODES.HEARTBEAT,
-  d: null,
 };
 
 // https://discord.com/developers/docs/topics/gateway#payloads
