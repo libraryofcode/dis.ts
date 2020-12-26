@@ -15,13 +15,14 @@ export default class RESTClient {
   globallyRateLimited = false;
   readonly client: Client;
   readonly rateLimits = new RateLimits(this);
+  queue: { method: HTTP_METHODS, endpoint: string, auth: boolean, payload?: { [s: string]: any } }[] = [];
 
   constructor(client: Client) {
     this.client = client;
   }
 
   async request(method: HTTP_METHODS, endpoint: string, auth: boolean, payload?: { [s: string]: any }): Promise<any> {
-    if (this.globallyRateLimited) throw new Error('Globally rate limited. Try again later.'); // TODO Implement proper global rate limit queue
+    if (this.globallyRateLimited) return this.queue.push({ method, endpoint, auth, payload });
 
     const rateLimitRoute = this.calculateRLRoute(endpoint, method);
     const routeBucket = this.rateLimits.get(rateLimitRoute) || this.rateLimits.create(rateLimitRoute);
@@ -67,7 +68,16 @@ export default class RESTClient {
         const discordBucket = api.headersIn['x-ratelimit-bucket'] as string | undefined;
         if (api.headersIn['x-ratelimit-global'] === 'true') {
           this.globallyRateLimited = true;
-          setTimeout(() => { this.globallyRateLimited = false; }, api.json.retry_after * 1e3);
+          this.queue.push({ method, endpoint: endpointFinal, auth, payload });
+
+          setTimeout(async () => {
+            this.globallyRateLimited = false;
+
+            const nextRequest = this.queue[0];
+            await this.request(nextRequest.method, nextRequest.endpoint, nextRequest.auth, nextRequest.payload);
+
+            this.queue.pop();
+          }, api.json.retry_after * 1e3);
         } else if (discordBucket !== undefined) {
           const bucket = this.rateLimits.getBucket(discordBucket) || this.rateLimits.get(rateLimitRoute) as RESTBucket;
           bucket.bucket ?? (bucket.bucket = discordBucket);
