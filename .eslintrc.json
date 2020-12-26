@@ -18,7 +18,7 @@
     "plugins": [
         "@typescript-eslint"
     ],
-    "ignorePatterns": "build/",
+    "ignorePatterns": ["build/", "node_modules/"],
     "rules": {
         "no-undefined": "off",
         "@typescript-eslint/explicit-module-boundary-types": "off",
