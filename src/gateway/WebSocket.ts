@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/member-ordering */
-
 import WebSocket from 'ws';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { EVENTS, Payload } from './constants';
@@ -60,21 +58,21 @@ export default class Socket {
     }));
   }
 
-  resume() {
-    if (this.ws.readyState === WebSocket.OPEN) {
-      this.ws.send(JSON.stringify({
-        op: GATEWAY_OPCODES.RESUME,
-        d: {
-          token: this._token,
-          session_id: this.session_id,
-          seq: this.seq,
-        },
-      }));
-    }
+  newWS() {
+    this.ws = new WebSocket(this._wsURL);
+    this.ws.on('open', this.identify);
+    this.ws.on('close', this.onClose);
+    this.ws.on('message', this.onMessage);
+  }
+
+  onClose(code: number) {
+    if (!GATEWAY_CLOSE_EVENT_CODES[code]) console.log(code);
+    else console.log(GATEWAY_CLOSE_EVENT_CODES[code]);
   }
 
   onMessage(data: Payload) {
     data = JSON.parse(String(data));
+    console.log(data);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { t, s, op, d } = data;
     if (s) this.seq = s;
@@ -117,15 +115,16 @@ export default class Socket {
     }
   }
 
-  onClose(code: number) {
-    if (!GATEWAY_CLOSE_EVENT_CODES[code]) console.log(code);
-    else console.log(GATEWAY_CLOSE_EVENT_CODES[code]);
-  }
-
-  newWS() {
-    this.ws = new WebSocket(this._wsURL);
-    this.ws.on('open', this.identify);
-    this.ws.on('close', this.onClose);
-    this.ws.on('message', this.onMessage);
+  resume() {
+    if (this.ws.readyState === WebSocket.OPEN) {
+      this.ws.send(JSON.stringify({
+        op: GATEWAY_OPCODES.RESUME,
+        d: {
+          token: this._token,
+          session_id: this.session_id,
+          seq: this.seq,
+        },
+      }));
+    }
   }
 }
