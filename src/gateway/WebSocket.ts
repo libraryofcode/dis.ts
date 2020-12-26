@@ -72,7 +72,6 @@ export default class Socket {
 
   onMessage(data: Payload) {
     data = JSON.parse(String(data));
-    console.log(data);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { t, s, op, d } = data;
     if (s) this.seq = s;
