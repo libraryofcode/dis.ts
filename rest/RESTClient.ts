@@ -1,9 +1,9 @@
 import http from 'http';
-import Client from '../Client';
-import DiscordHTTPS, { HTTP_METHODS } from './DiscordHTTPS';
+import Client from '../src/Client';
+import DiscordHTTPS, { HTTP_METHODS } from './HTTPRequest';
 import RateLimits from './RateLimits';
 import RESTBucket from './RESTBucket';
-import { REST_CONSTANTS } from '../util/Constants';
+import { REST_CONSTANTS } from '../src/util/Constants';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { version, repository } = require('../../package.json');

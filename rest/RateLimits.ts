@@ -1,7 +1,7 @@
-import Collection from '../util/Collection';
+import Collection from '../src/util/Collection';
 import RESTClient from './RESTClient';
 import RESTBucket from './RESTBucket';
-import { REST_CONSTANTS } from '../util/Constants';
+import { REST_CONSTANTS } from '../src/util/Constants';
 
 export default class RateLimits extends Collection<RESTBucket> {
   requester: RESTClient;
