@@ -7,7 +7,7 @@ export default class Socket {
   private _intents: number;
   private _token: string;
   private _wsURL: string;
-  private interval!: NodeJS.Timeout;
+  private heartBeatInterval!: NodeJS.Timeout;
   private lastHeartbeatAck = true;
   private seq!: number;
   private session_id!: string;
@@ -23,54 +23,45 @@ export default class Socket {
     this.onMessage = this.onMessage.bind(this);
   }
 
-  heartbeat(expected: boolean) {
-    if (expected) {
-      if (!this.lastHeartbeatAck) {
-        clearInterval(this.interval);
-        this.ws.removeEventListener('close');
-        this.ws.terminate();
-
-        this.newWS();
-        this.resume();
-        this.lastHeartbeatAck = true;
-      } else this.lastHeartbeatAck = false;
-    }
-    if (this.ws.readyState === WebSocket.OPEN) {
-      this.ws.send(JSON.stringify({
-        op: GATEWAY_OPCODES.HEARTBEAT,
-        d: this.seq || null,
-      }));
-    }
-  }
-
-  identify() {
-    this.ws.send(JSON.stringify({
-      op: GATEWAY_OPCODES.IDENTIFY,
-      d: {
-        token: this._token,
-        intents: this._intents,
-        properties: {
-          $os: process.platform,
-          $browser: 'Dis.ts',
-          $device: 'Dis.ts',
-        },
-      },
-    }));
-  }
-
-  newWS() {
+  initialize() {
     this.ws = new WebSocket(this._wsURL);
     this.ws.on('open', this.identify);
     this.ws.on('close', this.onClose);
     this.ws.on('message', this.onMessage);
   }
 
-  onClose(code: number) {
+  private heartbeat(expected: boolean) {
+    if (expected) {
+      if (!this.lastHeartbeatAck) {
+        this.terminate();
+        this.initialize();
+        this.resume();
+        this.lastHeartbeatAck = true;
+      } else {
+        this.lastHeartbeatAck = false;
+      }
+    }
+    this.sendWS(GATEWAY_OPCODES.HEARTBEAT, this.seq || null);
+  }
+
+  private identify() {
+    this.sendWS(GATEWAY_OPCODES.IDENTIFY, {
+      token: this._token,
+      intents: this._intents,
+      properties: {
+        $os: process.platform,
+        $browser: 'Dis.ts',
+        $device: 'Dis.ts',
+      },
+    });
+  }
+
+  private onClose(code: number) {
     if (!GATEWAY_CLOSE_EVENT_CODES[code]) console.log(code);
     else console.log(GATEWAY_CLOSE_EVENT_CODES[code]);
   }
 
-  onMessage(data: Payload) {
+  private onMessage(data: Payload) {
     data = JSON.parse(String(data));
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { t, s, op, d } = data;
@@ -87,11 +78,8 @@ export default class Socket {
         break;
 
       case GATEWAY_OPCODES.RECONNECT:
-        clearInterval(this.interval);
-        this.ws.removeEventListener('close');
-        this.ws.terminate();
-
-        this.newWS();
+        this.terminate();
+        this.initialize();
         this.resume();
         break;
 
@@ -102,7 +90,7 @@ export default class Socket {
         break;
 
       case GATEWAY_OPCODES.HELLO:
-        this.interval = setInterval(() => this.heartbeat(true), d.heartbeat_interval);
+        this.heartBeatInterval = setInterval(() => this.heartbeat(true), d.heartbeat_interval);
         break;
 
       case GATEWAY_OPCODES.HEARTBEAT_ACK:
@@ -114,16 +102,26 @@ export default class Socket {
     }
   }
 
-  resume() {
+  private resume() {
+    this.sendWS(GATEWAY_OPCODES.RESUME, {
+      token: this._token,
+      session_id: this.session_id,
+      seq: this.seq,
+    });
+  }
+
+  private sendWS(op: GATEWAY_OPCODES, data: any) {
     if (this.ws.readyState === WebSocket.OPEN) {
       this.ws.send(JSON.stringify({
-        op: GATEWAY_OPCODES.RESUME,
-        d: {
-          token: this._token,
-          session_id: this.session_id,
-          seq: this.seq,
-        },
+        op,
+        d: data,
       }));
     }
+  }
+
+  private terminate() {
+    clearInterval(this.heartBeatInterval);
+    this.ws.off('close', this.onClose);
+    this.ws.terminate();
   }
 }
