@@ -10,7 +10,7 @@ export default class WebSocketClient {
   private heartBeatInterval!: NodeJS.Timeout;
   private lastHeartbeatAck = true;
   private seq!: number;
-  private session_id!: string;
+  private sessionID!: string;
   private ws!: WebSocket;
 
   constructor(token: string, wsURL: string, intents: number) {
@@ -70,7 +70,7 @@ export default class WebSocketClient {
     switch (op) {
       case GATEWAY_OPCODES.DISPATCH:
         // if (EVENTS[t]) client.emit(EVENTS[t], d);
-        this.session_id = d.session_id;
+        this.sessionID = d.sessionID;
         break;
 
       case GATEWAY_OPCODES.HEARTBEAT:
@@ -105,7 +105,7 @@ export default class WebSocketClient {
   private resume() {
     this.sendWS(GATEWAY_OPCODES.RESUME, {
       token: this._token,
-      session_id: this.session_id,
+      sessionID: this.sessionID,
       seq: this.seq,
     });
   }
