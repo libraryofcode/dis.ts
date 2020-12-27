@@ -3,7 +3,7 @@ import WebSocket from 'ws';
 import { EVENTS, Payload } from './constants';
 import { GATEWAY_OPCODES, GATEWAY_CLOSE_EVENT_CODES } from '../util/Constants';
 
-export default class Socket {
+export default class WebSocketClient {
   private _intents: number;
   private _token: string;
   private _wsURL: string;
