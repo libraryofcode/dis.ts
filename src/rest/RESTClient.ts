@@ -22,8 +22,6 @@ export default class RESTClient {
   }
 
   async request(method: HTTP_METHODS, endpoint: string, auth: boolean, payload?: { [s: string]: any }): Promise<any> {
-    if (this.globallyRateLimited) return this.queue.push({ method, endpoint, auth, payload });
-
     const rateLimitRoute = this.calculateRLRoute(endpoint, method);
     const routeBucket = this.rateLimits.get(rateLimitRoute) || this.rateLimits.create(rateLimitRoute);
 
