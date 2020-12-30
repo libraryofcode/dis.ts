@@ -8,23 +8,29 @@ import { REST_CONSTANTS } from '../src/util/Constants';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { version, repository } = require('../../package.json');
 
+declare interface Request { auth: boolean; endpoint: string; method: HTTP_METHODS; payload?: { [s: string]: any } }
+
 export default class RESTClient {
   version = 'v8';
   apiURL = `/api/${this.version}`;// eslint-disable-line @typescript-eslint/member-ordering
   readonly client: Client;
   globallyRateLimited = false;
   https = new DiscordHTTPS(null, this);
-  // eslint-disable-next-line @typescript-eslint/member-ordering
-  queue: { method: HTTP_METHODS; endpoint: string; auth: boolean; payload?: { [s: string]: any } }[];
+  queue: Request[] = [];
   readonly rateLimits = new RateLimits(this);
   userAgent = `DiscordBot (${repository}, ${version})`;
 
   constructor(client: Client) {
     this.client = client;
-    this.queue = [];
   }
 
   request(method: HTTP_METHODS, endpoint: string, auth: boolean, payload?: { [s: string]: any }): Promise<any> {
+    if (this.globallyRateLimited) {
+      this.queue.push({ auth, endpoint, method, payload });
+      // @ts-ignore: Refuses to return nothing because the type being returned is Promise<any>
+      return;
+    }
+
     const rateLimitRoute = this.calculateRLRoute(endpoint, method);
     const routeBucket = this.rateLimits.get(rateLimitRoute) || this.rateLimits.create(rateLimitRoute);
 
@@ -69,13 +75,13 @@ export default class RESTClient {
           this.globallyRateLimited = true;
           this.queue.push({ method, endpoint: endpointFinal, auth, payload });
 
-          setTimeout(async () => {
+          setTimeout(() => {
             this.globallyRateLimited = false;
 
-            const nextRequest = this.queue[0];
-            await this.request(nextRequest.method, nextRequest.endpoint, nextRequest.auth, nextRequest.payload);
-
-            this.queue.filter((req) => req !== nextRequest);
+            while (this.queue.length >= 1) {
+              this.request(this.queue[0].method, this.queue[0].endpoint, this.queue[0].auth, this.queue[0].payload);
+              this.queue.shift();
+            }
           }, api.json.retry_after * 1e3);
         } else if (discordBucket !== undefined) {
           const bucket = this.rateLimits.getBucket(discordBucket) || this.rateLimits.get(rateLimitRoute) as RESTBucket;
