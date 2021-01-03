@@ -63,7 +63,7 @@ export default class RESTClient {
       }
     }
 
-    return new Promise((res, rej) => { // This seems to be the best way to return data asap then handle rate limits?
+    const request = new Promise((res, rej) => { // This seems to be the best way to return data asap then handle rate limits?
       routeBucket.add(async (cb) => {
         const api = await this.https.request(method, endpointFinal, headers, data);
         if (api.error) rej(api.error);
@@ -79,8 +79,10 @@ export default class RESTClient {
             this.globallyRateLimited = false;
 
             while (this.queue.length >= 1) {
-              this.request(this.queue[0].method, this.queue[0].endpoint, this.queue[0].auth, this.queue[0].payload);
-              this.queue.shift();
+              const _request = this.queue.shift();
+
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              this.request(_request!.method, _request!.endpoint, _request!.auth, _request!.payload);
             }
           }, api.json.retry_after * 1e3);
         } else if (discordBucket !== undefined) {
@@ -99,6 +101,8 @@ export default class RESTClient {
         }
       });
     });
+
+    return request;
   }
 
   calculateRLRoute(endpoint: string, method: HTTP_METHODS) {
