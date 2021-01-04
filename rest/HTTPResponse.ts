@@ -16,11 +16,8 @@ export default class HTTPResponse {
     this.headersIn = response.headers;
     this.data = data;
     if (this.response.statusCode! >= 300) {
-      if (this.json?.code) {
-        this.error = new RESTError(this.request, this.response, this.json, stack, this);
-      } else {
-        this.error = new HTTPError(this.request, this.response, this.json, stack, this);
-      }
+      if (this.json?.code) this.error = new RESTError(this.request, this.response, this.json, stack, this);
+      else this.error = new HTTPError(this.request, this.response, this.json, stack, this);
     } else {
       this.error = null;
     }

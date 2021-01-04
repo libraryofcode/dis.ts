@@ -20,7 +20,9 @@ export default function Socket(token: string, wsURL: string, intents: number) {
         newWS();
         resume();
         lastHeartbeatAck = true;
-      } else lastHeartbeatAck = false;
+      } else {
+        lastHeartbeatAck = false;
+      }
     }
     if (ws.readyState === WebSocket.OPEN) {
       ws.send(JSON.stringify({
@@ -63,6 +65,7 @@ export default function Socket(token: string, wsURL: string, intents: number) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { t, s, op, d } = data;
     if (s) seq = s;
+
 
     switch (op) {
       case GATEWAY_OPCODES.DISPATCH:

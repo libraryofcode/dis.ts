@@ -8,7 +8,9 @@ import { REST_CONSTANTS } from '../src/util/Constants';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { version, repository } = require('../../package.json');
 
-declare interface Request { auth: boolean; endpoint: string; method: HTTP_METHODS; payload?: { [s: string]: any } }
+declare interface Request {
+  auth: boolean; endpoint: string; method: HTTP_METHODS; payload?: { [s: string]: any };
+}
 
 export default class RESTClient {
   version = 'v8';
@@ -51,11 +53,8 @@ export default class RESTClient {
         const queryString: string[] = [];
         Object.entries(payload).forEach(([ key, value ]) => {
           if (value === undefined) return;
-          if (Array.isArray(value)) {
-            value.forEach((v) => queryString.push(`${encodeURIComponent(key)}=${encodeURIComponent(v)}`));
-          } else {
-            queryString.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
-          }
+          if (Array.isArray(value)) value.forEach((v) => queryString.push(`${encodeURIComponent(key)}=${encodeURIComponent(v)}`));
+          else queryString.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
         });
         endpointFinal += `?${queryString.join('&')}`;
       } else {
