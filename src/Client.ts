@@ -1,5 +1,5 @@
-import Endpoints from './rest/Endpoints';
-import RESTClient from './rest/RESTClient';
+import Endpoints from '../rest/Endpoints';
+import RESTClient from '../rest/RESTClient';
 import { WIDGET_STYLE_OPTIONS } from './util/Constants';
 
 export default class Client {
