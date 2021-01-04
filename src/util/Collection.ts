@@ -65,9 +65,7 @@ export default class Collection<T> extends Map<string, T> {
 
     if (this.maxContent !== undefined && this.size > this.maxContent) {
       const names = this.keys();
-      while (this.size > this.maxContent) {
-        this.delete(names.next().value);
-      }
+      while (this.size > this.maxContent) this.delete(names.next().value);
     }
 
     return obj;

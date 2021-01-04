@@ -54,11 +54,9 @@ export default class DiscordHTTPS {
         request.abort();
       });
 
-      if (Array.isArray(body)) {
-        body.forEach((b) => request.write(b));
-      } else if (body) {
-        request.write(body);
-      }
+      if (Array.isArray(body)) body.forEach((b) => request.write(b));
+      else if (body) request.write(body);
+
       request.end();
     });
   }

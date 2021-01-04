@@ -44,11 +44,8 @@ export default class RESTClient {
         const queryString: string[] = [];
         Object.entries(payload).forEach(([ key, value ]) => {
           if (value === undefined) return;
-          if (Array.isArray(value)) {
-            value.forEach((v) => queryString.push(`${encodeURIComponent(key)}=${encodeURIComponent(v)}`));
-          } else {
-            queryString.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
-          }
+          if (Array.isArray(value)) value.forEach((v) => queryString.push(`${encodeURIComponent(key)}=${encodeURIComponent(v)}`));
+          else queryString.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
         });
         endpointFinal += `?${queryString.join('&')}`;
       } else {
@@ -66,7 +63,9 @@ export default class RESTClient {
         const discordBucket = api.headersIn['x-ratelimit-bucket'] as string | undefined;
         if (api.headersIn['x-ratelimit-global'] === 'true') {
           this.globallyRateLimited = true;
-          setTimeout(() => { this.globallyRateLimited = false; }, api.json.retry_after * 1e3);
+          setTimeout(() => {
+            this.globallyRateLimited = false;
+          }, api.json.retry_after * 1e3);
         } else if (discordBucket !== undefined) {
           const bucket = this.rateLimits.getBucket(discordBucket) || this.rateLimits.get(rateLimitRoute) as RESTBucket;
           bucket.bucket ?? (bucket.bucket = discordBucket);
