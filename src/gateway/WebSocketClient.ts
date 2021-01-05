@@ -6,7 +6,7 @@ import { GATEWAY_OPCODES, GATEWAY_CLOSE_EVENT_CODES } from '../util/Constants';
 export default class WebSocketClient {
   private _intents: number;
   private _token: string;
-  private _wsURL: string;
+  private _url: string;
   private heartBeatInterval!: NodeJS.Timeout;
   private lastHeartbeatAck = true;
   private seq!: number;
@@ -15,7 +15,7 @@ export default class WebSocketClient {
 
   constructor(token: string, wsURL: string, intents: number) {
     this._token = token;
-    this._wsURL = wsURL;
+    this._url = wsURL;
     this._intents = intents;
 
     this._identify = this._identify.bind(this);
@@ -24,10 +24,19 @@ export default class WebSocketClient {
   }
 
   connect() {
-    this.ws = new WebSocket(this._wsURL);
+    this.ws = new WebSocket(this._url);
     this.ws.on('open', this._identify);
     this.ws.on('close', this._onClose);
     this.ws.on('message', this._onMessage);
+  }
+
+  send(op: GATEWAY_OPCODES, data: any) {
+    if (this.ws.readyState === WebSocket.OPEN) {
+      this.ws.send(JSON.stringify({
+        op,
+        d: data,
+      }));
+    }
   }
 
   private _heartbeat(expected: boolean) {
@@ -41,11 +50,11 @@ export default class WebSocketClient {
         this.lastHeartbeatAck = false;
       }
     }
-    this._sendWS(GATEWAY_OPCODES.HEARTBEAT, this.seq || null);
+    this.send(GATEWAY_OPCODES.HEARTBEAT, this.seq || null);
   }
 
   private _identify() {
-    this._sendWS(GATEWAY_OPCODES.IDENTIFY, {
+    this.send(GATEWAY_OPCODES.IDENTIFY, {
       token: this._token,
       intents: this._intents,
       properties: {
@@ -70,7 +79,7 @@ export default class WebSocketClient {
     switch (op) {
       case GATEWAY_OPCODES.DISPATCH:
         // if (EVENTS[t]) client.emit(EVENTS[t], d);
-        this.sessionID = d.sessionID;
+        this.sessionID = d.session_id;
         break;
 
       case GATEWAY_OPCODES.HEARTBEAT:
@@ -103,20 +112,11 @@ export default class WebSocketClient {
   }
 
   private _resume() {
-    this._sendWS(GATEWAY_OPCODES.RESUME, {
+    this.send(GATEWAY_OPCODES.RESUME, {
       token: this._token,
-      sessionID: this.sessionID,
+      session_id: this.sessionID,
       seq: this.seq,
     });
-  }
-
-  private _sendWS(op: GATEWAY_OPCODES, data: any) {
-    if (this.ws.readyState === WebSocket.OPEN) {
-      this.ws.send(JSON.stringify({
-        op,
-        d: data,
-      }));
-    }
   }
 
   private _terminate() {
