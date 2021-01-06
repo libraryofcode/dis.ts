@@ -19,9 +19,8 @@ export default class RESTBucket {
 
   ratelimit() {
     const now = Date.now();
-    if (now > this.resetAt) {
-      this.remaining = this.limit;
-    }
+    if (now > this.resetAt) this.remaining = this.limit;
+
     if (this.remaining > 0) return Promise.resolve();
 
     this.rateLimited = true;

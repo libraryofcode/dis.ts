@@ -10,12 +10,19 @@ const { version, repository } = require('../../package.json');
 
 export default class RESTClient {
   version = 'v8';
+
   apiURL = `/api/${this.version}`;// eslint-disable-line @typescript-eslint/member-ordering
+
   readonly client: Client;
+
   globallyRateLimited = false;
+
   https = new DiscordHTTPS(null, this);
+
   queue: any[] = [];
+
   readonly rateLimits = new RateLimits(this);
+
   userAgent = `DiscordBot (${repository}, ${version})`;
 
   constructor(client: Client) {
@@ -42,12 +49,10 @@ export default class RESTClient {
       if (method === 'GET' || method === 'DELETE') {
         const queryString: string[] = [];
         Object.entries(payload).forEach(([ key, value ]) => {
+          // eslint-disable-next-line no-undefined
           if (value === undefined) return;
-          if (Array.isArray(value)) {
-            value.forEach((v) => queryString.push(`${encodeURIComponent(key)}=${encodeURIComponent(v)}`));
-          } else {
-            queryString.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
-          }
+          if (Array.isArray(value)) value.forEach((v) => queryString.push(`${encodeURIComponent(key)}=${encodeURIComponent(v)}`));
+          else queryString.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
         });
         endpointFinal += `?${queryString.join('&')}`;
       } else {
@@ -77,8 +82,10 @@ export default class RESTClient {
               this.request(_request!.method, _request!.endpoint, _request!.auth, _request!.payload);
             }
           }, api.json.retry_after * 1e3);
+        // eslint-disable-next-line no-undefined
         } else if (discordBucket !== undefined) {
           const bucket = this.rateLimits.getBucket(discordBucket) || this.rateLimits.get(rateLimitRoute) as RESTBucket;
+          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
           bucket.bucket ?? (bucket.bucket = discordBucket);
 
           if (rateLimitRoute !== bucket.route && !bucket.additionalRoutes.includes(rateLimitRoute)) {
@@ -100,6 +107,7 @@ export default class RESTClient {
     return request;
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   calculateRLRoute(endpoint: string, method: HTTP_METHODS) {
     const route = endpoint
       .replace(REST_CONSTANTS.ROUTE_REGEX, REST_CONSTANTS.ROUTE_REPLACER)
