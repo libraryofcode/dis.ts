@@ -8,15 +8,13 @@ import { REST_CONSTANTS } from '../src/util/Constants';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { version, repository } = require('../../package.json');
 
-declare interface Request { auth: boolean; endpoint: string; method: HTTP_METHODS; payload?: { [s: string]: any } }
-
 export default class RESTClient {
   version = 'v8';
   apiURL = `/api/${this.version}`;// eslint-disable-line @typescript-eslint/member-ordering
   readonly client: Client;
   globallyRateLimited = false;
   https = new DiscordHTTPS(null, this);
-  queue: Request[] = [];
+  queue: any[] = [];
   readonly rateLimits = new RateLimits(this);
   userAgent = `DiscordBot (${repository}, ${version})`;
 
@@ -25,12 +23,6 @@ export default class RESTClient {
   }
 
   request(method: HTTP_METHODS, endpoint: string, auth: boolean, payload?: { [s: string]: any }): Promise<any> {
-    if (this.globallyRateLimited) {
-      this.queue.push({ auth, endpoint, method, payload });
-      // @ts-ignore: Refuses to return nothing because the type being returned is Promise<any>
-      return;
-    }
-
     const rateLimitRoute = this.calculateRLRoute(endpoint, method);
     const routeBucket = this.rateLimits.get(rateLimitRoute) || this.rateLimits.create(rateLimitRoute);
 
@@ -64,7 +56,7 @@ export default class RESTClient {
     }
 
     const request = new Promise((res, rej) => { // This seems to be the best way to return data asap then handle rate limits?
-      routeBucket.add(async (cb) => {
+      const call = async (cb: any) => {
         const api = await this.https.request(method, endpointFinal, headers, data);
         if (api.error) rej(api.error);
         else res(api.json);
@@ -99,7 +91,10 @@ export default class RESTClient {
         } else {
           routeBucket.remaining += 1;
         }
-      });
+      };
+
+      if (this.globallyRateLimited) this.queue.push(() => routeBucket.add(call));
+      else routeBucket.add(call);
     });
 
     return request;
