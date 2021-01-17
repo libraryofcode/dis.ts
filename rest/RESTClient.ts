@@ -19,7 +19,7 @@ export default class RESTClient {
 
   https = new DiscordHTTPS(null, this);
 
-  queue: any[] = [];
+  queue: (() => void)[] = [];
 
   readonly rateLimits = new RateLimits(this);
 
@@ -70,19 +70,7 @@ export default class RESTClient {
         const discordBucket = api.headersIn['x-ratelimit-bucket'] as string | undefined;
         if (api.headersIn['x-ratelimit-global'] === 'true') {
           this.globallyRateLimited = true;
-          this.queue.push({ method, endpoint: endpointFinal, auth, payload });
-
-          setTimeout(() => {
-            this.globallyRateLimited = false;
-
-            while (this.queue.length >= 1) {
-              const _request = this.queue.shift();
-
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              this.request(_request!.method, _request!.endpoint, _request!.auth, _request!.payload);
-            }
-          }, api.json.retry_after * 1e3);
-        // eslint-disable-next-line no-undefined
+          // eslint-disable-next-line no-undefined
         } else if (discordBucket !== undefined) {
           const bucket = this.rateLimits.getBucket(discordBucket) || this.rateLimits.get(rateLimitRoute) as RESTBucket;
           // eslint-disable-next-line @typescript-eslint/no-unused-expressions
