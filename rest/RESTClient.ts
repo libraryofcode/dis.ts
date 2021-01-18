@@ -70,6 +70,17 @@ export default class RESTClient {
         const discordBucket = api.headersIn['x-ratelimit-bucket'] as string | undefined;
         if (api.headersIn['x-ratelimit-global'] === 'true') {
           this.globallyRateLimited = true;
+
+          setTimeout(() => {
+            this.globallyRateLimited = false;
+
+            while (this.queue.length >= 1) {
+              const _request = this.queue.shift();
+
+              // @ts-ignore ts(2722) "Cannot invoke an object which is possibly 'undefined'."
+              _request();
+            }
+          }, api.json.retry_after * 1e3);
           // eslint-disable-next-line no-undefined
         } else if (discordBucket !== undefined) {
           const bucket = this.rateLimits.getBucket(discordBucket) || this.rateLimits.get(rateLimitRoute) as RESTBucket;
