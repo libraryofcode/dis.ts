@@ -4,6 +4,7 @@ import { EVENTS, Payload } from './constants';
 import { GATEWAY_OPCODES, GATEWAY_CLOSE_EVENT_CODES } from '../util/Constants';
 
 export default class WebSocketClient {
+  public IDENTIFY_TIMEOUT = 4000;
   private _intents: number;
   private _token: string;
   private _url: string;
@@ -95,7 +96,7 @@ export default class WebSocketClient {
       case GATEWAY_OPCODES.INVALID_SESSION:
         setTimeout(() => {
           this._identify();
-        }, 4000);
+        }, this.IDENTIFY_TIMEOUT);
         break;
 
       case GATEWAY_OPCODES.HELLO:
