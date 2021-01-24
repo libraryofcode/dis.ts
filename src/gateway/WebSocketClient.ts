@@ -2,9 +2,9 @@ import WebSocket from 'ws';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { EVENTS, Payload } from './constants';
 import { GATEWAY_OPCODES, GATEWAY_CLOSE_EVENT_CODES } from '../util/Constants';
+const IDENTIFY_TIMEOUT = 4000;
 
 export default class WebSocketClient {
-  public IDENTIFY_TIMEOUT = 4000;
   private _intents: number;
   private _token: string;
   private _url: string;
@@ -96,7 +96,7 @@ export default class WebSocketClient {
       case GATEWAY_OPCODES.INVALID_SESSION:
         setTimeout(() => {
           this._identify();
-        }, this.IDENTIFY_TIMEOUT);
+        }, IDENTIFY_TIMEOUT);
         break;
 
       case GATEWAY_OPCODES.HELLO:
