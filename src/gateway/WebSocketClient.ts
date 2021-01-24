@@ -5,14 +5,14 @@ import { GATEWAY_OPCODES, GATEWAY_CLOSE_EVENT_CODES } from '../util/Constants';
 const IDENTIFY_TIMEOUT = 4000;
 
 export default class WebSocketClient {
+  private _heartBeatInterval!: NodeJS.Timeout;
   private _intents: number;
+  private _lastHeartbeatAck = true;
+  private _seq!: number;
+  private _sessionID!: string;
   private _token: string;
   private _url: string;
-  private heartBeatInterval!: NodeJS.Timeout;
-  private lastHeartbeatAck = true;
-  private seq!: number;
-  private sessionID!: string;
-  private ws!: WebSocket;
+  private _ws!: WebSocket;
 
   constructor(token: string, wsURL: string, intents: number) {
     this._token = token;
@@ -25,15 +25,15 @@ export default class WebSocketClient {
   }
 
   connect() {
-    this.ws = new WebSocket(this._url);
-    this.ws.on('open', this._identify);
-    this.ws.on('close', this._onClose);
-    this.ws.on('message', this._onMessage);
+    this._ws = new WebSocket(this._url);
+    this._ws.on('open', this._identify);
+    this._ws.on('close', this._onClose);
+    this._ws.on('message', this._onMessage);
   }
 
   send(op: GATEWAY_OPCODES, data: any) {
-    if (this.ws.readyState === WebSocket.OPEN) {
-      this.ws.send(JSON.stringify({
+    if (this._ws.readyState === WebSocket.OPEN) {
+      this._ws.send(JSON.stringify({
         op,
         d: data,
       }));
@@ -42,16 +42,16 @@ export default class WebSocketClient {
 
   private _heartbeat(expected: boolean) {
     if (expected) {
-      if (!this.lastHeartbeatAck) {
+      if (!this._lastHeartbeatAck) {
         this._terminate();
         this.connect();
         this._resume();
-        this.lastHeartbeatAck = true;
+        this._lastHeartbeatAck = true;
       } else {
-        this.lastHeartbeatAck = false;
+        this._lastHeartbeatAck = false;
       }
     }
-    this.send(GATEWAY_OPCODES.HEARTBEAT, this.seq || null);
+    this.send(GATEWAY_OPCODES.HEARTBEAT, this._seq || null);
   }
 
   private _identify() {
@@ -75,12 +75,12 @@ export default class WebSocketClient {
     data = JSON.parse(String(data));
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { t, s, op, d } = data;
-    if (s) this.seq = s;
+    if (s) this._seq = s;
 
     switch (op) {
       case GATEWAY_OPCODES.DISPATCH:
         // if (EVENTS[t]) client.emit(EVENTS[t], d);
-        this.sessionID = d.session_id;
+        this._sessionID = d.session_id;
         break;
 
       case GATEWAY_OPCODES.HEARTBEAT:
@@ -100,11 +100,11 @@ export default class WebSocketClient {
         break;
 
       case GATEWAY_OPCODES.HELLO:
-        this.heartBeatInterval = setInterval(() => this._heartbeat(true), d.heartbeat_interval);
+        this._heartBeatInterval = setInterval(() => this._heartbeat(true), d.heartbeat_interval);
         break;
 
       case GATEWAY_OPCODES.HEARTBEAT_ACK:
-        this.lastHeartbeatAck = true;
+        this._lastHeartbeatAck = true;
         break;
 
       default:
@@ -115,14 +115,14 @@ export default class WebSocketClient {
   private _resume() {
     this.send(GATEWAY_OPCODES.RESUME, {
       token: this._token,
-      session_id: this.sessionID,
-      seq: this.seq,
+      session_id: this._sessionID,
+      seq: this._seq,
     });
   }
 
   private _terminate() {
-    clearInterval(this.heartBeatInterval);
-    this.ws.off('close', this._onClose);
-    this.ws.terminate();
+    clearInterval(this._heartBeatInterval);
+    this._ws.off('close', this._onClose);
+    this._ws.terminate();
   }
 }
