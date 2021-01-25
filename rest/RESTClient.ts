@@ -60,7 +60,7 @@ export default class RESTClient {
       }
     }
 
-    const request = new Promise((res, rej) => { // This seems to be the best way to return data asap then handle rate limits?
+    return new Promise((res, rej) => { // This seems to be the best way to return data asap then handle rate limits?
       const call = async (cb: any) => {
         const api = await this.https.request(method, endpointFinal, headers, data);
         if (api.error) rej(api.error);
@@ -75,10 +75,7 @@ export default class RESTClient {
             this.globallyRateLimited = false;
 
             while (this.queue.length >= 1) {
-              const _request = this.queue.shift();
-
-              // @ts-ignore ts(2722) "Cannot invoke an object which is possibly 'undefined'."
-              _request();
+              this.queue.shift()?.();
             }
           }, api.json.retry_after * 1e3);
           // eslint-disable-next-line no-undefined
@@ -102,12 +99,9 @@ export default class RESTClient {
       if (this.globallyRateLimited) this.queue.push(() => routeBucket.add(call));
       else routeBucket.add(call);
     });
-
-    return request;
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  calculateRLRoute(endpoint: string, method: HTTP_METHODS) {
+  calculateRLRoute(endpoint: string, method: HTTP_METHODS): string {
     const route = endpoint
       .replace(REST_CONSTANTS.ROUTE_REGEX, REST_CONSTANTS.ROUTE_REPLACER)
       .replace(REST_CONSTANTS.WEBHOOK_REGEX, REST_CONSTANTS.WEBHOOK_REPLACER);
