@@ -74,15 +74,13 @@ export default class RESTClient {
           setTimeout(() => {
             this.globallyRateLimited = false;
 
-            while (this.queue.length >= 1) {
-              this.queue.shift()?.();
-            }
+            while (this.queue.length >= 1) this.queue.shift()?.();
           }, api.json.retry_after * 1e3);
           // eslint-disable-next-line no-undefined
         } else if (discordBucket !== undefined) {
           const bucket = this.rateLimits.getBucket(discordBucket) || this.rateLimits.get(rateLimitRoute) as RESTBucket;
-          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-          bucket.bucket ?? (bucket.bucket = discordBucket);
+
+          if (!bucket.bucket) bucket.bucket = discordBucket;
 
           if (rateLimitRoute !== bucket.route && !bucket.additionalRoutes.includes(rateLimitRoute)) {
             bucket.additionalRoutes.push(rateLimitRoute);
