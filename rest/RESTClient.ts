@@ -14,6 +14,7 @@ export default class RESTClient {
   readonly client: Client;
   globallyRateLimited = false;
   https = new DiscordHTTPS(null, this);
+  queue: (() => void)[] = [];
   readonly rateLimits = new RateLimits(this);
   userAgent = `DiscordBot (${repository}, ${version})`;
 
@@ -22,8 +23,6 @@ export default class RESTClient {
   }
 
   request(method: HTTP_METHODS, endpoint: string, auth: boolean, payload?: { [s: string]: any }): Promise<any> {
-    if (this.globallyRateLimited) throw new Error('Globally rate limited. Try again later.'); // TODO Implement proper global rate limit queue
-
     const rateLimitRoute = this.calculateRLRoute(endpoint, method);
     const routeBucket = this.rateLimits.get(rateLimitRoute) || this.rateLimits.create(rateLimitRoute);
 
@@ -54,7 +53,7 @@ export default class RESTClient {
     }
 
     return new Promise((res, rej) => { // This seems to be the best way to return data asap then handle rate limits?
-      routeBucket.add(async (cb) => {
+      const call = async (cb: any) => {
         const api = await this.https.request(method, endpointFinal, headers, data);
         if (api.error) rej(api.error);
         else res(api.json);
@@ -63,12 +62,16 @@ export default class RESTClient {
         const discordBucket = api.headersIn['x-ratelimit-bucket'] as string | undefined;
         if (api.headersIn['x-ratelimit-global'] === 'true') {
           this.globallyRateLimited = true;
+
           setTimeout(() => {
             this.globallyRateLimited = false;
+
+            while (this.queue.length) this.queue.shift()!();
           }, api.json.retry_after * 1e3);
         } else if (discordBucket !== undefined) {
           const bucket = this.rateLimits.getBucket(discordBucket) || this.rateLimits.get(rateLimitRoute) as RESTBucket;
-          bucket.bucket ?? (bucket.bucket = discordBucket);
+
+          if (!bucket.bucket) bucket.bucket = discordBucket;
 
           if (rateLimitRoute !== bucket.route && !bucket.additionalRoutes.includes(rateLimitRoute)) {
             bucket.additionalRoutes.push(rateLimitRoute);
@@ -80,7 +83,10 @@ export default class RESTClient {
         } else {
           routeBucket.remaining += 1;
         }
-      });
+      };
+
+      if (this.globallyRateLimited) this.queue.push(() => routeBucket.add(call));
+      else routeBucket.add(call);
     });
   }
 
