@@ -10,19 +10,12 @@ const { version, repository } = require('../../package.json');
 
 export default class RESTClient {
   version = 'v8';
-
   apiURL = `/api/${this.version}`;// eslint-disable-line @typescript-eslint/member-ordering
-
   readonly client: Client;
-
   globallyRateLimited = false;
-
   https = new DiscordHTTPS(null, this);
-
   queue: (() => void)[] = [];
-
   readonly rateLimits = new RateLimits(this);
-
   userAgent = `DiscordBot (${repository}, ${version})`;
 
   constructor(client: Client) {
@@ -76,7 +69,6 @@ export default class RESTClient {
 
             while (this.queue.length >= 1) this.queue.shift()?.();
           }, api.json.retry_after * 1e3);
-          // eslint-disable-next-line no-undefined
         } else if (discordBucket !== undefined) {
           const bucket = this.rateLimits.getBucket(discordBucket) || this.rateLimits.get(rateLimitRoute) as RESTBucket;
 
@@ -99,7 +91,7 @@ export default class RESTClient {
     });
   }
 
-  calculateRLRoute(endpoint: string, method: HTTP_METHODS): string {
+  calculateRLRoute(endpoint: string, method: HTTP_METHODS) {
     const route = endpoint
       .replace(REST_CONSTANTS.ROUTE_REGEX, REST_CONSTANTS.ROUTE_REPLACER)
       .replace(REST_CONSTANTS.WEBHOOK_REGEX, REST_CONSTANTS.WEBHOOK_REPLACER);
