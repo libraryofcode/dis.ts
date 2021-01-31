@@ -42,7 +42,6 @@ export default class RESTClient {
       if (method === 'GET' || method === 'DELETE') {
         const queryString: string[] = [];
         Object.entries(payload).forEach(([ key, value ]) => {
-          // eslint-disable-next-line no-undefined
           if (value === undefined) return;
           if (Array.isArray(value)) value.forEach((v) => queryString.push(`${encodeURIComponent(key)}=${encodeURIComponent(v)}`));
           else queryString.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
@@ -67,7 +66,7 @@ export default class RESTClient {
           setTimeout(() => {
             this.globallyRateLimited = false;
 
-            while (this.queue.length >= 1) this.queue.shift()?.();
+            while (this.queue.length) this.queue.shift()!();
           }, api.json.retry_after * 1e3);
         } else if (discordBucket !== undefined) {
           const bucket = this.rateLimits.getBucket(discordBucket) || this.rateLimits.get(rateLimitRoute) as RESTBucket;
