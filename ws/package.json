@@ -1,0 +1,20 @@
+{
+  "name": "@dis.ts/ws",
+  "version": "0.1.0",
+  "description": "A Discord WebSocket wrapper written 100% in TypeScript.",
+  "main": "WebSocketClient.js",
+  "types": "WebSocketClient.ts",
+  "repository": "https://github.com/libraryofcode/dis.ts",
+  "author": "Library of Code sp-us, Dept. of Engineering : Board of Directors",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "lint": "eslint **/*.ts",
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "dependencies": {
+    "typescript": "^4.1.3",
+    "ws": "^7.4.0"
+  }
+}

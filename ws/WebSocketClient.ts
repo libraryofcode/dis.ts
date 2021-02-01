@@ -1,7 +1,6 @@
 import WebSocket from 'ws';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { EVENTS, Payload } from './constants';
-import { GATEWAY_OPCODES, GATEWAY_CLOSE_EVENT_CODES } from '../util/Constants';
+import { EVENTS, Payload, GATEWAY_OPCODES, GATEWAY_CLOSE_EVENT_CODES } from './constants';
 const IDENTIFY_TIMEOUT = 4000;
 
 export default class WebSocketClient {
