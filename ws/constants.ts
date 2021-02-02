@@ -125,7 +125,7 @@ export enum GATEWAY_CLOSE_EVENT_CODES {
 // https://discord.com/developers/docs/topics/gateway#payloads
 export interface Payload {
   d: any;
-  op: number;
+  op: GATEWAY_OPCODES;
   s: number;
   t: string;
 }
