@@ -26,9 +26,9 @@ export default class WebSocketClient {
   private _token: string;
   private _url: string;
 
-  constructor(token: string, wsURL: string, intents: number, connProps: Partial<ConnectionProperties> = {}) {
+  constructor(token: string, url: string, intents: number, connProps: Partial<ConnectionProperties> = {}) {
     this._token = token;
-    this._url = wsURL;
+    this._url = url;
     this._intents = intents;
 
     this._identify = this._identify.bind(this);
