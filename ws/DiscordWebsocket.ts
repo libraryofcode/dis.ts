@@ -10,7 +10,7 @@ interface ConnectionProperties {
 }
 
 // TODO implement rate limits
-export default class WebSocketClient {
+export default class DiscordWebsocket {
   autoReconnect = true;
   connectionProperties: ConnectionProperties;
   discordTrace?: string;
