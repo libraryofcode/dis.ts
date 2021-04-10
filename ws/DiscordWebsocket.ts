@@ -63,6 +63,20 @@ export default class DiscordWebsocket {
     return this;
   }
 
+  reset() {
+    if (this._heartBeatInterval) clearInterval(this._heartBeatInterval);
+    if (this.ws?.readyState === WebSocket.OPEN) {
+      this.ws.off('message', this._onMessage)
+        .off('error', console.error)
+        .terminate();
+    }
+    this._heartBeatInterval = null;
+    this.ws = null;
+    this.ready = false;
+    this._lastHeartbeatAck = true;
+    return this;
+  }
+
   restart(newSession = false) {
     if (newSession) this.sessionID = null;
     this.disconnect().connect();
@@ -98,16 +112,6 @@ export default class DiscordWebsocket {
 
   setURL(url: string) {
     this._url = url;
-  }
-
-  uninitialize() {
-    if (this._heartBeatInterval) clearInterval(this._heartBeatInterval);
-    if (this.ws?.readyState === WebSocket.OPEN) this.ws.off('message', this._onMessage).off('error', console.error).terminate();
-    this._heartBeatInterval = null;
-    this.ws = null;
-    this.ready = false;
-    this._lastHeartbeatAck = true;
-    return this;
   }
 
   private _heartbeat(scheduled = false) {
@@ -161,19 +165,19 @@ export default class DiscordWebsocket {
       case GATEWAY_CLOSE_EVENT_CODES.SESSION_TIMEOUT: setTimeout(() => this.restart(true), IDENTIFY_TIMEOUT); break;
       case GATEWAY_CLOSE_EVENT_CODES.AUTHENTICATION_FAILED: {
         this._token = '';
-        this.uninitialize();
+        this.reset();
         break;
       }
       case GATEWAY_CLOSE_EVENT_CODES.INVALID_SHARD: // Um..?
       case GATEWAY_CLOSE_EVENT_CODES.INVALID_INTENTS:
-      case GATEWAY_CLOSE_EVENT_CODES.DISALLOWED_INTENTS: this.uninitialize(); break;
+      case GATEWAY_CLOSE_EVENT_CODES.DISALLOWED_INTENTS: this.reset(); break;
       case GATEWAY_CLOSE_EVENT_CODES.INVALID_API_VERSION: {
         this._url = '';
-        this.uninitialize();
+        this.reset();
         break;
       }
       default: {
-        this.uninitialize();
+        this.reset();
         if (!this._selfDisconnect && this.autoReconnect) this.connect();
         console.log(new Error(`Unknown close code: ${code}`));
       }
