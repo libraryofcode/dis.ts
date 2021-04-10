@@ -52,10 +52,12 @@ export default class DiscordWebsocket {
     return this;
   }
 
-  // TODO prevent initialization without url
   initialize() {
+    if (!this._url) throw new Error('Websocket URL not provided');
+
     this._selfDisconnect = false;
     if (this.ws) throw new Error('Attempted duplicate connection - run uninitialize');
+
     this.ws = new WebSocket(this._url);
     this.ws.once('close', this._onClose);
     this.ws.on('message', this._onMessage);
