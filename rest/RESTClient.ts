@@ -1,33 +1,32 @@
 import http from 'http';
-import Client from '../Client';
-import DiscordHTTPS, { HTTP_METHODS } from './DiscordHTTPS';
+import Client from '../src/Client';
+import DiscordHTTPS, { HTTP_METHODS } from './HTTPRequest';
 import RateLimits from './RateLimits';
 import RESTBucket from './RESTBucket';
-import { REST_CONSTANTS } from '../util/Constants';
+import { REST_CONSTANTS } from '../src/util/Constants';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { version, repository } = require('../../package.json');
 
 export default class RESTClient {
   version = 'v8';
-  apiURL = `/api/${this.version}`;
-  https = new DiscordHTTPS(null, this);
-  userAgent = `DiscordBot (${repository}, ${version})`;
-  globallyRateLimited = false;
+  apiURL = `/api/${this.version}`;// eslint-disable-line @typescript-eslint/member-ordering
   readonly client: Client;
+  globallyRateLimited = false;
+  https = new DiscordHTTPS(null, this);
+  queue: (() => void)[] = [];
   readonly rateLimits = new RateLimits(this);
-  queue: { method: HTTP_METHODS, endpoint: string, auth: boolean, payload?: { [s: string]: any } }[] = [];
+  userAgent = `DiscordBot (${repository}, ${version})`;
 
   constructor(client: Client) {
     this.client = client;
   }
 
-  async request(method: HTTP_METHODS, endpoint: string, auth: boolean, payload?: { [s: string]: any }): Promise<any> {
+  request(method: HTTP_METHODS, endpoint: string, auth: boolean, payload?: { [s: string]: any }): Promise<any> {
     const rateLimitRoute = this.calculateRLRoute(endpoint, method);
     const routeBucket = this.rateLimits.get(rateLimitRoute) || this.rateLimits.create(rateLimitRoute);
 
-    const headers: http.OutgoingHttpHeaders = {
-      'User-Agent': this.userAgent,
-    };
+    const headers: http.OutgoingHttpHeaders = { 'User-Agent': this.userAgent };
     if (auth) headers.Authorization = this.client.token;
     if (payload?.reason) {
       payload.reason = payload.reason.replace(/\s+/g, ' ');
@@ -42,13 +41,10 @@ export default class RESTClient {
     if (payload) {
       if (method === 'GET' || method === 'DELETE') {
         const queryString: string[] = [];
-        Object.entries(payload).forEach(([key, value]) => {
+        Object.entries(payload).forEach(([ key, value ]) => {
           if (value === undefined) return;
-          if (Array.isArray(value)) {
-            value.forEach((v) => queryString.push(`${encodeURIComponent(key)}=${encodeURIComponent(v)}`));
-          } else {
-            queryString.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
-          }
+          if (Array.isArray(value)) value.forEach((v) => queryString.push(`${encodeURIComponent(key)}=${encodeURIComponent(v)}`));
+          else queryString.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
         });
         endpointFinal += `?${queryString.join('&')}`;
       } else {
@@ -57,7 +53,7 @@ export default class RESTClient {
     }
 
     return new Promise((res, rej) => { // This seems to be the best way to return data asap then handle rate limits?
-      routeBucket.add(async (cb) => {
+      const call = async (cb: any) => {
         const api = await this.https.request(method, endpointFinal, headers, data);
         if (api.error) rej(api.error);
         else res(api.json);
@@ -66,19 +62,16 @@ export default class RESTClient {
         const discordBucket = api.headersIn['x-ratelimit-bucket'] as string | undefined;
         if (api.headersIn['x-ratelimit-global'] === 'true') {
           this.globallyRateLimited = true;
-          this.queue.push({ method, endpoint: endpointFinal, auth, payload });
 
-          setTimeout(async () => {
+          setTimeout(() => {
             this.globallyRateLimited = false;
 
-            const nextRequest = this.queue[0];
-            await this.request(nextRequest.method, nextRequest.endpoint, nextRequest.auth, nextRequest.payload);
-
-            this.queue.pop();
+            while (this.queue.length) this.queue.shift()!();
           }, api.json.retry_after * 1e3);
         } else if (discordBucket !== undefined) {
           const bucket = this.rateLimits.getBucket(discordBucket) || this.rateLimits.get(rateLimitRoute) as RESTBucket;
-          bucket.bucket ?? (bucket.bucket = discordBucket);
+
+          if (!bucket.bucket) bucket.bucket = discordBucket;
 
           if (rateLimitRoute !== bucket.route && !bucket.additionalRoutes.includes(rateLimitRoute)) {
             bucket.additionalRoutes.push(rateLimitRoute);
@@ -90,7 +83,10 @@ export default class RESTClient {
         } else {
           routeBucket.remaining += 1;
         }
-      });
+      };
+
+      if (this.globallyRateLimited) this.queue.push(() => routeBucket.add(call));
+      else routeBucket.add(call);
     });
   }
 

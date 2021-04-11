@@ -6,9 +6,9 @@ import RESTClient from './RESTClient';
 export type HTTP_METHODS = 'DELETE' | 'GET' | 'PATCH' | 'POST' | 'PUT';
 
 export default class DiscordHTTPS {
-  private _client: unknown;
   domain = 'discord.com';
   requester: RESTClient;
+  private _client: unknown;
   constructor(client: unknown, requester: RESTClient) {
     this._client = client;
     this.requester = requester;
@@ -16,7 +16,7 @@ export default class DiscordHTTPS {
 
   request(method: HTTP_METHODS, path: string, headers: http.OutgoingHttpHeaders, body?: string | string[]) {
     return new Promise<HTTPResponse>((res, rej) => {
-      // @ts-expect-error
+      // @ts-expect-error: Stack trace assignment
       const stackTrace: {stack: string} = {}; Error.captureStackTrace(stackTrace); stackTrace.stack = stackTrace.stack.substr(6);
 
       const request = https.request({
@@ -54,11 +54,9 @@ export default class DiscordHTTPS {
         request.abort();
       });
 
-      if (Array.isArray(body)) {
-        body.forEach((b) => request.write(b));
-      } else if (body) {
-        request.write(body);
-      }
+      if (Array.isArray(body)) body.forEach((b) => request.write(b));
+      else if (body) request.write(body);
+
       request.end();
     });
   }

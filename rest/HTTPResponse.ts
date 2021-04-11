@@ -3,12 +3,12 @@ import RESTError from './RESTError';
 import HTTPError from './HTTPError';
 
 export default class HTTPResponse {
-  request: ClientRequest;
-  headersOut: OutgoingHttpHeaders;
-  headersIn: IncomingHttpHeaders;
-  response: IncomingMessage;
-  error: Error | null;
   data: Buffer;
+  error: Error | null;
+  headersIn: IncomingHttpHeaders;
+  headersOut: OutgoingHttpHeaders;
+  request: ClientRequest;
+  response: IncomingMessage;
   constructor(request: ClientRequest, response: IncomingMessage, data: Buffer, stack: string) {
     this.request = request;
     this.headersOut = request.getHeaders();
@@ -16,11 +16,8 @@ export default class HTTPResponse {
     this.headersIn = response.headers;
     this.data = data;
     if (this.response.statusCode! >= 300) {
-      if (this.json?.code) {
-        this.error = new RESTError(this.request, this.response, this.json, stack, this);
-      } else {
-        this.error = new HTTPError(this.request, this.response, this.json, stack, this);
-      }
+      if (this.json?.code) this.error = new RESTError(this.request, this.response, this.json, stack, this);
+      else this.error = new HTTPError(this.request, this.response, this.json, stack, this);
     } else {
       this.error = null;
     }

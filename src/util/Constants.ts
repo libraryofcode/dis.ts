@@ -114,14 +114,14 @@ export enum OVERWRITE_TYPES {
 // https://discord.com/developers/docs/resources/guild#guild-object-default-message-notification-level
 export enum DEFAULT_MESSAGE_NOTIFICATION_LEVEL {
   ALL_MESSAGES,
-  ONLY_MENTIONS
+  ONLY_MENTIONS,
 }
 
 // https://discord.com/developers/docs/resources/guild#guild-object-explicit-content-filter-level
 export enum EXPLICIT_CONTENT_FILTER_LEVEL {
   DISABLED,
   MEMBERS_WITHOUT_ROLES,
-  ALL_MEMBERS
+  ALL_MEMBERS,
 }
 
 // https://discord.com/developers/docs/resources/guild#guild-object-mfa-level
@@ -136,7 +136,7 @@ export enum VERIFICATION_LEVEL {
   LOW,
   MEDIUM,
   HIGH,
-  VERY_HIGH
+  VERY_HIGH,
 }
 
 // https://discord.com/developers/docs/resources/guild#guild-object-premium-tier
@@ -212,7 +212,7 @@ export enum USER_FLAGS {
   BUG_HUNTER_LEVEL_2 = 1 << 14,
   UNDERAGE_DELETED = 1 << 15,
   VERIFIED_BOT = 1 << 16,
-  EARLY_VERIFIED_BOT_DEVELOPER = 1 << 17
+  EARLY_VERIFIED_BOT_DEVELOPER = 1 << 17,
 }
 
 // https://discord.com/developers/docs/resources/user#user-object-premium-types
@@ -233,93 +233,6 @@ export enum VISIBILITY_TYPES {
 export enum WEBHOOK_TYPES {
   INCOMING = 1,
   CHANNEL_FOLLOWER,
-}
-
-// Gateway
-// https://discord.com/developers/docs/topics/gateway#list-of-intents
-export enum INTENTS {
-  GUILDS = 1 << 0,
-  GUILD_MEMBERS = 1 << 1,
-  GUILD_BANS = 1 << 2,
-  GUILD_EMOJIS = 1 << 3,
-  GUILD_INTEGRATIONS = 1 << 4,
-  GUILD_WEBHOOKS = 1 << 5,
-  GUILD_INVITES = 1 << 6,
-  GUILD_VOICE_STATES = 1 << 7,
-  GUILD_PRESENCES = 1 << 8,
-  GUILD_MESSAGES = 1 << 9,
-  GUILD_MESSAGE_REACTIONS = 1 << 10,
-  GUILD_MESSAGE_TYPING = 1 << 11,
-  DIRECT_MESSAGES = 1 << 12,
-  DIRECT_MESSAGE_REACTIONS = 1 << 13,
-  DIRECT_MESSAGE_TYPING = 1 << 14,
-}
-
-// https://discord.com/developers/docs/topics/gateway#update-status-status-types
-export enum STATUS_TYPES {
-  ONLINE = 'online',
-  DO_NOT_DISTURB = 'dnd',
-  IDLE = 'idle',
-  INVISIBLE = 'invisible',
-  OFFLINE = 'offline',
-}
-
-// https://discord.com/developers/docs/topics/gateway#activity-object-activity-types
-export enum ACTIVITY_TYPES {
-  PLAYING,
-  STREAMING,
-  LISTENING,
-  WATCHING,
-  CUSTOM,
-  COMPETING,
-}
-
-// https://discord.com/developers/docs/topics/gateway#activity-object-activity-flags
-export enum ACTIVITY_FLAGS {
-  INSTANCE = 1 << 0,
-  JOIN = 1 << 1,
-  SPECTATE = 1 << 2,
-  JOIN_REQUEST = 1 << 3,
-  SYNC = 1 << 4,
-  PLAY = 1 << 5,
-}
-
-// Opcodes and Status Codes
-// https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-opcodes
-export enum GATEWAY_OPCODES {
-  DISPATCH,
-  HEARTBEAT,
-  IDENTIFY,
-  PRESENCE_UPDATE,
-  VOICE_STATE_UPDATE,
-  VOICE_SERVER_PING,
-  RESUME,
-  RECONNECT,
-  REQUEST_GUILD_MEMBERS,
-  INVALID_SESSION,
-  HELLO,
-  HEARTBEAT_ACK,
-  SYNC_GUILD,
-  SYNC_CALL,
-}
-
-// https:// discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-close-event-codes
-export enum GATEWAY_CLOSE_EVENT_CODES {
-  UNKNOWN_ERROR = 4000,
-  UNKNOW_OPCODE,
-  DECODE_ERROR,
-  NOT_AUTHENTICATED,
-  AUTHENTICATION_FAILED,
-  ALREADY_AUTHENTICATED,
-  INVALID_SESSION,
-  INVALID_RESUME_SEQUENCE,
-  RATE_LIMITED,
-  SESSION_TIMEOUT,
-  INVALID_SHARD,
-  SHARDING_REQUIRED,
-  INVALID_API_VERSION,
-  INVALID_INTENTS,
-  DISALLOWED_INTENTS,
 }
 
 // https://discord.com/developers/docs/topics/opcodes-and-status-codes#voice-voice-opcodes
@@ -643,14 +556,14 @@ export const USER_LIMITS = {
   USERNAME_MAX: 32,
   NICKNAME_MIN: 1,
   NICKNAME_MAX: 32,
-  INVALID_USERNAME_SUBSTR: ['@', '#', ':', '```'],
-  INVALID_USERNAMES: ['discordtag', 'everyone', 'here'],
+  INVALID_USERNAME_SUBSTR: [ '@', '#', ':', '```' ],
+  INVALID_USERNAMES: [ 'discordtag', 'everyone', 'here' ],
 };
 
 export const WEBHOOK_LIMITS = {
   NAME_MIN: 1,
   NAME_MAX: 80,
-  INVALID_NAMES: ['clyde'],
+  INVALID_NAMES: [ 'clyde' ],
   EMBED_COUNT_MAX: 10,
 };
 
