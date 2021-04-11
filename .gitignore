@@ -4,3 +4,7 @@ node_modules
 # Distribution
 *.js
 *.d.ts
+
+# IDE Files
+.vscode
+.idea
