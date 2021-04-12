@@ -147,7 +147,6 @@ export default class DiscordWebsocket {
         large_threshold: this.largeThreshold,
         // shard: [this.id, totalShards],
         // presence: presence idk,
-        // guild_subscriptions: guildSubscriptions, but we could use intents for this?
         intents: this._intents,
       },
       true,
