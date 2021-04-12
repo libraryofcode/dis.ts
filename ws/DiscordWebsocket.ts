@@ -84,7 +84,7 @@ export default class DiscordWebsocket {
     this.disconnect().connect();
   }
 
-  // TODO Prevent 4012, 4013?
+  // TODO Prevent 4013?
   send(
     op: GATEWAY_OPCODES.IDENTIFY | GATEWAY_OPCODES.RESUME | GATEWAY_OPCODES.HEARTBEAT | GATEWAY_OPCODES.REQUEST_GUILD_MEMBERS | GATEWAY_OPCODES.VOICE_STATE_UPDATE | GATEWAY_OPCODES.PRESENCE_UPDATE,
     d: any,
@@ -173,6 +173,10 @@ export default class DiscordWebsocket {
       case GATEWAY_CLOSE_EVENT_CODES.INVALID_INTENTS:
       case GATEWAY_CLOSE_EVENT_CODES.DISALLOWED_INTENTS: this.reset(); break;
       case GATEWAY_CLOSE_EVENT_CODES.INVALID_API_VERSION: {
+        if (this._url.includes('v=8')) {
+          this.reset();
+          console.error(new Error(`Hardcode fallback API version failed: ${this._url}`));
+        }
         this._url = this._url.replace(/v=\d/, 'v=8');
         this.reset().connect();
         break;
