@@ -136,6 +136,7 @@ export default class DiscordWebsocket {
   }
 
   // TODO max_concurrency implemetation if necessary
+  // TODO compression implementation
   private _identify() {
     if (!this._token) throw new Error('Unable to identify without a token');
 
@@ -154,6 +155,7 @@ export default class DiscordWebsocket {
     );
   }
 
+  // TODO Construct proper errors
   private _onClose(code: GATEWAY_CLOSE_EVENT_CODES) {
     switch (code) {
       case GATEWAY_CLOSE_EVENT_CODES.UNKNOWN_ERROR:
@@ -173,7 +175,7 @@ export default class DiscordWebsocket {
       case GATEWAY_CLOSE_EVENT_CODES.INVALID_SHARD: // Um..?
       case GATEWAY_CLOSE_EVENT_CODES.INVALID_INTENTS:
       case GATEWAY_CLOSE_EVENT_CODES.DISALLOWED_INTENTS: this.reset(); break;
-      case GATEWAY_CLOSE_EVENT_CODES.INVALID_API_VERSION: {
+      case GATEWAY_CLOSE_EVENT_CODES.INVALID_API_VERSION: { // REVIEW Discuss implications of falling back to hardcoded version
         if (this._url.includes('v=8')) {
           this.reset();
           console.error(new Error(`Hardcode fallback API version failed: ${this._url}`));
