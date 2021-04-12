@@ -173,8 +173,8 @@ export default class DiscordWebsocket {
       case GATEWAY_CLOSE_EVENT_CODES.INVALID_INTENTS:
       case GATEWAY_CLOSE_EVENT_CODES.DISALLOWED_INTENTS: this.reset(); break;
       case GATEWAY_CLOSE_EVENT_CODES.INVALID_API_VERSION: {
-        this._url = '';
-        this.reset();
+        this._url = this._url.replace(/v=\d/, 'v=8');
+        this.reset().connect();
         break;
       }
       default: {
