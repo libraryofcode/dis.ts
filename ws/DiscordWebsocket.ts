@@ -136,8 +136,9 @@ export default class DiscordWebsocket {
   }
 
   // TODO max_concurrency implemetation if necessary
-  // TODO prevent identifying without a token
   private _identify() {
+    if (!this._token) throw new Error('Unable to identify without a token');
+
     this.send(
       GATEWAY_OPCODES.IDENTIFY,
       {
