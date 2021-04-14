@@ -103,7 +103,7 @@ export enum GATEWAY_OPCODES {
   SYNC_CALL,
 }
 
-// https:// discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-close-event-codes
+// https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-close-event-codes
 export enum GATEWAY_CLOSE_EVENT_CODES {
   UNKNOWN_ERROR = 4000,
   UNKNOW_OPCODE,
