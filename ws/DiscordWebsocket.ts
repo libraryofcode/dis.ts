@@ -161,11 +161,11 @@ export default class DiscordWebsocket {
       case GATEWAY_CLOSE_EVENT_CODES.UNKNOWN_ERROR:
       case GATEWAY_CLOSE_EVENT_CODES.UNKNOW_OPCODE:
       case GATEWAY_CLOSE_EVENT_CODES.DECODE_ERROR:
-      case GATEWAY_CLOSE_EVENT_CODES.ALREADY_AUTHENTICATED:
+      case GATEWAY_CLOSE_EVENT_CODES.ALREADY_AUTHENTICATED: this.sessionID = null; break;
       case GATEWAY_CLOSE_EVENT_CODES.RATE_LIMITED: this.restart(); break;
-      case GATEWAY_CLOSE_EVENT_CODES.NOT_AUTHENTICATED:
+      case GATEWAY_CLOSE_EVENT_CODES.NOT_AUTHENTICATED: this.sessionID = null; break;
       case GATEWAY_CLOSE_EVENT_CODES.INVALID_SESSION:
-      case GATEWAY_CLOSE_EVENT_CODES.INVALID_RESUME_SEQUENCE:
+      case GATEWAY_CLOSE_EVENT_CODES.INVALID_RESUME_SEQUENCE: this._seq = null; break;
       case GATEWAY_CLOSE_EVENT_CODES.SESSION_TIMEOUT: setTimeout(() => this.restart(true), IDENTIFY_TIMEOUT); break;
       case GATEWAY_CLOSE_EVENT_CODES.AUTHENTICATION_FAILED: {
         this._token = '';
@@ -211,7 +211,7 @@ export default class DiscordWebsocket {
       case GATEWAY_OPCODES.DISPATCH: this._onEvent(p); break;
       case GATEWAY_OPCODES.HEARTBEAT: this._heartbeat(); break;
       case GATEWAY_OPCODES.RECONNECT: this.restart(); break;
-      case GATEWAY_OPCODES.INVALID_SESSION: this._identify(); break;
+      case GATEWAY_OPCODES.INVALID_SESSION: setTimeout(() => this._identify, IDENTIFY_TIMEOUT); break;
       case GATEWAY_OPCODES.HELLO: this._hello(d); break;
       case GATEWAY_OPCODES.HEARTBEAT_ACK: this._lastHeartbeatAck = true; break;
       default: console.warn('UNKNOWN OP', { op, d, s, t });
