@@ -42,13 +42,13 @@ export default class DiscordWebsocket {
     return this;
   }
 
-  disconnect(code?: number) {
+  disconnect(code?: number, reason?: string) {
     if (code === 1000 || code === 1001) {
       this.sessionID = null;
       this._seq = null;
     }
     this._selfDisconnect = true;
-    this.ws?.close(code);
+    this.ws?.close(code, reason);
     return this;
   }
 
@@ -56,7 +56,7 @@ export default class DiscordWebsocket {
     if (!this._url) throw new Error('Websocket URL not provided');
 
     this._selfDisconnect = false;
-    if (this.ws) throw new Error('Attempted duplicate connection - run uninitialize');
+    if (this.ws) this.reset();
 
     this.ws = new WebSocket(this._url);
     this.ws.once('close', this._onClose);
@@ -81,7 +81,8 @@ export default class DiscordWebsocket {
 
   restart(newSession = false) {
     if (newSession) this.sessionID = null;
-    this.disconnect().connect();
+    this.ws?.off('close', this._onClose);
+    this.disconnect(4200, 'Reconnect').connect();
   }
 
   // TODO Prevent 4013?
