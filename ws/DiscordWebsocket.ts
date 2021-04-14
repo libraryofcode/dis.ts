@@ -165,7 +165,7 @@ export default class DiscordWebsocket {
       case GATEWAY_CLOSE_EVENT_CODES.RATE_LIMITED: this.restart(); break;
       case GATEWAY_CLOSE_EVENT_CODES.NOT_AUTHENTICATED:
       case GATEWAY_CLOSE_EVENT_CODES.INVALID_SESSION:
-      case GATEWAY_CLOSE_EVENT_CODES.INVALID_RESUME_SEQUENCE: this._seq = null; break;
+      case GATEWAY_CLOSE_EVENT_CODES.INVALID_RESUME_SEQUENCE: this.restart(true); break;
       case GATEWAY_CLOSE_EVENT_CODES.SESSION_TIMEOUT: setTimeout(() => this.restart(true), IDENTIFY_TIMEOUT); break;
       case GATEWAY_CLOSE_EVENT_CODES.AUTHENTICATION_FAILED: {
         this._token = '';
