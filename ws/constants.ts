@@ -1,5 +1,5 @@
 // https://discord.com/developers/docs/topics/gateway#commands-and-events-gateway-events
-export const EVENTS = {
+export const EVENTS: { [x: string]: string } = {
   READY: 'ready',
   CHANNEL_CREATE: 'channelCreate',
   CHANNEL_UPDATE: 'channelUpdate',
@@ -104,7 +104,11 @@ export enum GATEWAY_OPCODES {
 }
 
 // https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-close-event-codes
+// 1000 and 1001: https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent
+// 4200 is just a non-1000 close code
 export enum GATEWAY_CLOSE_EVENT_CODES {
+  NORMAL = 1000,
+  GOING_AWAY,
   UNKNOWN_ERROR = 4000,
   UNKNOW_OPCODE,
   DECODE_ERROR,
@@ -120,6 +124,7 @@ export enum GATEWAY_CLOSE_EVENT_CODES {
   INVALID_API_VERSION,
   INVALID_INTENTS,
   DISALLOWED_INTENTS,
+  RECONNECT = 4200,
 }
 
 // https://discord.com/developers/docs/topics/gateway#payloads
