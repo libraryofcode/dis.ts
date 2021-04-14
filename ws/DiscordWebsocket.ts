@@ -211,7 +211,7 @@ export default class DiscordWebsocket {
       case GATEWAY_OPCODES.DISPATCH: this._onEvent(p); break;
       case GATEWAY_OPCODES.HEARTBEAT: this._heartbeat(); break;
       case GATEWAY_OPCODES.RECONNECT: this.restart(); break;
-      case GATEWAY_OPCODES.INVALID_SESSION: setTimeout(() => this._identify, IDENTIFY_TIMEOUT); break;
+      case GATEWAY_OPCODES.INVALID_SESSION: setTimeout(this._identify, IDENTIFY_TIMEOUT); break;
       case GATEWAY_OPCODES.HELLO: this._hello(d); break;
       case GATEWAY_OPCODES.HEARTBEAT_ACK: this._lastHeartbeatAck = true; break;
       default: console.warn('UNKNOWN OP', { op, d, s, t });
