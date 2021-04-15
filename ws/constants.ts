@@ -1,5 +1,5 @@
 // https://discord.com/developers/docs/topics/gateway#commands-and-events-gateway-events
-export const EVENTS: { [x: string]: string } = {
+export const EVENTS = {
   READY: 'ready',
   CHANNEL_CREATE: 'channelCreate',
   CHANNEL_UPDATE: 'channelUpdate',
@@ -115,8 +115,7 @@ export enum GATEWAY_CLOSE_EVENT_CODES {
   NOT_AUTHENTICATED,
   AUTHENTICATION_FAILED,
   ALREADY_AUTHENTICATED,
-  INVALID_SESSION,
-  INVALID_RESUME_SEQUENCE,
+  INVALID_RESUME_SEQUENCE = 4007,
   RATE_LIMITED,
   SESSION_TIMEOUT,
   INVALID_SHARD,

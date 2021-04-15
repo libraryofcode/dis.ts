@@ -48,6 +48,7 @@ export default class DiscordWebsocket {
       this._seq = null;
     }
     this._selfDisconnect = true;
+    this.ws?.off('close', this._onClose);
     this.ws?.close(code, reason);
     return this;
   }
@@ -56,7 +57,7 @@ export default class DiscordWebsocket {
     if (!this._url) throw new Error('Websocket URL not provided');
 
     this._selfDisconnect = false;
-    if (this.ws) this.reset();
+    if (this.ws) throw new Error('Attempted duplicate connection - run uninitialize');
 
     this.ws = new WebSocket(this._url);
     this.ws.once('close', this._onClose);
@@ -81,7 +82,6 @@ export default class DiscordWebsocket {
 
   restart(newSession = false) {
     if (newSession) this.sessionID = null;
-    this.ws?.off('close', this._onClose);
     this.disconnect(GATEWAY_CLOSE_EVENT_CODES.RECONNECT, 'Reconnect').connect();
   }
 
@@ -165,9 +165,8 @@ export default class DiscordWebsocket {
       case GATEWAY_CLOSE_EVENT_CODES.ALREADY_AUTHENTICATED:
       case GATEWAY_CLOSE_EVENT_CODES.RATE_LIMITED: this.restart(); break;
       case GATEWAY_CLOSE_EVENT_CODES.NOT_AUTHENTICATED:
-      case GATEWAY_CLOSE_EVENT_CODES.INVALID_SESSION:
       case GATEWAY_CLOSE_EVENT_CODES.INVALID_RESUME_SEQUENCE: this.restart(true); break;
-      case GATEWAY_CLOSE_EVENT_CODES.SESSION_TIMEOUT: setTimeout(() => this.restart(true), IDENTIFY_TIMEOUT); break;
+      case GATEWAY_CLOSE_EVENT_CODES.SESSION_TIMEOUT: this.restart(true); break;
       case GATEWAY_CLOSE_EVENT_CODES.AUTHENTICATION_FAILED: {
         this._token = '';
         this.reset();
