@@ -1,5 +1,4 @@
 import Base from './Base';
-//import User from './User'; TODO User
 
 export enum ChannelType {
   GUILD_TEXT,
@@ -10,20 +9,6 @@ export enum ChannelType {
   GUILD_NEWS,
   GUILD_STORE,
   GUILD_STAGE_VOICE = 13,
-}
-
-export interface Overwrite extends Base {
-  allow: string;
-  deny: string;
-  type: 0 | 1;
-}
-
-export interface VoiceRegion extends Base {
-  custom: boolean;
-  deprecated: boolean;
-  name: string;
-  optimal: boolean;
-  vip: boolean;
 }
 
 export enum VideoQuality {
@@ -42,11 +27,11 @@ export default interface Channel extends Base {
   nsfw?: boolean;
   owner_id?: string;
   parent_id?: string | null;
-  permission_overwrites?: Overwrite[];
+  permission_overwrites?: unknown[]; // TODO Overwrite
   position?: number;
   rate_limit_per_user?: number;
   recipients?: [unknown]; // TODO User
-  rtc_region?: VoiceRegion | null;
+  rtc_region?: unknown | null; // TODO VoiceRegion
   topic?: string | null;
   type: ChannelType;
   user_limit?: number;
