@@ -1,5 +1,4 @@
 import Base from './Base';
-//import User from './User'; TODO User
 
 export enum ChannelType {
   GUILD_TEXT,
