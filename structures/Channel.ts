@@ -1,7 +1,5 @@
 import Base from './Base';
-//import User from './User'         doesn't exist yet
-
-// https://discord.com/developers/docs/resources/channel
+//import User from './User'; TODO User
 
 export enum ChannelType {
   GUILD_TEXT,
@@ -37,20 +35,20 @@ export default interface Channel extends Base {
   application_id?: string;
   bitrate?: number;
   guild_id?: number;
-  icon?: string;
-  last_message_id?: string;
-  last_pin_timestamp?: Date;
+  icon?: string | null;
+  last_message_id?: string | null;
+  last_pin_timestamp?: Date | null;
   name?: string;
   nsfw?: boolean;
   owner_id?: string;
-  parent_id?: string;
+  parent_id?: string | null;
   permission_overwrites?: Overwrite[];
   position?: number;
   rate_limit_per_user?: number;
-  rtc_region?: VoiceRegion;
-  topic?: string;
+  recipients?: [unknown]; // TODO User
+  rtc_region?: VoiceRegion | null;
+  topic?: string | null;
   type: ChannelType;
   user_limit?: number;
-  //recipients?: User[];         User doesn't exist yet
   video_quality_mode?: VideoQuality;
 }
