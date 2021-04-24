@@ -57,7 +57,6 @@ export default interface Guild extends Base {
   application_id: string | null;
   approximate_member_count?: number;
   approximate_presence_count: number;
-  approximate_presenece_count?: number;
   banner: string | null;
   channels?: unknown[]; // TODO channels
   default_message_notifications: DefaultMessageNotificationLevel;
