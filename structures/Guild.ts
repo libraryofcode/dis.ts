@@ -56,9 +56,10 @@ export default interface Guild extends Base {
   afk_timeout: number;
   application_id: string | null;
   approximate_member_count?: number;
+  approximate_presence_count: number;
   approximate_presenece_count?: number;
   banner: string | null;
-  channels: unknown[]; // TODO channels
+  channels?: unknown[]; // TODO channels
   default_message_notifications: DefaultMessageNotificationLevel;
   description: string | null;
   discovery_splash: string | null;
@@ -76,6 +77,7 @@ export default interface Guild extends Base {
   members?: unknown[]; // TODO guild members
   mfa_level: MFALevel;
   name: string;
+  nsfw: boolean;
   owner?: boolean;
   owner_id: string;
   permissions?: string;
@@ -93,8 +95,8 @@ export default interface Guild extends Base {
   unavailable?: boolean;
   vanity_url_code: string | null;
   verification_level: VerificationLevel;
-  voice_states: unknown[]; // TODO partial voice states
-  welcome_screen: WelcomeScreen[];
+  voice_states?: unknown[]; // TODO partial voice states
+  welcome_screen: WelcomeScreen;
   widget_channel_id?: string | null;
   widget_enabled?: boolean;
 }
