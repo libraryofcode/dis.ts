@@ -3,7 +3,7 @@ import WebSocket from 'ws';
 import { EVENTS, Payload, GATEWAY_OPCODES, GATEWAY_CLOSE_EVENT_CODES } from './constants';
 const IDENTIFY_TIMEOUT = 1000;
 
-interface ConnectionProperties {
+export interface ConnectionProperties {
   $browser: string;
   $device: string;
   $os: string;
