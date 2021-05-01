@@ -43,10 +43,14 @@ export default class DiscordWebsocket {
   }
 
   disconnect(code?: GATEWAY_CLOSE_EVENT_CODES, reason?: string) {
+    if (this._heartBeatInterval) clearInterval(this._heartBeatInterval); this._heartBeatInterval = null;
+
+    // https://discord.com/developers/docs/topics/gateway#disconnections
     if (code === GATEWAY_CLOSE_EVENT_CODES.NORMAL || code === GATEWAY_CLOSE_EVENT_CODES.GOING_AWAY) {
       this.sessionID = null;
       this._seq = null;
     }
+
     this._selfDisconnect = true;
     this.ws?.off('close', this._onClose);
     this.ws?.close(code, reason);
