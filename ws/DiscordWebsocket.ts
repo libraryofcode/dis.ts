@@ -43,16 +43,7 @@ export default class DiscordWebsocket {
   }
 
   disconnect(code?: GATEWAY_CLOSE_EVENT_CODES, reason?: string) {
-    if (this._heartBeatInterval) clearInterval(this._heartBeatInterval); this._heartBeatInterval = null;
-
-    // https://discord.com/developers/docs/topics/gateway#disconnections
-    if (code === GATEWAY_CLOSE_EVENT_CODES.NORMAL || code === GATEWAY_CLOSE_EVENT_CODES.GOING_AWAY) {
-      this.sessionID = null;
-      this._seq = null;
-    }
-
     this._selfDisconnect = true;
-    this.ws?.off('close', this._onClose);
     this.ws?.close(code, reason);
     return this;
   }
@@ -71,13 +62,14 @@ export default class DiscordWebsocket {
   }
 
   reset() {
-    if (this._heartBeatInterval) clearInterval(this._heartBeatInterval);
+    if (this._heartBeatInterval) {
+      clearInterval(this._heartBeatInterval); this._heartBeatInterval = null;
+    }
     if (this.ws?.readyState === WebSocket.OPEN) {
       this.ws.off('message', this._onMessage)
         .off('error', console.error)
         .terminate();
     }
-    this._heartBeatInterval = null;
     this.ws = null;
     this.ready = false;
     this._lastHeartbeatAck = true;
@@ -163,6 +155,15 @@ export default class DiscordWebsocket {
   // TODO Construct proper errors
   private _onClose(code: GATEWAY_CLOSE_EVENT_CODES) {
     switch (code) {
+      case GATEWAY_CLOSE_EVENT_CODES.NORMAL:
+      case GATEWAY_CLOSE_EVENT_CODES.GOING_AWAY: {
+        this.sessionID = null;
+        this._seq = null;
+        if (this._heartBeatInterval) {
+          clearInterval(this._heartBeatInterval); this._heartBeatInterval = null;
+        }
+        break;
+      }
       case GATEWAY_CLOSE_EVENT_CODES.UNKNOWN_ERROR:
       case GATEWAY_CLOSE_EVENT_CODES.UNKNOW_OPCODE:
       case GATEWAY_CLOSE_EVENT_CODES.DECODE_ERROR:
@@ -186,6 +187,12 @@ export default class DiscordWebsocket {
         }
         this._url = this._url.replace(/v=\d/, 'v=8');
         this.reset().connect();
+        break;
+      }
+      case GATEWAY_CLOSE_EVENT_CODES.RECONNECT: {
+        if (this._heartBeatInterval) {
+          clearInterval(this._heartBeatInterval); this._heartBeatInterval = null;
+        }
         break;
       }
       default: {
