@@ -63,7 +63,8 @@ export default class DiscordWebsocket {
 
   reset() {
     if (this._heartBeatInterval) {
-      clearInterval(this._heartBeatInterval); this._heartBeatInterval = null;
+      clearInterval(this._heartBeatInterval);
+      this._heartBeatInterval = null;
     }
     if (this.ws?.readyState === WebSocket.OPEN) {
       this.ws.off('message', this._onMessage)
@@ -191,7 +192,8 @@ export default class DiscordWebsocket {
       }
       case GATEWAY_CLOSE_EVENT_CODES.RECONNECT: {
         if (this._heartBeatInterval) {
-          clearInterval(this._heartBeatInterval); this._heartBeatInterval = null;
+          clearInterval(this._heartBeatInterval);
+          this._heartBeatInterval = null;
         }
         break;
       }
