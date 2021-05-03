@@ -14,13 +14,12 @@ interface BotGateway {
 export default class ShardManager {
   shards: Map<number, DiscordWebsocket> = new Map();
 
-  constructor(public token: string, public intents: number, public connProps: Partial<ConnectionProperties> = {}) {
+  constructor(public token: string, public intents: number, public connProps: Partial<ConnectionProperties> = {}, public botGatewayURL: string = 'https://discord.com/api/v8/gateway/bot') {
     this.initialize();
   }
 
-  private async getBotGateway() {
-    const botGateway: BotGateway = await (await fetch('https://discord.com/api/v8/gateway/bot')).json();
-    return botGateway;
+  private async getBotGateway(): Promise<BotGateway> {
+    return await (await fetch(this.botGatewayURL)).json();
   }
 
   private async initialize() {
