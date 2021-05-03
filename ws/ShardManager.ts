@@ -12,9 +12,9 @@ interface BotGateway {
 }
 
 export default class ShardManager {
-  private shards: Map<number, DiscordWebsocket> = new Map();
+  shards: Map<number, DiscordWebsocket> = new Map();
 
-  constructor(private token: string, private intents: number, private connProps: Partial<ConnectionProperties> = {}) {
+  constructor(public token: string, public intents: number, public connProps: Partial<ConnectionProperties> = {}) {
     this.initialize();
   }
 
