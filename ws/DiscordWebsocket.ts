@@ -42,9 +42,9 @@ export default class DiscordWebsocket {
     return this;
   }
 
-  disconnect(code?: GATEWAY_CLOSE_EVENT_CODES, reason?: string) {
+  disconnect() {
     this._selfDisconnect = true;
-    this.ws?.close(code, reason);
+    this.ws?.close(GATEWAY_CLOSE_EVENT_CODES.GOING_AWAY, 'Going away');
     return this;
   }
 
@@ -79,7 +79,7 @@ export default class DiscordWebsocket {
 
   restart(newSession = false) {
     if (newSession) this.sessionID = null;
-    this.disconnect(GATEWAY_CLOSE_EVENT_CODES.RECONNECT, 'Reconnect').connect();
+    this.ws?.close(GATEWAY_CLOSE_EVENT_CODES.RECONNECT, 'Reconnect');
   }
 
   // TODO Prevent 4013?
@@ -155,6 +155,7 @@ export default class DiscordWebsocket {
 
   // TODO Construct proper errors
   private _onClose(code: GATEWAY_CLOSE_EVENT_CODES) {
+    this.ws?.off('close', this._onClose);
     switch (code) {
       case GATEWAY_CLOSE_EVENT_CODES.NORMAL:
       case GATEWAY_CLOSE_EVENT_CODES.GOING_AWAY: {
@@ -195,6 +196,7 @@ export default class DiscordWebsocket {
           clearInterval(this._heartBeatInterval);
           this._heartBeatInterval = null;
         }
+        this.connect();
         break;
       }
       default: {
