@@ -1,5 +1,6 @@
 import Base from './Base';
 import Channel from './Channel';
+import GuildMember from './GuildMember';
 
 export default interface Guild extends Base {
   afk_channel_id: string | null;
@@ -23,7 +24,7 @@ export default interface Guild extends Base {
   max_presences?: number | null;
   max_video_channel_users?: number;
   member_count?: number;
-  members?: unknown[]; // TODO guild members
+  members?: GuildMember[]; // TODO guild members
   mfa_level: MFALevel;
   name: string;
   nsfw: boolean;
