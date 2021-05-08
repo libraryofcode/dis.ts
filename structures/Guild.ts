@@ -27,6 +27,7 @@ export default interface Guild extends Base {
   mfa_level: MFALevel;
   name: string;
   nsfw: boolean;
+  nsfw_level: 0 | 1 | 2; // TODO Enumerate this, pending Discord documentation
   owner?: boolean;
   owner_id: string;
   permissions?: string;
@@ -45,9 +46,24 @@ export default interface Guild extends Base {
   vanity_url_code: string | null;
   verification_level: VerificationLevel;
   voice_states?: unknown[]; // TODO partial voice states
-  welcome_screen: WelcomeScreen;
+  welcome_screen?: WelcomeScreen;
   widget_channel_id?: string | null;
   widget_enabled?: boolean;
+}
+
+export interface GuildPartial {
+  banner: string | null;
+  description: string | null;
+  features: GuildFeatures[];
+  icon: string | null;
+  id: string;
+  name: string;
+  nsfw: boolean;
+  nsfw_level: 0 | 1 | 2; // TODO Enumerate this, pending Discord documentation
+  splash: string | null;
+  vanity_url_code: string | null;
+  verification_level: VerificationLevel;
+  welcome_screen?: WelcomeScreen;
 }
 
 export enum DefaultMessageNotificationLevel {
