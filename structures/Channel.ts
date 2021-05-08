@@ -26,8 +26,7 @@ export default interface Channel extends Base {
   video_quality_mode?: VideoQuality;
 }
 
-export interface ChannelPartial {
-  id: string;
+export interface ChannelPartial extends Base {
   name: string;
   type: ChannelType;
 }
@@ -50,9 +49,8 @@ export enum ChannelType {
   GUILD_STAGE_VOICE,
 }
 
-export interface ThreadMember {
+export interface ThreadMember extends Base {
   flags: number; // REVIEW Discord has no documentation for this
-  id: string;
   join_timestamp: Date;
   user_id: string;
 }

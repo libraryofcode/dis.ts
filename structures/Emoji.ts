@@ -1,7 +1,8 @@
-export default interface Emoji {
+import Base from './Base';
+
+export default interface Emoji extends Base {
   animated: boolean;
   available: boolean;
-  id: string;
   managed: boolean;
   name: string;
   require_colons: boolean;

@@ -51,12 +51,11 @@ export default interface Guild extends Base {
   widget_enabled?: boolean;
 }
 
-export interface GuildPartial {
+export interface GuildPartial extends Base {
   banner: string | null;
   description: string | null;
   features: GuildFeatures[];
   icon: string | null;
-  id: string;
   name: string;
   nsfw: boolean;
   nsfw_level: 0 | 1 | 2; // TODO Enumerate this, pending Discord documentation
