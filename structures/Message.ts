@@ -1,6 +1,7 @@
+import Base from './Base';
 import Channel from './Channel';
 
-export default interface Message {
+export default interface Message extends Base {
   activity?: MessageActivity;
   application?: unknown; // TODO Partial application
   attachments: unknown[]; // TODO Attachment
@@ -11,7 +12,6 @@ export default interface Message {
   embeds: unknown[]; // TODO Embed
   flags?: MessageFlags;
   guild_id?: string;
-  id: string;
   interaction?: unknown; // TODO Message Interaction
   member?: unknown; // TODO Partial Member?
   mention_channels?: string[];
