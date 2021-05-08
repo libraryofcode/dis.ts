@@ -66,6 +66,11 @@ export interface GuildPartial {
   welcome_screen?: WelcomeScreen;
 }
 
+export interface WebhookGuild extends Base {
+  icon: string;
+  name: string;
+}
+
 export enum DefaultMessageNotificationLevel {
   ALL_MESSAGES,
   ONLY_MENTIONS,

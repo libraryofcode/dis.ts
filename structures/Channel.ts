@@ -32,6 +32,10 @@ export interface ChannelPartial {
   type: ChannelType;
 }
 
+export interface WebhookChannel extends Base {
+  name: string;
+}
+
 export enum ChannelType {
   GUILD_TEXT,
   DM,
