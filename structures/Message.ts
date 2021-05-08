@@ -1,5 +1,6 @@
 import Base from './Base';
 import Channel from './Channel';
+import { PartialEmoji } from './Emoji';
 
 export default interface Message extends Base {
   activity?: MessageActivity;
@@ -87,6 +88,5 @@ export enum MessageType {
 
 export interface Reaction {
   count: number;
-  emoji: unknown; // TODO Emoji
-  me: boolean;
+  emoji: PartialEmoji;
 }
