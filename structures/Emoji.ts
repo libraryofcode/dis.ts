@@ -1,9 +1,9 @@
 export default interface Emoji {
   animated: boolean;
   available: boolean;
-  id: string | null;
+  id: string;
   managed: boolean;
-  name: string | null;
+  name: string;
   require_colons: boolean;
   roles: string[];
   user?: unknown; // TODO User
