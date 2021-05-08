@@ -26,6 +26,12 @@ export default interface Channel extends Base {
   video_quality_mode?: VideoQuality;
 }
 
+export interface ChannelPartial {
+  id: string;
+  name: string;
+  type: ChannelType;
+}
+
 export enum ChannelType {
   GUILD_TEXT,
   DM,
