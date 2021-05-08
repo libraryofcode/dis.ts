@@ -24,7 +24,7 @@ export default interface Guild extends Base {
   max_presences?: number | null;
   max_video_channel_users?: number;
   member_count?: number;
-  members?: GuildMember[]; // TODO guild members
+  members?: GuildMember[];
   mfa_level: MFALevel;
   name: string;
   nsfw: boolean;
