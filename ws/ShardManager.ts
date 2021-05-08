@@ -18,8 +18,8 @@ export default class ShardManager {
     this.initialize();
   }
 
-  private async getBotGateway(): Promise<BotGateway> {
-    return await (await fetch(this.botGatewayURL)).json();
+  private getBotGateway(): Promise<BotGateway> {
+    return fetch(this.botGatewayURL).then((r) => r.json());
   }
 
   private async initialize() {
@@ -27,8 +27,8 @@ export default class ShardManager {
 
     for (let currentShard = 0; currentShard <= botGateway.shards; currentShard++) {
       const websocket = new DiscordWebsocket(this.token, botGateway.url, this.intents, this.connProps);
-      websocket.connect();
       this.shards.set(currentShard, websocket);
+      websocket.connect();
     }
   }
 }
