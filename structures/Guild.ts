@@ -52,7 +52,7 @@ export default interface Guild extends Base {
   widget_enabled?: boolean;
 }
 
-export interface GuildPartial extends Base {
+export interface InviteGuild extends Base {
   banner: string | null;
   description: string | null;
   features: GuildFeatures[];
@@ -64,6 +64,23 @@ export interface GuildPartial extends Base {
   vanity_url_code: string | null;
   verification_level: VerificationLevel;
   welcome_screen?: WelcomeScreen;
+}
+
+export interface TemplateGuild {
+  afk_channel_id: string | null;
+  afk_timeout: number;
+  channels?: Channel[];
+  default_message_notifications: DefaultMessageNotificationLevel;
+  description: string | null;
+  explicit_content_filter: ExplicitContentFilterLevel;
+  icon_hash?: string | null;
+  name: string;
+  preferred_locale: string;
+  region: string;
+  roles: unknown[]; // TODO roles
+  system_channel_flags: SystemChannelFlags;
+  system_channel_id: string | null;
+  verification_level: VerificationLevel;
 }
 
 export interface WebhookGuild extends Base {

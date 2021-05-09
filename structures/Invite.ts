@@ -1,5 +1,5 @@
 import { ChannelPartial } from './Channel';
-import { GuildPartial } from './Guild';
+import { InviteGuild } from './Guild';
 
 export default interface Invite {
   approximate_member_count?: number;
@@ -7,7 +7,7 @@ export default interface Invite {
   channel: ChannelPartial;
   code: string;
   expires_at?: Date | null;
-  guild?: GuildPartial;
+  guild?: InviteGuild;
   inviter?: unknown; // TODO User
   target_application?: unknown; // TODO Partial OAuth Application
   target_type?: InviteTargetType;
