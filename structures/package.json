@@ -1,0 +1,12 @@
+{
+  "name": "@dis.ts/structures",
+  "version": "0.1.0",
+  "description": "Structures for the dis.ts library",
+  "repository": "https://github.com/libraryofcode/dis.ts",
+  "author": "Library of Code sp-us, Dept. of Engineering : Board of Directors",
+  "license": "MIT",
+  "private": false,
+  "devDependencies": {
+    "typescript": "^4.2.4"
+  }
+}

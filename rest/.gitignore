@@ -1,0 +1,6 @@
+# Package Management
+node_modules
+
+# Distribution
+*.js
+*.d.ts
