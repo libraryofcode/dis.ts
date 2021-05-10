@@ -1,15 +1,5 @@
+import BotGateway from '../structures/BotGateway';
 import DiscordWebsocket, { ConnectionProperties } from './DiscordWebsocket';
-
-interface BotGateway {
-  session_start_limit: {
-    max_concurrency: number;
-    remaining: number;
-    reset_after: number;
-    total: number;
-  };
-  shards: number;
-  url: string;
-}
 
 export default class ShardManager {
   shards: Map<number, DiscordWebsocket> = new Map();
