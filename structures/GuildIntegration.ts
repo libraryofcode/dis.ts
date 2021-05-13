@@ -25,7 +25,7 @@ export interface BotIntegration extends Base {
   type: 'discord';
 }
 
-interface IntegrationAccount extends Base {
+export interface IntegrationAccount extends Base {
   name: string;
 }
 
