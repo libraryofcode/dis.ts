@@ -2,10 +2,17 @@
   "name": "@dis.ts/structures",
   "version": "0.1.0",
   "description": "Structures for the dis.ts library",
+  "main": "./index.js",
+  "types": "./index.ts",
   "repository": "https://github.com/libraryofcode/dis.ts",
   "author": "Library of Code sp-us, Dept. of Engineering : Board of Directors",
   "license": "MIT",
   "private": false,
+  "scripts": {
+    "lint": "eslint **/*.ts",
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
   "devDependencies": {
     "typescript": "^4.2.4"
   }
