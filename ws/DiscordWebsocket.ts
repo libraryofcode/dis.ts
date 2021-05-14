@@ -155,7 +155,6 @@ export default class DiscordWebsocket {
 
   // TODO Construct proper errors
   private _onClose(code: GATEWAY_CLOSE_EVENT_CODES) {
-    this.ws?.off('close', this._onClose);
     switch (code) {
       case GATEWAY_CLOSE_EVENT_CODES.NORMAL:
       case GATEWAY_CLOSE_EVENT_CODES.GOING_AWAY: {
