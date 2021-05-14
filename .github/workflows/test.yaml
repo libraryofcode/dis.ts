@@ -21,7 +21,7 @@ jobs:
         npm run lint
       env:
         CI: true
-  tsc:
+  build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
