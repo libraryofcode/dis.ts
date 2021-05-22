@@ -27,7 +27,6 @@ export default interface Guild extends Base {
   members?: GuildMember[];
   mfa_level: MFALevel;
   name: string;
-  nsfw: boolean;
   nsfw_level: GuildNSFWLevel;
   owner?: boolean;
   owner_id: string;
