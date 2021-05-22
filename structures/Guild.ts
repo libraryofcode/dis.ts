@@ -28,7 +28,7 @@ export default interface Guild extends Base {
   mfa_level: MFALevel;
   name: string;
   nsfw: boolean;
-  nsfw_level: 0 | 1 | 2; // TODO Enumerate this, pending Discord documentation
+  nsfw_level: GuildNSFWLevel;
   owner?: boolean;
   owner_id: string;
   permissions?: string;
@@ -100,6 +100,13 @@ export enum ExplicitContentFilterLevel {
 }
 
 export type GuildFeatures = 'AMINATED_ICON' | 'BANNER' | 'COMMERCE' | 'COMMUNITY' | 'DISCOVERABLE' | 'FEATURABLE' | 'INVITE_SPLASH' | 'MEMBER_VERIFICATION_GATE_ENABLED' | 'NEWS' | 'PARTNERED' | 'PREVIEW_ENABLED' | 'VANITY_URL' | 'VERIFIED' | 'VIP_REGIONS' | 'WELCOME_SCREEN_ENABLED';
+
+export enum GuildNSFWLevel {
+  DEFAULT,
+  EXPLICIT,
+  SAFE,
+  AGE_RESTRICTED,
+}
 
 export enum MFALevel {
   NONE,
