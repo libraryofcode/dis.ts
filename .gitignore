@@ -3,4 +3,5 @@ node_modules
 
 # Distribution
 *.js
+*.js.map
 *.d.ts
