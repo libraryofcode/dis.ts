@@ -1,5 +1,6 @@
 import BotGateway from '../structures/BotGateway';
 import DiscordWebsocket, { ConnectionProperties } from './DiscordWebsocket';
+import fetch from 'node-fetch';
 
 export default class ShardManager {
   shards: Map<number, DiscordWebsocket> = new Map();
