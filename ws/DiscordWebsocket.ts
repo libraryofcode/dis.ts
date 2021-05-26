@@ -1,6 +1,8 @@
 import WebSocket from 'ws';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { EVENTS, Payload, GATEWAY_OPCODES, GATEWAY_CLOSE_EVENT_CODES } from './constants';
+import GatewayClient from './GatewayClient';
+import ShardManager from './ShardManager';
 const IDENTIFY_TIMEOUT = 1000;
 
 export interface ConnectionProperties {
@@ -12,9 +14,11 @@ export interface ConnectionProperties {
 // TODO implement rate limits
 export default class DiscordWebsocket {
   autoReconnect = true;
+  client: GatewayClient;
   connectionProperties: ConnectionProperties;
   discordTrace?: string;
   largeThreshold?: number;
+  manager: ShardManager;
   ready = false;
   sessionID: string | null = null;
   ws: WebSocket | null = null;
@@ -26,15 +30,17 @@ export default class DiscordWebsocket {
   private _token: string;
   private _url: string;
 
-  constructor(token: string, url: string, intents: number, connProps: Partial<ConnectionProperties> = {}) {
-    this._token = token;
+  constructor(manager: ShardManager, url: string) {
+    this.manager = manager;
+    this.client = manager.client;
+    this._token = manager.token;
     this._url = url;
-    this._intents = intents;
+    this._intents = manager.options.intents;
 
     this._identify = this._identify.bind(this);
     this._onClose = this._onClose.bind(this);
     this._onMessage = this._onMessage.bind(this);
-    this.connectionProperties = { $os: process.platform, $browser: 'dis.ts', $device: 'dis.ts', ...connProps };
+    this.connectionProperties = { $os: process.platform, $browser: 'dis.ts', $device: 'dis.ts', ...manager.options.connProps };
   }
 
   connect() {
@@ -217,6 +223,7 @@ export default class DiscordWebsocket {
 
   private _onMessage(data: string) {
     const p: Payload = JSON.parse(data);
+
     const { d, op, s, t } = p;
 
     if (s) this._seq = s;
