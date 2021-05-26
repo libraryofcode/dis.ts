@@ -1,11 +1,20 @@
 import BotGateway from '../structures/BotGateway';
 import DiscordWebsocket, { ConnectionProperties } from './DiscordWebsocket';
 import fetch from 'node-fetch';
+import { INTENTS } from './constants';
 
 export default class ShardManager {
+  botGatewayURL: string;
+  connProps: Partial<ConnectionProperties>;
+  intents: INTENTS;
   shards: Map<number, DiscordWebsocket> = new Map();
+  token: string;
 
-  constructor(public token: string, public intents: number, public connProps: Partial<ConnectionProperties> = {}, public botGatewayURL: string = 'https://discord.com/api/v8/gateway/bot') {
+  constructor(token: string, intents: number, connProps: Partial<ConnectionProperties> = {}, botGatewayURL = 'https://discord.com/api/v8/gateway/bot') {
+    this.token = token;
+    this.intents = intents;
+    this.connProps = connProps;
+    this.botGatewayURL = botGatewayURL;
     this.initialize();
   }
 
