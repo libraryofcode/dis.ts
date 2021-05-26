@@ -5,17 +5,21 @@ import ShardManager from './ShardManager';
 
 export interface GatewayOptions {
   connProps?: ConnectionProperties;
-  gwURL?: string;
   intents: INTENTS;
+  shards?: {
+    firstShard?: number;
+    lastShard?: number;
+    recommended?: boolean;
+  };
 }
 
 export default class GatewayClient extends EventEmitter {
   options: GatewayOptions;
   shardManager: ShardManager;
-  constructor(token: string, options: GatewayOptions) {
+  constructor(token: string, options: GatewayOptions, gwURL?: string) {
     super();
     this.options = options;
-    this.shardManager = new ShardManager(this, token);
+    this.shardManager = new ShardManager(this, token, gwURL);
   }
 
   connect() {

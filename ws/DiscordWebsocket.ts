@@ -40,7 +40,7 @@ export default class DiscordWebsocket {
     this._identify = this._identify.bind(this);
     this._onClose = this._onClose.bind(this);
     this._onMessage = this._onMessage.bind(this);
-    this.connectionProperties = { $os: process.platform, $browser: 'dis.ts', $device: 'dis.ts', ...manager.options.connProps };
+    this.connectionProperties = manager.options.connProps;
   }
 
   connect() {

@@ -8,3 +8,7 @@ export default interface BotGateway {
   shards: number;
   url: string;
 }
+
+export interface Gateway {
+  url: string;
+}
