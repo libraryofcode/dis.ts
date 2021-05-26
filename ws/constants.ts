@@ -10,7 +10,7 @@ export const EVENTS = {
   GUILD_DELETE: 'guildDelete',
   GUILD_BAN_ADD: 'guildBanAdd',
   GUILD_BAN_REMOVE: 'guildBanRemove',
-  GUILD_EMOJIS_UPDATE: 'guildEmojiesUpdate',
+  GUILD_EMOJIS_UPDATE: 'guildEmojisUpdate',
   GUILD_INTEGRATIONS_UPDATE: 'guildIntegrationsUpdate',
   GUILD_MEMBER_ADD: 'guildMemberAdd',
   GUILD_MEMBER_REMOVE: 'guildMemberRemove',
