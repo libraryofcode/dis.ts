@@ -519,22 +519,15 @@ export default class Client {
     return this.rest.request('GET', Endpoints.LIST_ACTIVE_THREADS(channelID), true);
   }
 
+  listArchivedThreads(channelID: string, type: 'public'|'private', params: any = {}) {
+    return this.rest.request('GET', Endpoints.LIST_ARCHIVED_THREADS(channelID, type), true, {
+      before: params.before,
+      limit: params.limit,
+    });
+  }
+
   listJoinedPrivateArchivedThreads(channelID: string, params: any = {}) {
     return this.rest.request('GET', Endpoints.LIST_JOINED_PRIVATE_ARCHIVED_THREADS(channelID), true, {
-      before: params.before,
-      limit: params.limit,
-    });
-  }
-
-  listPrivateArchivedThreads(channelID: string, params: any = {}) {
-    return this.rest.request('GET', Endpoints.LIST_PRIVATE_ARCHIVED_THREADS(channelID), true, {
-      before: params.before,
-      limit: params.limit,
-    });
-  }
-
-  listPublicArchivedThreads(channelID: string, params: any = {}) {
-    return this.rest.request('GET', Endpoints.LIST_PUBLIC_ARCHIVED_THREADS(channelID), true, {
       before: params.before,
       limit: params.limit,
     });
