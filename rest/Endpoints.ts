@@ -68,6 +68,73 @@ export default class Endpoints {
     return `/channels/${channelID}/messages/${messageID}/reactions`;
   }
   /**
+   * `/channels/{channel.id}/messages/{message.id}/threads`
+   * - POST - Create new thread from existing message
+   */
+  public static START_THREAD_WITH_MESSAGE(channelID: string, messageID: string) {
+    return `/channels/${channelID}/messages/${messageID}/threads`;
+  }
+  /**
+   * `/channels/{channel.id}/threads`
+   * - POST - Creates a new thread that is not connected to an existing message
+   */
+  public static START_THREAD_WITHOUT_MESSAGE(channelID: string) {
+    return `/channels/${channelID}/threads`;
+  }
+  /**
+   * `/channels/{channel.id}/thread-members/@me`
+   * - PUT - Adds the current user to a thread
+   * - DELETE - Removes the current user from a thread
+   */
+  public static THREAD(channelID: string) {
+    return `/channels/${channelID}/thread-members/@me`;
+  }
+  /**
+   * `/channels/{channel.id}/thread-members/{user.id}`
+   * - PUT - Adds another member to a thread
+   * - DELETE - Removes another member from a thread
+   */
+  public static THREAD_MEMBER(channelID: string, userID: string) {
+    return `/channels/${channelID}/thread-members/${userID}`;
+  }
+  /**
+   * `/channels/{channel.id}/thread-members`
+   * - GET - Return array of thread members objects that are members of the thread
+   */
+  public static LIST_THREAD_MEMBERS(channelID: string) {
+    return `/channels/${channelID}/thread-members`;
+  }
+  /**
+   * `/channels/{channel.id}/threads/active`
+   * - GET - Return all active threads in the channel
+   */
+  public static LIST_ACTIVE_THREADS(channelID: string) {
+    return `/channels/${channelID}/thread/active`;
+  }
+  /**
+   * `/channels/{channel.id}/threads/archived/public`
+   * - GET - Return archived threads in the channel that are public
+   */
+  public static LIST_PUBLIC_ARCHIVED_THREADS(channelID: string) {
+    return `/channels/${channelID}/threads/archived/public`;
+  }
+  /**
+   * `/channels/{channel.id}/threads/archived/private`
+   * - GET - Return archived threads in the channel that are of type GUILD_PRIVATE_THREAD
+   */
+  public static LIST_PRIVATE_ARCHIVED_THREADS(channelID: string) {
+    return `/channels/${channelID}/threads/archived/private`;
+  }
+  /**
+   * `/channels/{channel.id}/users/@me/threads/archived/private`
+   * - GET - Return archived threads in the channel that are of type GUILD_PRIVATE_THREAD, and the user has joined
+   */
+  public static LIST_JOINED_PRIVATE_ARCHIVED_THREADS(channelID: string) {
+    return `/channels/${channelID}/users/@me/threads/archived/private`;
+  }
+
+
+  /**
    * `/channels/:channelID/messages/bulk-delete`
    * - POST - Bulk Delete Messages
    */

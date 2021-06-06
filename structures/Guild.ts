@@ -42,6 +42,7 @@ export default interface Guild extends Base {
   splash: string | null;
   system_channel_flags: SystemChannelFlags;
   system_channel_id: string | null;
+  threads?: Channel[];
   unavailable?: boolean;
   vanity_url_code: string | null;
   verification_level: VerificationLevel;

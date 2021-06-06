@@ -9,7 +9,7 @@ import { REST_CONSTANTS } from '../src/util/Constants';
 const { version, repository } = require('../../package.json');
 
 export default class RESTClient {
-  version = 'v8';
+  version = 'v9';
   apiURL = `/api/${this.version}`;// eslint-disable-line @typescript-eslint/member-ordering
   readonly client: Client;
   globallyRateLimited = false;
