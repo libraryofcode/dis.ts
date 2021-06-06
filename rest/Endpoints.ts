@@ -413,7 +413,7 @@ export default class Endpoints {
    * - GET & type = public - Return archived threads in the channel that are public
    * - GET & type = private - Return archived threads in the channel that are of type GUILD_PRIVATE_THREAD
    */
-  public static LIST_ARCHIVED_THREADS(channelID: string, type: 'public'|'private') {
+  public static LIST_ARCHIVED_THREADS(channelID: string, type: 'public' | 'private') {
     return `/channels/${channelID}/threads/archived/${type}`;
   }
   /**
