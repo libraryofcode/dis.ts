@@ -14,7 +14,7 @@ export default interface Channel extends Base {
   nsfw?: boolean;
   owner_id?: string;
   parent_id?: string | null;
-  permission_overwrites?: unknown[]; // TODO Overwrite
+  permission_overwrites?: permissionOverwrite[];
   position?: number;
   rate_limit_per_user?: number;
   recipients?: [unknown]; // TODO User
@@ -66,4 +66,10 @@ export interface ThreadMetadata {
 export enum VideoQuality {
   AUTO = 1,
   FULL,
+}
+
+export interface permissionOverwrite extends Base {
+  allow: string;
+  deny: string;
+  type: 0 | 1;
 }
