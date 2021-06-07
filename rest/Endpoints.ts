@@ -366,7 +366,7 @@ export default class Endpoints {
   // Threads
   /**
    * `/channels/{channel.id}/messages/{message.id}/threads`
-   * - POST - Create new thread from existing message
+   * - POST - Creates a new thread from an existing message
    */
   public static START_THREAD_WITH_MESSAGE(channelID: string, messageID: string) {
     return `/channels/${channelID}/messages/${messageID}/threads`;
@@ -396,29 +396,29 @@ export default class Endpoints {
   }
   /**
    * `/channels/{channel.id}/thread-members`
-   * - GET - Return array of thread members objects that are members of the thread
+   * - GET - Returns array of thread members objects that are members of the thread
    */
   public static LIST_THREAD_MEMBERS(channelID: string) {
     return `/channels/${channelID}/thread-members`;
   }
   /**
    * `/channels/{channel.id}/threads/active`
-   * - GET - Return all active threads in the channel
+   * - GET - Returns all active threads in the channel, including public and private threads
    */
   public static LIST_ACTIVE_THREADS(channelID: string) {
     return `/channels/${channelID}/threads/active`;
   }
   /**
    * `/channels/{channel.id}/threads/archived/public OR private`
-   * - GET & type = public - Return archived threads in the channel that are public
-   * - GET & type = private - Return archived threads in the channel that are of type GUILD_PRIVATE_THREAD
+   * - GET & type = public - Returns archived threads in the channel that are public
+   * - GET & type = private - Returns archived threads in the channel that are of type GUILD_PRIVATE_THREAD
    */
   public static LIST_ARCHIVED_THREADS(channelID: string, type: 'public' | 'private') {
     return `/channels/${channelID}/threads/archived/${type}`;
   }
   /**
    * `/channels/{channel.id}/users/@me/threads/archived/private`
-   * - GET - Return archived threads in the channel that are of type GUILD_PRIVATE_THREAD, and the user has joined
+   * - GET - Returns archived threads in the channel that are of type GUILD_PRIVATE_THREAD, and the user has joined
    */
   public static LIST_JOINED_PRIVATE_ARCHIVED_THREADS(channelID: string) {
     return `/channels/${channelID}/users/@me/threads/archived/private`;
