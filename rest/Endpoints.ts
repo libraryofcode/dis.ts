@@ -365,21 +365,21 @@ export default class Endpoints {
 
   // Threads
   /**
-   * `/channels/{channel.id}/messages/{message.id}/threads`
+   * `/channels/:channelID/messages/:messageID/threads`
    * - POST - Creates a new thread from an existing message
    */
   public static START_THREAD_WITH_MESSAGE(channelID: string, messageID: string) {
     return `/channels/${channelID}/messages/${messageID}/threads`;
   }
   /**
-   * `/channels/{channel.id}/threads`
+   * `/channels/:channelID/threads`
    * - POST - Creates a new thread that is not connected to an existing message
    */
   public static START_THREAD_WITHOUT_MESSAGE(channelID: string) {
     return `/channels/${channelID}/threads`;
   }
   /**
-   * `/channels/{channel.id}/thread-members/@me`
+   * `/channels/:channelID/thread-members/@me`
    * - PUT - Adds the current user to a thread
    * - DELETE - Removes the current user from a thread
    */
@@ -387,7 +387,7 @@ export default class Endpoints {
     return `/channels/${channelID}/thread-members/@me`;
   }
   /**
-   * `/channels/{channel.id}/thread-members/{user.id}`
+   * `/channels/:channelID/thread-members/:userID`
    * - PUT - Adds another member to a thread
    * - DELETE - Removes another member from a thread
    */
@@ -395,21 +395,21 @@ export default class Endpoints {
     return `/channels/${channelID}/thread-members/${userID}`;
   }
   /**
-   * `/channels/{channel.id}/thread-members`
+   * `/channels/:channelID/thread-members`
    * - GET - Returns array of thread members objects that are members of the thread
    */
   public static LIST_THREAD_MEMBERS(channelID: string) {
     return `/channels/${channelID}/thread-members`;
   }
   /**
-   * `/channels/{channel.id}/threads/active`
+   * `/channels/:channelID/threads/active`
    * - GET - Returns all active threads in the channel, including public and private threads
    */
   public static LIST_ACTIVE_THREADS(channelID: string) {
     return `/channels/${channelID}/threads/active`;
   }
   /**
-   * `/channels/{channel.id}/threads/archived/public OR private`
+   * `/channels/:channelID}/threads/archived/public OR private`
    * - GET & type = public - Returns archived threads in the channel that are public
    * - GET & type = private - Returns archived threads in the channel that are of type GUILD_PRIVATE_THREAD
    */
@@ -417,7 +417,7 @@ export default class Endpoints {
     return `/channels/${channelID}/threads/archived/${type}`;
   }
   /**
-   * `/channels/{channel.id}/users/@me/threads/archived/private`
+   * `/channels/:channelID/users/@me/threads/archived/private`
    * - GET - Returns archived threads in the channel that are of type GUILD_PRIVATE_THREAD, and the user has joined
    */
   public static LIST_JOINED_PRIVATE_ARCHIVED_THREADS(channelID: string) {
