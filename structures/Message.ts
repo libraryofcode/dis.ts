@@ -10,6 +10,7 @@ import Sticker from './Sticker';
 export default interface Message extends Base {
   activity?: MessageActivity;
   application?: unknown; // TODO Partial application
+  application_id?: string;
   attachments: Attachment[];
   author: unknown; // TODO User
   channel_id: string;
