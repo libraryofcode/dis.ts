@@ -1,6 +1,7 @@
 import Base from './Base';
 import Channel from './Channel';
 import GuildMember from './GuildMember';
+import Emoji from './Emoji';
 
 export default interface Guild extends Base {
   afk_channel_id: string | null;
@@ -13,7 +14,7 @@ export default interface Guild extends Base {
   default_message_notifications: DefaultMessageNotificationLevel;
   description: string | null;
   discovery_splash: string | null;
-  emojis: unknown[]; // TODO emojis
+  emojis: Emoji[];
   explicit_content_filter: ExplicitContentFilterLevel;
   features: GuildFeatures[];
   icon: string | null;
@@ -40,8 +41,10 @@ export default interface Guild extends Base {
   roles: unknown[]; // TODO roles
   rules_channel_id: string | null;
   splash: string | null;
+  stage_instances?: unknown[]; // TODO stage instance
   system_channel_flags: SystemChannelFlags;
   system_channel_id: string | null;
+  threads?: Channel[];
   unavailable?: boolean;
   vanity_url_code: string | null;
   verification_level: VerificationLevel;
