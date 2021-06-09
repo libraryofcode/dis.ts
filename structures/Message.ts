@@ -5,6 +5,7 @@ import { ActionRow } from './Components';
 import { PartialEmoji } from './Emoji';
 import { GuildMemberMessage } from './GuildMember';
 import { MessageInteraction } from './Interaction';
+import Sticker from './Sticker';
 
 export default interface Message extends Base {
   activity?: MessageActivity;
@@ -29,7 +30,7 @@ export default interface Message extends Base {
   pinned: boolean;
   reactions?: Reaction[];
   referenced_message?: Message | null;
-  stickers?: unknown; // TODO Sticker
+  stickers?: Sticker[];
   thread?: Channel;
   timestamp: Date;
   tts: boolean;
