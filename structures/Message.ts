@@ -64,6 +64,10 @@ export interface MessageReference {
   message_id?: string;
 }
 
+export interface MessageReferenceCreate extends MessageReference {
+  fail_if_not_exists?: boolean;
+}
+
 export enum MessageType {
   DEFAULT,
   RECIPIENT_ADD,
@@ -78,7 +82,7 @@ export enum MessageType {
   USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_2,
   USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_3,
   CHANNEL_FOLLOW_ADD,
-  GUILD_DISCOVERY_DISQUALIFIED,
+  GUILD_DISCOVERY_DISQUALIFIED = 14,
   GUILD_DISCOVERY_REQUALIFIED,
   GUILD_DISCOVERY_GRACE_PERIOD_INITIAL_WARNING,
   GUILD_DISCOVERY_GRACE_PERIOD_FINAL_WARNING,
