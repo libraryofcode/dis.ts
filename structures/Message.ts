@@ -1,3 +1,4 @@
+import { MessageApplication } from './Application';
 import Attachment from './Attachment';
 import Base from './Base';
 import Channel, { ChannelMention } from './Channel';
@@ -9,7 +10,7 @@ import Sticker from './Sticker';
 
 export default interface Message extends Base {
   activity?: MessageActivity;
-  application?: unknown; // TODO Partial application
+  application?: MessageApplication;
   application_id?: string;
   attachments: Attachment[];
   author: unknown; // TODO User
