@@ -54,6 +54,10 @@ export default interface Guild extends Base {
   widget_enabled?: boolean;
 }
 
+export interface UnavailableGuild extends Base {
+  unavailable?: true;
+}
+
 export interface InviteGuild extends Base {
   banner: string | null;
   description: string | null;
