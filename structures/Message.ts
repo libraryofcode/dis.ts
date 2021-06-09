@@ -1,3 +1,4 @@
+import Attachment from './Attachment';
 import Base from './Base';
 import Channel, { ChannelMention } from './Channel';
 import { ActionRow } from './Components';
@@ -7,7 +8,7 @@ import { GuildMemberMessage } from './GuildMember';
 export default interface Message extends Base {
   activity?: MessageActivity;
   application?: unknown; // TODO Partial application
-  attachments: unknown[]; // TODO Attachment
+  attachments: Attachment[];
   author: unknown; // TODO User
   channel_id: string;
   components: ActionRow[];
