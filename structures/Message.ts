@@ -4,6 +4,7 @@ import Channel, { ChannelMention } from './Channel';
 import { ActionRow } from './Components';
 import { PartialEmoji } from './Emoji';
 import { GuildMemberMessage } from './GuildMember';
+import { MessageInteraction } from './Interaction';
 
 export default interface Message extends Base {
   activity?: MessageActivity;
@@ -17,7 +18,7 @@ export default interface Message extends Base {
   embeds: unknown[]; // TODO Embed
   flags?: MessageFlags;
   guild_id?: string;
-  interaction?: unknown; // TODO Message Interaction
+  interaction?: MessageInteraction;
   member?: GuildMemberMessage;
   mention_channels?: ChannelMention[];
   mention_everyone: boolean;

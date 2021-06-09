@@ -45,3 +45,9 @@ export interface ApplicationCommandInteractionDataOption {
   type: ApplicationCommandOptionType;
   value?: any; // TODO ????
 }
+
+export interface MessageInteraction extends Base {
+  name: string;
+  type: InteractionType;
+  user: unknown; // TODO User
+}
