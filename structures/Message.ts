@@ -5,9 +5,11 @@ import { PartialEmoji } from './Emoji';
 export default interface Message extends Base {
   activity?: MessageActivity;
   application?: unknown; // TODO Partial application
+  application_id?: string;
   attachments: unknown[]; // TODO Attachment
   author: unknown; // TODO User
   channel_id: string;
+  components?: unknown[]; // TODO message components
   content: string;
   edited_timestamp: Date | null;
   embeds: unknown[]; // TODO Embed
@@ -15,7 +17,7 @@ export default interface Message extends Base {
   guild_id?: string;
   interaction?: unknown; // TODO Message Interaction
   member?: unknown; // TODO Partial Member?
-  mention_channels?: string[];
+  mention_channels?: unknown[]; // TODO channel mention
   mention_everyone: boolean;
   mention_roles: string[];
   mentions: unknown[]; // TODO Extended user interface with member object for MESSAGE_CREATE/UPDATE
@@ -24,7 +26,7 @@ export default interface Message extends Base {
   pinned: boolean;
   reactions?: Reaction[];
   referenced_message?: Message | null;
-  stickers?: unknown; // TODO Sticker
+  stickers?: unknown[]; // TODO Sticker
   thread?: Channel;
   timestamp: Date;
   tts: boolean;
@@ -57,6 +59,7 @@ export enum MessageFlags {
 
 export interface MessageReference {
   channel_id?: string;
+  fail_if_not_exists?: boolean;
   guild_id?: string;
   message_id?: string;
 }
@@ -75,7 +78,7 @@ export enum MessageType {
   USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_2,
   USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_3,
   CHANNEL_FOLLOW_ADD,
-  GUILD_DISCOVERY_DISQUALIFIED,
+  GUILD_DISCOVERY_DISQUALIFIED = 14,
   GUILD_DISCOVERY_REQUALIFIED,
   GUILD_DISCOVERY_GRACE_PERIOD_INITIAL_WARNING,
   GUILD_DISCOVERY_GRACE_PERIOD_FINAL_WARNING,
