@@ -5,7 +5,7 @@ export default interface GuildMember {
   nick?: string | null;
   pending?: boolean;
   permissions?: unknown; // TODO BigInt permissions;
-  premium_since: Date | null;
+  premium_since?: Date | null;
   roles: string[];
   user?: unknown; // TODO User;
 }
