@@ -17,6 +17,7 @@ export default class DiscordWebsocket {
   client: GatewayClient;
   connectionProperties: ConnectionProperties;
   discordTrace?: string;
+  id: number;
   largeThreshold?: number;
   manager: ShardManager;
   ready = false;
@@ -30,9 +31,10 @@ export default class DiscordWebsocket {
   private _token: string;
   private _url: string;
 
-  constructor(manager: ShardManager, url: string) {
+  constructor(manager: ShardManager, id: number, url: string) {
     this.manager = manager;
     this.client = manager.client;
+    this.id = id;
     this._token = manager.token;
     this._url = url;
     this._intents = manager.options.intents;
@@ -52,6 +54,10 @@ export default class DiscordWebsocket {
     this._selfDisconnect = true;
     this.ws?.close(code, reason);
     return this;
+  }
+
+  emit(event: string, data: any) {
+    this.client.emit(event, this.id, data);
   }
 
   initialize() {
@@ -188,11 +194,11 @@ export default class DiscordWebsocket {
       case GATEWAY_CLOSE_EVENT_CODES.INVALID_INTENTS:
       case GATEWAY_CLOSE_EVENT_CODES.DISALLOWED_INTENTS: this.reset(); break;
       case GATEWAY_CLOSE_EVENT_CODES.INVALID_API_VERSION: { // REVIEW Discuss implications of falling back to hardcoded version
-        if (this._url.includes('v=8')) {
+        if (this._url.includes('v=9')) {
           this.reset();
           console.error(new Error(`Hardcode fallback API version failed: ${this._url}`));
         }
-        this._url = this._url.replace(/v=\d/, 'v=8');
+        this._url = this._url.replace(/v=\d/, 'v=9');
         this.reset().connect();
         break;
       }
@@ -214,6 +220,8 @@ export default class DiscordWebsocket {
 
   private _onEvent(p: Payload) {
     const { d, t } = p;
+    this.emit(t, d);
+
     switch (t) {
       case 'READY': this.sessionID = d.session_id; this.ready = true; break;
       case 'RESUMED': this.ready = true; break;
@@ -223,6 +231,7 @@ export default class DiscordWebsocket {
 
   private _onMessage(data: string) {
     const p: Payload = JSON.parse(data);
+    this.emit('rawMessage', p);
 
     const { d, op, s, t } = p;
 
