@@ -3,7 +3,7 @@ export { default as BotGateway } from './BotGateway';
 export { default as Channel, ChannelPartial, WebhookChannel, ChannelType, ThreadMember, ThreadMetadata, VideoQuality } from './Channel';
 export { default as Emoji, PartialEmoji } from './Emoji';
 export { default as Guild, InviteGuild, TemplateGuild, WebhookGuild, DefaultMessageNotificationLevel, ExplicitContentFilterLevel, GuildFeatures, MFALevel, PremiumTier, SystemChannelFlags, VerificationLevel, WelcomeScreen, WelcomeScreenChannel } from './Guild';
-export { default as GuildIntegration, BotIntegration, IntegrationAccount, IntegrationApplication, IntegrationExpireBehaviour, InterationType } from './GuildIntegration';
+export { default as GuildIntegration, BotIntegration, IntegrationAccount, IntegrationApplication, IntegrationExpireBehavior, InterationType } from './GuildIntegration';
 export { default as GuildMember } from './GuildMember';
 export { default as GuildPreview } from './GuildPreview';
 export { default as GuildTemplate } from './GuildTemplate';
