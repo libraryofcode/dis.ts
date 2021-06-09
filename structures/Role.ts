@@ -14,5 +14,5 @@ export default interface Role extends Base {
 export interface roleTags {
   bot_id?: string;
   integration_id?: string;
-  premium_subscriber: null;
+  premium_subscriber?: null;
 }
