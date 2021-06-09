@@ -1,4 +1,5 @@
 import Base from './Base';
+import { PermissionOverwrite } from './Permissions';
 
 export default interface Channel extends Base {
   application_id?: string;
@@ -66,10 +67,4 @@ export interface ThreadMetadata {
 export enum VideoQuality {
   AUTO = 1,
   FULL,
-}
-
-export interface PermissionOverwrite extends Base {
-  allow: string;
-  deny: string;
-  type: 0 | 1;
 }

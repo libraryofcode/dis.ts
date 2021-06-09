@@ -2,6 +2,7 @@
 // @ts-nocheck
 // NOTE Can't enun bigints, but reverse mappings will cast bigints to stringified keys.
 // NOTE See https://github.com/microsoft/TypeScript/issues/40793 and https://github.com/microsoft/TypeScript/issues/37783
+import Base from './Base';
 
 enum Permissions {
   CREATE_INSTANT_INVITE = 1n << 0n,
@@ -43,5 +44,10 @@ enum Permissions {
   USE_PRIVATE_THREADS = 1n << 36n,
 }
 
+export interface PermissionOverwrite extends Base {
+  allow: string;
+  deny: string;
+  type: 0 | 1;
+}
 
 export default Permissions;
