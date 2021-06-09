@@ -9,3 +9,5 @@ export default interface GuildMember {
   roles: string[];
   user?: unknown; // TODO User;
 }
+
+export type GuildMemberMessage = Required<Omit<GuildMember, 'permissions' | 'user'>>;

@@ -1,6 +1,7 @@
 import Base from './Base';
-import Channel from './Channel';
+import Channel, { ChannelMention } from './Channel';
 import { PartialEmoji } from './Emoji';
+import { GuildMemberMessage } from './GuildMember';
 
 export default interface Message extends Base {
   activity?: MessageActivity;
@@ -8,17 +9,18 @@ export default interface Message extends Base {
   attachments: unknown[]; // TODO Attachment
   author: unknown; // TODO User
   channel_id: string;
+  components: unknown[]; // TODO Components
   content: string;
   edited_timestamp: Date | null;
   embeds: unknown[]; // TODO Embed
   flags?: MessageFlags;
   guild_id?: string;
   interaction?: unknown; // TODO Message Interaction
-  member?: unknown; // TODO Partial Member?
-  mention_channels?: string[];
+  member?: GuildMemberMessage;
+  mention_channels?: ChannelMention[];
   mention_everyone: boolean;
   mention_roles: string[];
-  mentions: unknown[]; // TODO Extended user interface with member object for MESSAGE_CREATE/UPDATE
+  mentions: unknown[]; // TODO Extended user interface with member: GuildMemberMessage for MESSAGE_CREATE/UPDATE
   message_reference?: MessageReference;
   nonce?: string | number;
   pinned: boolean;
