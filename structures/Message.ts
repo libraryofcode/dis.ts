@@ -1,5 +1,6 @@
 import Base from './Base';
 import Channel, { ChannelMention } from './Channel';
+import { ActionRow } from './Components';
 import { PartialEmoji } from './Emoji';
 import { GuildMemberMessage } from './GuildMember';
 
@@ -9,7 +10,7 @@ export default interface Message extends Base {
   attachments: unknown[]; // TODO Attachment
   author: unknown; // TODO User
   channel_id: string;
-  components: unknown[]; // TODO Components
+  components: ActionRow[];
   content: string;
   edited_timestamp: Date | null;
   embeds: unknown[]; // TODO Embed
