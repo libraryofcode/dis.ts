@@ -1,4 +1,4 @@
-import BotGateway, { Gateway } from '../structures/BotGateway';
+import BotGateway, { Gateway } from '../structures/Gateway';
 import DiscordWebsocket from './DiscordWebsocket';
 import GatewayClient, { GatewayOptions } from './GatewayClient';
 
@@ -58,7 +58,7 @@ export default class ShardManager {
     else if (this.options.shards.lastShard < <number> this.options.shards.firstShard) throw new RangeError('Invalid last shard ID');
 
     for (let currentShard = <number> this.options.shards.firstShard; currentShard <= <number> this.options.shards.lastShard; currentShard++) {
-      const websocket = new DiscordWebsocket(this, this.gwURL);
+      const websocket = new DiscordWebsocket(this, currentShard, this.gwURL);
       this.shards.set(currentShard, websocket);
       websocket.connect();
     }
