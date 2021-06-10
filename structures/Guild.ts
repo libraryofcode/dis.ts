@@ -2,6 +2,7 @@ import Base from './Base';
 import Channel from './Channel';
 import GuildMember from './GuildMember';
 import Emoji from './Emoji';
+import StageInstance from './StageInstance';
 
 export default interface Guild extends Base {
   afk_channel_id: string | null;
@@ -41,7 +42,7 @@ export default interface Guild extends Base {
   roles: unknown[]; // TODO roles
   rules_channel_id: string | null;
   splash: string | null;
-  stage_instances?: unknown[]; // TODO stage instance
+  stage_instances?: StageInstance[];
   system_channel_flags: SystemChannelFlags;
   system_channel_id: string | null;
   threads?: Channel[];
