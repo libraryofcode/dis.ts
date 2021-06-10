@@ -47,7 +47,12 @@ enum Permissions {
 export interface PermissionOverwrite extends Base {
   allow: string;
   deny: string;
-  type: 0 | 1;
+  type: PermissionOverwriteType;
+}
+
+export enum PermissionOverwriteType {
+  ROLE,
+  MEMBER,
 }
 
 export default Permissions;
