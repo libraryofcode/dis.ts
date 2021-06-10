@@ -1,6 +1,6 @@
 export { default as Base } from './Base';
-export { default as Channel, ChannelPartial, WebhookChannel, ChannelType, ThreadMember, ThreadMetadata, VideoQuality } from './Channel';
 export { default as BotGateway } from './Gateway';
+export { default as Channel, ChannelPartial, WebhookChannel, ChannelType, ThreadMember, ThreadMetadata, VideoQuality } from './Channel';
 export { default as Emoji, PartialEmoji } from './Emoji';
 export { default as Guild, InviteGuild, TemplateGuild, WebhookGuild, DefaultMessageNotificationLevel, ExplicitContentFilterLevel, GuildFeatures, MFALevel, PremiumTier, SystemChannelFlags, VerificationLevel, WelcomeScreen, WelcomeScreenChannel } from './Guild';
 export { default as GuildIntegration, BotIntegration, IntegrationAccount, IntegrationApplication, IntegrationExpireBehaviour, InterationType } from './GuildIntegration';
