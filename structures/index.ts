@@ -6,6 +6,7 @@ export { default as Guild, InviteGuild, TemplateGuild, WebhookGuild, DefaultMess
 export { default as GuildIntegration, BotIntegration, IntegrationAccount, IntegrationApplication, IntegrationExpireBehaviour, InterationType } from './GuildIntegration';
 export { default as GuildMember } from './GuildMember';
 export { default as GuildPreview } from './GuildPreview';
+export { default as GuildRole, RoleTags } from './GuildRole';
 export { default as GuildTemplate } from './GuildTemplate';
 export { default as Invite, InviteMetadata, InviteTargetType } from './Invite';
 export { default as Message, MessageActivity, MessageActivityType, MessageFlags, MessageReference, MessageType, Reaction } from './Message';
