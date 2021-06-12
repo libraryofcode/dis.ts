@@ -1,7 +1,7 @@
 import Base from './Base';
 import Channel from './Channel';
-import GuildMember from './GuildMember';
 import Emoji from './Emoji';
+import GuildMember from './GuildMember';
 import StageInstance from './StageInstance';
 
 export default interface Guild extends Base {
