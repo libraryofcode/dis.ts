@@ -3,18 +3,18 @@ import Base from './Base';
 export default interface GuildIntegration extends Base {
   account: IntegrationAccount;
   application?: IntegrationApplication;
-  enable_emoticons: boolean;
+  enable_emoticons?: boolean;
   enabled: boolean;
-  expire_behaviour: IntegrationExpireBehaviour;
-  expire_grace_period: number;
+  expire_behavior?: IntegrationExpireBehavior;
+  expire_grace_period?: number;
   name: string;
-  revoked: boolean;
-  role_id: string;
-  subscriber_count: number;
+  revoked?: boolean;
+  role_id?: string;
+  subscriber_count?: number;
   synced_at: Date;
-  syncing: boolean;
+  syncing?: boolean;
   type: InterationType;
-  user: unknown; // TODO User
+  user?: unknown; // TODO User
 }
 
 export interface BotIntegration extends Base {
@@ -37,7 +37,7 @@ export interface IntegrationApplication extends Base {
   summary: string;
 }
 
-export enum IntegrationExpireBehaviour {
+export enum IntegrationExpireBehavior {
   REMOVE_ROLE,
   KICK,
 }
