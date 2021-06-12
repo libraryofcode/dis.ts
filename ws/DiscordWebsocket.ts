@@ -1,9 +1,11 @@
 import WebSocket from 'ws';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { EVENTS, Payload, GATEWAY_OPCODES, GATEWAY_CLOSE_EVENT_CODES } from './constants';
+import GatewayClient from './GatewayClient';
+import ShardManager from './ShardManager';
 const IDENTIFY_TIMEOUT = 1000;
 
-interface ConnectionProperties {
+export interface ConnectionProperties {
   $browser: string;
   $device: string;
   $os: string;
@@ -12,9 +14,12 @@ interface ConnectionProperties {
 // TODO implement rate limits
 export default class DiscordWebsocket {
   autoReconnect = true;
+  client: GatewayClient;
   connectionProperties: ConnectionProperties;
   discordTrace?: string;
+  id: number;
   largeThreshold?: number;
+  manager: ShardManager;
   ready = false;
   sessionID: string | null = null;
   ws: WebSocket | null = null;
@@ -26,15 +31,18 @@ export default class DiscordWebsocket {
   private _token: string;
   private _url: string;
 
-  constructor(token: string, url: string, intents: number, connProps: Partial<ConnectionProperties> = {}) {
-    this._token = token;
+  constructor(manager: ShardManager, id: number, url: string) {
+    this.manager = manager;
+    this.client = manager.client;
+    this.id = id;
+    this._token = manager.token;
     this._url = url;
-    this._intents = intents;
+    this._intents = manager.options.intents;
 
     this._identify = this._identify.bind(this);
     this._onClose = this._onClose.bind(this);
     this._onMessage = this._onMessage.bind(this);
-    this.connectionProperties = { $os: process.platform, $browser: 'dis.ts', $device: 'dis.ts', ...connProps };
+    this.connectionProperties = manager.options.connProps;
   }
 
   connect() {
@@ -42,14 +50,14 @@ export default class DiscordWebsocket {
     return this;
   }
 
-  disconnect(code?: number) {
-    if (code === 1000 || code === 1001) {
-      this.sessionID = null;
-      this._seq = null;
-    }
+  disconnect(code?: GATEWAY_CLOSE_EVENT_CODES, reason?: string) {
     this._selfDisconnect = true;
-    this.ws?.close(code);
+    this.ws?.close(code, reason);
     return this;
+  }
+
+  emit(event: string, data: any) {
+    this.client.emit(event, this.id, data);
   }
 
   initialize() {
@@ -66,13 +74,15 @@ export default class DiscordWebsocket {
   }
 
   reset() {
-    if (this._heartBeatInterval) clearInterval(this._heartBeatInterval);
+    if (this._heartBeatInterval) {
+      clearInterval(this._heartBeatInterval);
+      this._heartBeatInterval = null;
+    }
     if (this.ws?.readyState === WebSocket.OPEN) {
       this.ws.off('message', this._onMessage)
         .off('error', console.error)
         .terminate();
     }
-    this._heartBeatInterval = null;
     this.ws = null;
     this.ready = false;
     this._lastHeartbeatAck = true;
@@ -81,7 +91,7 @@ export default class DiscordWebsocket {
 
   restart(newSession = false) {
     if (newSession) this.sessionID = null;
-    this.disconnect().connect();
+    this.disconnect(GATEWAY_CLOSE_EVENT_CODES.RECONNECT, 'Reconnect');
   }
 
   // TODO Prevent 4013?
@@ -158,15 +168,23 @@ export default class DiscordWebsocket {
   // TODO Construct proper errors
   private _onClose(code: GATEWAY_CLOSE_EVENT_CODES) {
     switch (code) {
+      case GATEWAY_CLOSE_EVENT_CODES.NORMAL:
+      case GATEWAY_CLOSE_EVENT_CODES.GOING_AWAY: {
+        this.sessionID = null;
+        this._seq = null;
+        if (this._heartBeatInterval) {
+          clearInterval(this._heartBeatInterval); this._heartBeatInterval = null;
+        }
+        break;
+      }
       case GATEWAY_CLOSE_EVENT_CODES.UNKNOWN_ERROR:
       case GATEWAY_CLOSE_EVENT_CODES.UNKNOW_OPCODE:
       case GATEWAY_CLOSE_EVENT_CODES.DECODE_ERROR:
       case GATEWAY_CLOSE_EVENT_CODES.ALREADY_AUTHENTICATED:
       case GATEWAY_CLOSE_EVENT_CODES.RATE_LIMITED: this.restart(); break;
       case GATEWAY_CLOSE_EVENT_CODES.NOT_AUTHENTICATED:
-      case GATEWAY_CLOSE_EVENT_CODES.INVALID_SESSION:
       case GATEWAY_CLOSE_EVENT_CODES.INVALID_RESUME_SEQUENCE:
-      case GATEWAY_CLOSE_EVENT_CODES.SESSION_TIMEOUT: setTimeout(() => this.restart(true), IDENTIFY_TIMEOUT); break;
+      case GATEWAY_CLOSE_EVENT_CODES.SESSION_TIMEOUT: this.restart(true); break;
       case GATEWAY_CLOSE_EVENT_CODES.AUTHENTICATION_FAILED: {
         this._token = '';
         this.reset();
@@ -176,12 +194,20 @@ export default class DiscordWebsocket {
       case GATEWAY_CLOSE_EVENT_CODES.INVALID_INTENTS:
       case GATEWAY_CLOSE_EVENT_CODES.DISALLOWED_INTENTS: this.reset(); break;
       case GATEWAY_CLOSE_EVENT_CODES.INVALID_API_VERSION: { // REVIEW Discuss implications of falling back to hardcoded version
-        if (this._url.includes('v=8')) {
+        if (this._url.includes('v=9')) {
           this.reset();
           console.error(new Error(`Hardcode fallback API version failed: ${this._url}`));
         }
-        this._url = this._url.replace(/v=\d/, 'v=8');
+        this._url = this._url.replace(/v=\d/, 'v=9');
         this.reset().connect();
+        break;
+      }
+      case GATEWAY_CLOSE_EVENT_CODES.RECONNECT: {
+        if (this._heartBeatInterval) {
+          clearInterval(this._heartBeatInterval);
+          this._heartBeatInterval = null;
+        }
+        this.connect();
         break;
       }
       default: {
@@ -194,6 +220,8 @@ export default class DiscordWebsocket {
 
   private _onEvent(p: Payload) {
     const { d, t } = p;
+    this.emit(t, d);
+
     switch (t) {
       case 'READY': this.sessionID = d.session_id; this.ready = true; break;
       case 'RESUMED': this.ready = true; break;
@@ -203,6 +231,8 @@ export default class DiscordWebsocket {
 
   private _onMessage(data: string) {
     const p: Payload = JSON.parse(data);
+    this.emit('rawMessage', p);
+
     const { d, op, s, t } = p;
 
     if (s) this._seq = s;
@@ -211,7 +241,7 @@ export default class DiscordWebsocket {
       case GATEWAY_OPCODES.DISPATCH: this._onEvent(p); break;
       case GATEWAY_OPCODES.HEARTBEAT: this._heartbeat(); break;
       case GATEWAY_OPCODES.RECONNECT: this.restart(); break;
-      case GATEWAY_OPCODES.INVALID_SESSION: this._identify(); break;
+      case GATEWAY_OPCODES.INVALID_SESSION: setTimeout(this._identify, IDENTIFY_TIMEOUT); break;
       case GATEWAY_OPCODES.HELLO: this._hello(d); break;
       case GATEWAY_OPCODES.HEARTBEAT_ACK: this._lastHeartbeatAck = true; break;
       default: console.warn('UNKNOWN OP', { op, d, s, t });

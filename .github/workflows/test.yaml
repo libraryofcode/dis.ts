@@ -21,7 +21,7 @@ jobs:
         npm run lint
       env:
         CI: true
-  tsc:
+  build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -33,9 +33,9 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: npm install and tsc
+    - name: npm install and build
       run: |
         npm install
-        tsc -p tsconfig.json --noEmit true
+        npm run build
       env:
         CI: true

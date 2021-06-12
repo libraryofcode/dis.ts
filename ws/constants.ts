@@ -10,7 +10,7 @@ export const EVENTS = {
   GUILD_DELETE: 'guildDelete',
   GUILD_BAN_ADD: 'guildBanAdd',
   GUILD_BAN_REMOVE: 'guildBanRemove',
-  GUILD_EMOJIS_UPDATE: 'guildEmojiesUpdate',
+  GUILD_EMOJIS_UPDATE: 'guildEmojisUpdate',
   GUILD_INTEGRATIONS_UPDATE: 'guildIntegrationsUpdate',
   GUILD_MEMBER_ADD: 'guildMemberAdd',
   GUILD_MEMBER_REMOVE: 'guildMemberRemove',
@@ -103,16 +103,19 @@ export enum GATEWAY_OPCODES {
   SYNC_CALL,
 }
 
-// https:// discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-close-event-codes
+// https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-close-event-codes
+// 1000 and 1001: https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent
+// 4200 is just a non-1000 close code
 export enum GATEWAY_CLOSE_EVENT_CODES {
+  NORMAL = 1000,
+  GOING_AWAY,
   UNKNOWN_ERROR = 4000,
   UNKNOW_OPCODE,
   DECODE_ERROR,
   NOT_AUTHENTICATED,
   AUTHENTICATION_FAILED,
   ALREADY_AUTHENTICATED,
-  INVALID_SESSION,
-  INVALID_RESUME_SEQUENCE,
+  INVALID_RESUME_SEQUENCE = 4007,
   RATE_LIMITED,
   SESSION_TIMEOUT,
   INVALID_SHARD,
@@ -120,6 +123,7 @@ export enum GATEWAY_CLOSE_EVENT_CODES {
   INVALID_API_VERSION,
   INVALID_INTENTS,
   DISALLOWED_INTENTS,
+  RECONNECT = 4200,
 }
 
 // https://discord.com/developers/docs/topics/gateway#payloads

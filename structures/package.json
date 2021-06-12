@@ -1,9 +1,9 @@
 {
-  "name": "@dis.ts/rest",
+  "name": "@dis.ts/structures",
   "version": "0.1.0",
-  "description": "A Discord REST API wrapper written 100% in TypeScript.",
-  "main": "RESTClient.js",
-  "types": "RESTClient.ts",
+  "description": "Structures for the dis.ts library",
+  "main": "./index.js",
+  "types": "./index.ts",
   "repository": "https://github.com/libraryofcode/dis.ts",
   "author": "Library of Code sp-us, Dept. of Engineering : Board of Directors",
   "license": "MIT",
@@ -14,7 +14,6 @@
     "prepare": "npm run build"
   },
   "devDependencies": {
-    "@types/node": "^14.14.0",
     "typescript": "^4.2.4"
   }
 }
