@@ -1,4 +1,5 @@
 import Base from './Base';
+import { PermissionOverwrite } from './Permissions';
 
 export default interface Channel extends Base {
   application_id?: string;
@@ -14,7 +15,7 @@ export default interface Channel extends Base {
   nsfw?: boolean;
   owner_id?: string;
   parent_id?: string | null;
-  permission_overwrites?: unknown[]; // TODO Overwrite
+  permission_overwrites?: PermissionOverwrite[];
   position?: number;
   rate_limit_per_user?: number;
   recipients?: [unknown]; // TODO User
