@@ -38,10 +38,6 @@ export default class Client {
     return this.rest.request('PUT', Endpoints.CHANNEL_PINNED_MESSAGE(channelID, messageID), true);
   }
 
-  addThreadMember(channelID: string, userID: string) {
-    return this.rest.request('PUT', Endpoints.THREAD_MEMBER(channelID, userID), true);
-  }
-
   beginGuildPrune(guildID: string, params: any = {}) {
     return this.rest.request('POST', Endpoints.GUILD_PRUNE(guildID), true, {
       days: params.days,
@@ -503,38 +499,8 @@ export default class Client {
       : this.rest.request('GET', Endpoints.WEBHOOK(webhookID), true);
   }
 
-  joinThread(channelID: string) {
-    return this.rest.request('PUT', Endpoints.THREAD(channelID), true);
-  }
-
   leaveGuild(guildID: string) {
     return this.rest.request('DELETE', Endpoints.USER_GUILD(guildID), true);
-  }
-
-  leaveThread(channelID: string) {
-    return this.rest.request('DELETE', Endpoints.THREAD(channelID), true);
-  }
-
-  listActiveThreads(channelID: string) {
-    return this.rest.request('GET', Endpoints.LIST_ACTIVE_THREADS(channelID), true);
-  }
-
-  listArchivedThreads(channelID: string, type: 'public'|'private', params: any = {}) {
-    return this.rest.request('GET', Endpoints.LIST_ARCHIVED_THREADS(channelID, type), true, {
-      before: params.before,
-      limit: params.limit,
-    });
-  }
-
-  listJoinedPrivateArchivedThreads(channelID: string, params: any = {}) {
-    return this.rest.request('GET', Endpoints.LIST_JOINED_PRIVATE_ARCHIVED_THREADS(channelID), true, {
-      before: params.before,
-      limit: params.limit,
-    });
-  }
-
-  listThreadMembers(channelID: string) {
-    return this.rest.request('GET', Endpoints.LIST_THREAD_MEMBERS(channelID), true);
   }
 
   listVoiceRegions() {
@@ -558,24 +524,6 @@ export default class Client {
 
   removeGuildMemberRole(guildID: string, userID: string, roleID: string) {
     return this.rest.request('DELETE', Endpoints.GUILD_MEMBER_ROLE(guildID, userID, roleID), true);
-  }
-
-  removeThreadMember(channelID: string, userID: string) {
-    return this.rest.request('DELETE', Endpoints.THREAD_MEMBER(channelID, userID), true);
-  }
-
-  startThreadWithMessage(channelID: string, messageID: string, params: any = {}) {
-    return this.rest.request('POST', Endpoints.START_THREAD_WITH_MESSAGE(channelID, messageID), true, {
-      name: params.name,
-      auto_archive_duration: params.autoArchiveDuration,
-    });
-  }
-
-  startThreadWithoutMessage(channelID: string, params: any = {}) {
-    return this.rest.request('POST', Endpoints.START_THREAD_WITHOUT_MESSAGE(channelID), true, {
-      name: params.name,
-      auto_archive_duration: params.autoArchiveDuration,
-    });
   }
 
   syncGuildIntegration(guildID: string, integrationID: string) {
