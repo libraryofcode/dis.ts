@@ -363,6 +363,67 @@ export default class Endpoints {
     return `/guilds/${guildID}/templates/${code}`;
   }
 
+  // Threads
+  /**
+   * `/channels/:channelID/messages/:messageID/threads`
+   * - POST - Start Thread with Message
+   */
+  public static START_THREAD_WITH_MESSAGE(channelID: string, messageID: string) {
+    return `/channels/${channelID}/messages/${messageID}/threads`;
+  }
+  /**
+   * `/channels/:channelID/threads`
+   * - POST - Start Thread without Message
+   */
+  public static START_THREAD_WITHOUT_MESSAGE(channelID: string) {
+    return `/channels/${channelID}/threads`;
+  }
+  /**
+   * `/channels/:channelID/thread-members/@me`
+   * - PUT - Join Thread
+   * - DELETE - Leave Thread
+   */
+  public static THREAD(channelID: string) {
+    return `/channels/${channelID}/thread-members/@me`;
+  }
+  /**
+   * `/channels/:channelID/thread-members/:userID`
+   * - PUT - Add Thread Member
+   * - DELETE - Remove Thread Member
+   */
+  public static THREAD_MEMBER(channelID: string, userID: string) {
+    return `/channels/${channelID}/thread-members/${userID}`;
+  }
+  /**
+   * `/channels/:channelID/thread-members`
+   * - GET - List Thread Members
+   */
+  public static LIST_THREAD_MEMBERS(channelID: string) {
+    return `/channels/${channelID}/thread-members`;
+  }
+  /**
+   * `/channels/:channelID/threads/active`
+   * - GET - List Active Threads
+   */
+  public static LIST_ACTIVE_THREADS(channelID: string) {
+    return `/channels/${channelID}/threads/active`;
+  }
+  /**
+   * `/channels/:channelID}/threads/archived/public OR private`
+   * - GET & type = public - List Public Archived Threads
+   * - GET & type = private - List Private Archived Threads
+   */
+  public static LIST_ARCHIVED_THREADS(channelID: string, type: 'public' | 'private') {
+    return `/channels/${channelID}/threads/archived/${type}`;
+  }
+  /**
+   * `/channels/:channelID/users/@me/threads/archived/private`
+   * - GET - List Joined Private Archived Threads
+   */
+  public static LIST_JOINED_PRIVATE_ARCHIVED_THREADS(channelID: string) {
+    return `/channels/${channelID}/users/@me/threads/archived/private`;
+  }
+
   // User
   /**
    * `/users/:userID`
