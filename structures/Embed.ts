@@ -1,3 +1,5 @@
+export type EmbedType = 'rich' | 'image' | 'video' | 'gifv' | 'article' | 'link';
+
 export interface EmbedAuthor {
   icon_url?: string;
   name?: string;
@@ -28,8 +30,6 @@ export interface EmbedProvider {
   name?: string;
   url?: string;
 }
-
-export type EmbedType = 'rich' | 'image' | 'video' | 'gifv' | 'article' | 'link';
 
 export default interface Embed {
   author?: EmbedAuthor;
